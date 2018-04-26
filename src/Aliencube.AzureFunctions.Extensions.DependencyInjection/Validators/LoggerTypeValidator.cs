@@ -16,12 +16,12 @@ namespace Aliencube.AzureFunctions.Extensions.DependencyInjection
         /// <returns>Returns <c>True</c>, if the logger type is valid; otherwise returns <c>False</c>.</returns>
         public static bool ValidateLoggerType<TLogger>(TLogger log)
         {
-            if (log.GetType() == typeof(TraceWriter))
+            if (log is TraceWriter)
             {
                 return true;
             }
 
-            if (log.GetType() == typeof(ILogger))
+            if (log is ILogger)
             {
                 return true;
             }

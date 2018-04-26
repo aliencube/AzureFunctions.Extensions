@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-using Microsoft.Azure.WebJobs.Host;
-using Microsoft.Extensions.Logging;
-
 namespace Aliencube.AzureFunctions.Extensions.DependencyInjection.Abstractions
 {
     /// <summary>
@@ -31,6 +28,7 @@ namespace Aliencube.AzureFunctions.Extensions.DependencyInjection.Abstractions
         }
 
         /// <inheritdoc />
-        public virtual Task<TOutput> InvokeAsync<TInput, TOutput>(TInput input, FunctionOptionsBase options = null) => Task.FromResult(default(TOutput));
+        public virtual Task<TOutput> InvokeAsync<TInput, TOutput>(TInput input, FunctionOptionsBase options = null)
+            => Task.FromResult(default(TOutput));
     }
 }

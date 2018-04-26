@@ -1,5 +1,5 @@
 ﻿using System;
-using Aliencube.AzureFunctions.Extensions.DependencyInjection.Abstractions;
+
 using Microsoft.Extensions.Configuration;
 
 namespace Aliencube.AzureFunctions.Extensions.DependencyInjection

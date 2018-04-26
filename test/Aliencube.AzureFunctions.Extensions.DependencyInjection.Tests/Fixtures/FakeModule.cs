@@ -13,6 +13,8 @@ namespace Aliencube.AzureFunctions.Extensions.DependencyInjection.Tests.Fixtures
         public override void Load(IServiceCollection services)
         {
             services.AddTransient<IFakeInterface, FakeClass>();
+            services.AddTransient<IFakeFunctionWithTraceWriter, FakeFunctionWithTraceWriter>();
+            services.AddTransient<IFakeFunctionWithILogger, FakeFunctionWithILogger>();
         }
     }
 }

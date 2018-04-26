@@ -7,6 +7,9 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Aliencube.AzureFunctions.Extensions.DependencyInjection.Tests
 {
+    /// <summary>
+    /// This represents the test entity for the <see cref="ContainerBuilder"/> class.
+    /// </summary>
     [TestClass]
     public class ContainerBuilderTests
     {
