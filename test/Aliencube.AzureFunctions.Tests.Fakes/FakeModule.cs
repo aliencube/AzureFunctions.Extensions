@@ -2,7 +2,7 @@
 
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Aliencube.AzureFunctions.Extensions.DependencyInjection.Tests.Fixtures
+namespace Aliencube.AzureFunctions.Tests.Fakes
 {
     /// <summary>
     /// This represents the module entity for test.

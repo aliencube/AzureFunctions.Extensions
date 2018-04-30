@@ -15,14 +15,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Aliencube.AzureFunctions.Extensions.DependencyInjection\Aliencube.AzureFunctions.Extensions.DependencyInjection.csproj" />
+    <ProjectReference Include="..\..\src\Aliencube.AzureFunctions.FunctionApp\Aliencube.AzureFunctions.FunctionApp.csproj" />
     <ProjectReference Include="..\Aliencube.AzureFunctions.Tests.Fakes\Aliencube.AzureFunctions.Tests.Fakes.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="fakeconfig.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
 
 </Project>

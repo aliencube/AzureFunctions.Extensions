@@ -16,9 +16,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{810145E0-41C
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{8B62E3FB-9062-4716-803A-1FA51FCE68BC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aliencube.AzureFunctions.Extensions.DependencyInjection", "src\Aliencube.AzureFunctions.Extensions.DependencyInjection\Aliencube.AzureFunctions.Extensions.DependencyInjection.csproj", "{EE506010-80F2-40CD-BE0E-861474560592}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Aliencube.AzureFunctions.Extensions.DependencyInjection", "src\Aliencube.AzureFunctions.Extensions.DependencyInjection\Aliencube.AzureFunctions.Extensions.DependencyInjection.csproj", "{EE506010-80F2-40CD-BE0E-861474560592}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aliencube.AzureFunctions.Extensions.DependencyInjection.Tests", "test\Aliencube.AzureFunctions.Extensions.DependencyInjection.Tests\Aliencube.AzureFunctions.Extensions.DependencyInjection.Tests.csproj", "{49C186AD-802E-4C6A-86B1-2092D3FC6660}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Aliencube.AzureFunctions.Extensions.DependencyInjection.Tests", "test\Aliencube.AzureFunctions.Extensions.DependencyInjection.Tests\Aliencube.AzureFunctions.Extensions.DependencyInjection.Tests.csproj", "{49C186AD-802E-4C6A-86B1-2092D3FC6660}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aliencube.AzureFunctions.FunctionApp", "src\Aliencube.AzureFunctions.FunctionApp\Aliencube.AzureFunctions.FunctionApp.csproj", "{4743903D-CC3D-40E0-9AD1-28DF6AC84144}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aliencube.AzureFunctions.FunctionApp.Tests", "test\Aliencube.AzureFunctions.FunctionApp.Tests\Aliencube.AzureFunctions.FunctionApp.Tests.csproj", "{1F697FCA-D521-4D41-BD76-4AE825569458}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aliencube.AzureFunctions.Tests.Fakes", "test\Aliencube.AzureFunctions.Tests.Fakes\Aliencube.AzureFunctions.Tests.Fakes.csproj", "{16B414D3-F4E4-4236-A7C4-75742626C2C1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -34,6 +40,18 @@ Global
 		{49C186AD-802E-4C6A-86B1-2092D3FC6660}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{49C186AD-802E-4C6A-86B1-2092D3FC6660}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{49C186AD-802E-4C6A-86B1-2092D3FC6660}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4743903D-CC3D-40E0-9AD1-28DF6AC84144}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4743903D-CC3D-40E0-9AD1-28DF6AC84144}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4743903D-CC3D-40E0-9AD1-28DF6AC84144}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4743903D-CC3D-40E0-9AD1-28DF6AC84144}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1F697FCA-D521-4D41-BD76-4AE825569458}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1F697FCA-D521-4D41-BD76-4AE825569458}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1F697FCA-D521-4D41-BD76-4AE825569458}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1F697FCA-D521-4D41-BD76-4AE825569458}.Release|Any CPU.Build.0 = Release|Any CPU
+		{16B414D3-F4E4-4236-A7C4-75742626C2C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{16B414D3-F4E4-4236-A7C4-75742626C2C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{16B414D3-F4E4-4236-A7C4-75742626C2C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{16B414D3-F4E4-4236-A7C4-75742626C2C1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -41,6 +59,9 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{EE506010-80F2-40CD-BE0E-861474560592} = {810145E0-41CF-4E24-BD9C-E7517498BA29}
 		{49C186AD-802E-4C6A-86B1-2092D3FC6660} = {8B62E3FB-9062-4716-803A-1FA51FCE68BC}
+		{4743903D-CC3D-40E0-9AD1-28DF6AC84144} = {810145E0-41CF-4E24-BD9C-E7517498BA29}
+		{1F697FCA-D521-4D41-BD76-4AE825569458} = {8B62E3FB-9062-4716-803A-1FA51FCE68BC}
+		{16B414D3-F4E4-4236-A7C4-75742626C2C1} = {8B62E3FB-9062-4716-803A-1FA51FCE68BC}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {70FEC644-BB3C-4441-AF91-DC694803C8F2}

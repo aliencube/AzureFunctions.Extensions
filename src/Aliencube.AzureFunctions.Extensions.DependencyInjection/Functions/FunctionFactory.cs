@@ -26,6 +26,9 @@ namespace Aliencube.AzureFunctions.Extensions.DependencyInjection
         }
 
         /// <inheritdoc />
+        public object ResultInvoked { get; set; }
+
+        /// <inheritdoc />
         public TFunction Create<TFunction, TLogger>(TLogger log) where TFunction : IFunction<TLogger>
         {
             if (log == null)

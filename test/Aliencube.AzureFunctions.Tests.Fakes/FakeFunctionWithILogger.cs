@@ -4,7 +4,7 @@ using Aliencube.AzureFunctions.Extensions.DependencyInjection.Abstractions;
 
 using Microsoft.Extensions.Logging;
 
-namespace Aliencube.AzureFunctions.Extensions.DependencyInjection.Tests.Fixtures
+namespace Aliencube.AzureFunctions.Tests.Fakes
 {
     /// <summary>
     /// This represents the function entity.

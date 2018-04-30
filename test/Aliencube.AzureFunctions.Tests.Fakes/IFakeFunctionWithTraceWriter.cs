@@ -2,7 +2,7 @@
 
 using Microsoft.Azure.WebJobs.Host;
 
-namespace Aliencube.AzureFunctions.Extensions.DependencyInjection.Tests.Fixtures
+namespace Aliencube.AzureFunctions.Tests.Fakes
 {
     /// <summary>
     /// This provides interfaces to the <see cref="FakeFunctionWithTraceWriter"/> class.

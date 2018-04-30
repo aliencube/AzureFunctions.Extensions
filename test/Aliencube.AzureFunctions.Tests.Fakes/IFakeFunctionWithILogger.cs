@@ -2,7 +2,7 @@
 
 using Microsoft.Extensions.Logging;
 
-namespace Aliencube.AzureFunctions.Extensions.DependencyInjection.Tests.Fixtures
+namespace Aliencube.AzureFunctions.Tests.Fakes
 {
     /// <summary>
     /// This provides interfaces to the <see cref="FakeFunctionWithILogger"/> class.

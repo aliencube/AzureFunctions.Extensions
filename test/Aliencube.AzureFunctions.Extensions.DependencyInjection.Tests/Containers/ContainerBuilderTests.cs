@@ -1,4 +1,4 @@
-using Aliencube.AzureFunctions.Extensions.DependencyInjection.Tests.Fixtures;
+using Aliencube.AzureFunctions.Tests.Fakes;
 
 using FluentAssertions;
 
