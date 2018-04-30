@@ -2,6 +2,32 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <IsPackable>true</IsPackable>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <PackageId>Aliencube.AzureFunctions.Extensions.DependencyInjection</PackageId>
+    <Owners>Aliencube</Owners>
+    <Authors>Justin Yoo</Authors>
+    <Company>Aliencube Community</Company>
+    <Version>1.0.0</Version>
+    <Title>AzureFunctions.Extensions.DependencyInjection</Title>
+    <Product>AzureFunctions.Extensions.DependencyInjection</Product>
+    <Summary>This package makes dependency injections on Azure Functions easier, using ASP.NET Core dependency injection features.</Summary>
+    <Description>This package makes dependency injections on Azure Functions easier, using ASP.NET Core dependency injection features.</Description>
+    <PackageTags>Azure Functions, Dependency Injection, IoC Container</PackageTags>
+    <Copyright>Aliencube Community</Copyright>
+    <PackageLicenseUrl>https://github.com/aliencube/AzureFunctions.Extensions/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/aliencube/AzureFunctions.Extensions</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/aliencube/AzureFunctions.Extensions</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>bin\Debug\netstandard2.0\Aliencube.AzureFunctions.Extensions.DependencyInjection.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>bin\Release\netstandard2.0\Aliencube.AzureFunctions.Extensions.DependencyInjection.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
