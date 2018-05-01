@@ -1,0 +1,79 @@
+# dev only
+-
+  environment:
+    package_semantic_version: 0.0.1
+  version: $(package_semantic_version).{build}
+  branches:
+    only:
+    - develop
+  skip_tags: true
+  skip_commits:
+    files:
+      - .editorconfig
+      - .gitattributes
+      - .gitignore
+      - appveyor.yml
+      - LICENSE
+      - README.md
+      - Settings.StyleCop
+      - Aliencube.AzureFunctions.Extensions.sln
+      - Aliencube.AzureFunctions.Extensions.sln.DotSettings
+      - '**/*.csproj'
+  image: Visual Studio 2017
+  configuration: Debug
+  platform: Any CPU
+  dotnet_csproj:
+    patch: true
+    file: '**\*.csproj'
+    version: '$(package_semantic_version).0'
+    package_version: '$(package_semantic_version).0'
+  nuget:
+    disable_publish_on_pr: true
+  before_build:
+  - ps: dotnet restore
+  build:
+    verbosity: minimal
+
+# release Only
+-
+  environment:
+    package_semantic_version: 0.0.1
+  version: $(package_semantic_version).{build}
+  pull_requests:
+    do_not_increment_build_number: true
+  branches:
+    only:
+    - release/all
+  skip_tags: true
+  skip_commits:
+    files:
+      - .editorconfig
+      - .gitattributes
+      - .gitignore
+      - appveyor.yml
+      - LICENSE
+      - README.md
+      - Settings.StyleCop
+      - Aliencube.AzureFunctions.Extensions.sln
+      - Aliencube.AzureFunctions.Extensions.sln.DotSettings
+      - '**/*.csproj'
+  image: Visual Studio 2017
+  configuration: Release
+  platform: Any CPU
+  dotnet_csproj:
+    patch: true
+    file: '**\*.csproj'
+    version: '$(package_semantic_version).0'
+    package_version: '$(package_semantic_version).0'
+  nuget:
+    disable_publish_on_pr: true
+  before_build:
+  - ps: dotnet restore
+  build:
+    verbosity: minimal
+  artifacts:
+  - path: .\src\Aliencube.AzureFunctions.Extensions.DependencyInjection\**\*.nupkg
+    name: Aliencube.AzureFunctions.Extensions.DependencyInjection
+  deploy:
+  - provider: Environment
+    name: NuGet for Aliencube.AzureFunctions.Extensions.DependencyInjection

@@ -7,6 +7,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
 		.mailmap = .mailmap
+		appveyor.yml = appveyor.yml
 		LICENSE = LICENSE
 		README.md = README.md
 		Settings.StyleCop = Settings.StyleCop
@@ -20,11 +21,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Aliencube.AzureFunctions.Ex
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Aliencube.AzureFunctions.Extensions.DependencyInjection.Tests", "test\Aliencube.AzureFunctions.Extensions.DependencyInjection.Tests\Aliencube.AzureFunctions.Extensions.DependencyInjection.Tests.csproj", "{49C186AD-802E-4C6A-86B1-2092D3FC6660}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aliencube.AzureFunctions.FunctionApp", "src\Aliencube.AzureFunctions.FunctionApp\Aliencube.AzureFunctions.FunctionApp.csproj", "{4743903D-CC3D-40E0-9AD1-28DF6AC84144}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Aliencube.AzureFunctions.FunctionApp", "src\Aliencube.AzureFunctions.FunctionApp\Aliencube.AzureFunctions.FunctionApp.csproj", "{4743903D-CC3D-40E0-9AD1-28DF6AC84144}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aliencube.AzureFunctions.FunctionApp.Tests", "test\Aliencube.AzureFunctions.FunctionApp.Tests\Aliencube.AzureFunctions.FunctionApp.Tests.csproj", "{1F697FCA-D521-4D41-BD76-4AE825569458}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Aliencube.AzureFunctions.FunctionApp.Tests", "test\Aliencube.AzureFunctions.FunctionApp.Tests\Aliencube.AzureFunctions.FunctionApp.Tests.csproj", "{1F697FCA-D521-4D41-BD76-4AE825569458}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aliencube.AzureFunctions.Tests.Fakes", "test\Aliencube.AzureFunctions.Tests.Fakes\Aliencube.AzureFunctions.Tests.Fakes.csproj", "{16B414D3-F4E4-4236-A7C4-75742626C2C1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Aliencube.AzureFunctions.Tests.Fakes", "test\Aliencube.AzureFunctions.Tests.Fakes\Aliencube.AzureFunctions.Tests.Fakes.csproj", "{16B414D3-F4E4-4236-A7C4-75742626C2C1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
