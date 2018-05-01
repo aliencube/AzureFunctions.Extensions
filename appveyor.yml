@@ -5,7 +5,7 @@
   version: $(package_semantic_version).{build}
   branches:
     only:
-    - develop
+    - dev
   skip_tags: true
   skip_commits:
     files:
