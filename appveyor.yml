@@ -45,18 +45,18 @@
     only:
     - release/all
   skip_tags: true
-  skip_commits:
-    files:
-      - .editorconfig
-      - .gitattributes
-      - .gitignore
-      - appveyor.yml
-      - LICENSE
-      - README.md
-      - Settings.StyleCop
-      - Aliencube.AzureFunctions.Extensions.sln
-      - Aliencube.AzureFunctions.Extensions.sln.DotSettings
-      - '**/*.csproj'
+#  skip_commits:
+#    files:
+#      - .editorconfig
+#      - .gitattributes
+#      - .gitignore
+#      - appveyor.yml
+#      - LICENSE
+#      - README.md
+#      - Settings.StyleCop
+#      - Aliencube.AzureFunctions.Extensions.sln
+#      - Aliencube.AzureFunctions.Extensions.sln.DotSettings
+#      - '**/*.csproj'
   image: Visual Studio 2017
   configuration: Release
   platform: Any CPU
