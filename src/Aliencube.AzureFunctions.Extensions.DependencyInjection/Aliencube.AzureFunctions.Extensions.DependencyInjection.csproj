@@ -10,8 +10,8 @@
     <Authors>Justin Yoo</Authors>
     <Company>Aliencube Community</Company>
     <Version>1.0.0</Version>
-    <Title>AzureFunctions.Extensions.DependencyInjection</Title>
-    <Product>AzureFunctions.Extensions.DependencyInjection</Product>
+    <Title>Aliencube.AzureFunctions.Extensions.DependencyInjection</Title>
+    <Product>Aliencube.AzureFunctions.Extensions.DependencyInjection</Product>
     <Summary>This package makes dependency injections on Azure Functions easier, using ASP.NET Core dependency injection features.</Summary>
     <Description>This package makes dependency injections on Azure Functions easier, using ASP.NET Core dependency injection features.</Description>
     <PackageTags>Azure Functions, Dependency Injection, IoC Container</PackageTags>
