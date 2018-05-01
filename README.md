@@ -24,7 +24,7 @@ Your contributions are always welcome! All your work should be done in your fork
 
 ## License ##
 
-**yarm** is released under [MIT License](http://opensource.org/licenses/MIT)
+**AzureFunctions.Extensions** is released under [MIT License](http://opensource.org/licenses/MIT)
 
 > The MIT License (MIT)
 >
