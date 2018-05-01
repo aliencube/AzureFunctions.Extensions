@@ -12,7 +12,7 @@ namespace Aliencube.AzureFunctions.Extensions.DependencyInjection.Abstractions
     public interface IFunction<TLogger>
     {
         /// <summary>
-        /// Gets or sets the <see cref="TLogger"/> instance. This MUST be either <see cref="TraceWriter"/> or <see cref="ILogger"/> type.
+        /// Gets or sets the logger instance. This MUST be either <see cref="TraceWriter"/> or <see cref="ILogger"/> type.
         /// </summary>
         TLogger Log { get; set; }
 

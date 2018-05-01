@@ -17,7 +17,7 @@ namespace Aliencube.AzureFunctions.Extensions.DependencyInjection.Abstractions
         /// </summary>
         /// <typeparam name="TFunction">Type of function.</typeparam>
         /// <typeparam name="TLogger">Type of logger.</typeparam>
-        /// <param name="log"><see cref="TLogger"/> instance.</param>
+        /// <param name="log">Logger instance.</param>
         /// <returns>Returns the function instance.</returns>
         TFunction Create<TFunction, TLogger>(TLogger log) where TFunction : IFunction<TLogger>;
     }
