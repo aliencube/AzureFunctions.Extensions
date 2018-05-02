@@ -15,7 +15,7 @@ namespace Aliencube.AzureFunctions.FunctionApp
 {
     public static class SampleHttpTrigger
     {
-        public static IFunctionFactory Factory = new FunctionFactory(new AppModule());
+        public static IFunctionFactory Factory = new FunctionFactory<AppModule>();
 
         [FunctionName("SampleHttpTrigger")]
         public static async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)]HttpRequest req, ILogger log)

@@ -1,3 +1,4 @@
+using Aliencube.AzureFunctions.Extensions.DependencyInjection.Abstractions;
 using Aliencube.AzureFunctions.Tests.Fakes;
 
 using FluentAssertions;
@@ -16,7 +17,7 @@ namespace Aliencube.AzureFunctions.Extensions.DependencyInjection.Tests
         [TestMethod]
         public void Given_NullModule_Container_Should_Resolve_Nothing()
         {
-            var container = new ContainerBuilder().RegisterModule(null).Build();
+            var container = new ContainerBuilder().RegisterModule((Module)null).Build();
 
             var resolved = container.GetService<IFakeInterface>();
 
@@ -27,6 +28,28 @@ namespace Aliencube.AzureFunctions.Extensions.DependencyInjection.Tests
         public void Given_FakeModule_Container_Should_Resolve_Instance()
         {
             var container = new ContainerBuilder().RegisterModule(new FakeModule()).Build();
+
+            var resolved = container.GetService<IFakeInterface>();
+
+            resolved.Should().NotBeNull();
+            resolved.Should().BeAssignableTo<IFakeInterface>();
+        }
+
+        [TestMethod]
+        public void Given_FakeModuleType_Container_Should_Resolve_Instance()
+        {
+            var container = new ContainerBuilder().RegisterModule(typeof(FakeModule)).Build();
+
+            var resolved = container.GetService<IFakeInterface>();
+
+            resolved.Should().NotBeNull();
+            resolved.Should().BeAssignableTo<IFakeInterface>();
+        }
+
+        [TestMethod]
+        public void Given_FakeModuleTypeGeneric_Container_Should_Resolve_Instance()
+        {
+            var container = new ContainerBuilder().RegisterModule<FakeModule>().Build();
 
             var resolved = container.GetService<IFakeInterface>();
 

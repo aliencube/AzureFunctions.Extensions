@@ -35,6 +35,22 @@ namespace Aliencube.AzureFunctions.Extensions.DependencyInjection
         }
 
         /// <inheritdoc />
+        public IContainerBuilder RegisterModule(Type moduleType)
+        {
+            var module = (Module)Activator.CreateInstance(moduleType);
+
+            return this.RegisterModule(module);
+        }
+
+        /// <inheritdoc />
+        public IContainerBuilder RegisterModule<TModule>() where TModule : Module
+        {
+            var module = Activator.CreateInstance<TModule>();
+
+            return this.RegisterModule(module);
+        }
+
+        /// <inheritdoc />
         public IServiceProvider Build()
         {
             var container = this._services.BuildServiceProvider();

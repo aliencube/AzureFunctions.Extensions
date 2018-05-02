@@ -43,5 +43,33 @@ namespace Aliencube.AzureFunctions.Extensions.DependencyInjection.Tests
             service.Should().BeAssignableTo<IFakeFunctionWithILogger>();
             service.Log.Should().BeAssignableTo<ILogger>();
         }
+
+        [TestMethod]
+        public void Given_ModuleType_Property_ShouldNotThrow_Exception()
+        {
+            var logger = new Mock<ILogger>();
+
+            var factory = new FunctionFactory(typeof(FakeModule));
+
+            var service = factory.Create<IFakeFunctionWithILogger, ILogger>(logger.Object);
+
+            service.Should().NotBeNull();
+            service.Should().BeAssignableTo<IFakeFunctionWithILogger>();
+            service.Log.Should().BeAssignableTo<ILogger>();
+        }
+
+        [TestMethod]
+        public void Given_ModuleTypeGeneric_Property_ShouldNotThrow_Exception()
+        {
+            var logger = new Mock<ILogger>();
+
+            var factory = new FunctionFactory<FakeModule>();
+
+            var service = factory.Create<IFakeFunctionWithILogger, ILogger>(logger.Object);
+
+            service.Should().NotBeNull();
+            service.Should().BeAssignableTo<IFakeFunctionWithILogger>();
+            service.Log.Should().BeAssignableTo<ILogger>();
+        }
     }
 }

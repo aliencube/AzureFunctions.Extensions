@@ -15,6 +15,20 @@ namespace Aliencube.AzureFunctions.Extensions.DependencyInjection.Abstractions
         IContainerBuilder RegisterModule(Module module = null);
 
         /// <summary>
+        /// Registers <see cref="Module"/> instance.
+        /// </summary>
+        /// <param name="moduleType">Type of module.</param>
+        /// <returns>Returns <see cref="IContainerBuilder"/> instance.</returns>
+        IContainerBuilder RegisterModule(Type moduleType);
+
+        /// <summary>
+        /// Registers <see cref="Module"/> instance.
+        /// </summary>
+        /// <typeparam name="TModule">Type of module.</typeparam>
+        /// <returns>Returns <see cref="IContainerBuilder"/> instance.</returns>
+        IContainerBuilder RegisterModule<TModule>() where TModule : Module;
+
+        /// <summary>
         /// Builds the IoC container.
         /// </summary>
         /// <returns>Returns <see cref="IServiceProvider"/> instance.</returns>
