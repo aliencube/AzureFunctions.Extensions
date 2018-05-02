@@ -18,6 +18,7 @@
     <Copyright>Aliencube Community</Copyright>
     <PackageLicenseUrl>https://github.com/aliencube/AzureFunctions.Extensions/blob/master/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/aliencube/AzureFunctions.Extensions</PackageProjectUrl>
+    <PackageIconUrl>https://raw.githubusercontent.com/aliencube/AzureFunctions.Extensions/master/icons/Aliencube.AzureFunctions.Extensions.DependencyInjection.png</PackageIconUrl>
     <RepositoryUrl>https://github.com/aliencube/AzureFunctions.Extensions</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
   </PropertyGroup>
