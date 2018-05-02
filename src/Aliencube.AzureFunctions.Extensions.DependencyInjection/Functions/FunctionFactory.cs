@@ -10,6 +10,19 @@ namespace Aliencube.AzureFunctions.Extensions.DependencyInjection
     /// <summary>
     /// This represents the factory entity for functions.
     /// </summary>
+    public class FunctionFactory<TModule> : FunctionFactory where TModule : Module
+    {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FunctionFactory"/> class.
+        /// </summary>
+        public FunctionFactory() : base(typeof(TModule))
+        {
+        }
+    }
+
+    /// <summary>
+    /// This represents the factory entity for functions.
+    /// </summary>
     public class FunctionFactory : IFunctionFactory
     {
         private readonly IServiceProvider _container;
@@ -22,6 +35,17 @@ namespace Aliencube.AzureFunctions.Extensions.DependencyInjection
         {
             this._container = new ContainerBuilder()
                                   .RegisterModule(module)
+                                  .Build();
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FunctionFactory"/> class.
+        /// </summary>
+        /// <param name="moduleType">Type of module.</param>
+        public FunctionFactory(Type moduleType)
+        {
+            this._container = new ContainerBuilder()
+                                  .RegisterModule(moduleType)
                                   .Build();
         }
 

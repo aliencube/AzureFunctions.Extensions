@@ -13,7 +13,7 @@ namespace Aliencube.AzureFunctions.FunctionApp
 {
     public static class SampleTimerTrigger
     {
-        public static IFunctionFactory Factory = new FunctionFactory(new AppModule());
+        public static IFunctionFactory Factory = new FunctionFactory(typeof(AppModule));
 
         [FunctionName("SampleTimerTrigger")]
         public static async Task Run([TimerTrigger("0/5 * * * * *")]TimerInfo myTimer, [Queue("output")]IAsyncCollector<string> collector, ILogger log)
