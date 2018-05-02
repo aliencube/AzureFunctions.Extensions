@@ -63,8 +63,8 @@
   dotnet_csproj:
     patch: true
     file: '**\*.csproj'
-    version: '$(package_semantic_version)-beta5'
-    package_version: '$(package_semantic_version)-beta5'
+    version: '$(package_semantic_version).0'
+    package_version: '$(package_semantic_version).0'
   nuget:
     disable_publish_on_pr: true
   before_build:
