@@ -2,11 +2,11 @@
 using System.Threading.Tasks;
 
 using Aliencube.AzureFunctions.Extensions.DependencyInjection.Abstractions;
-using Aliencube.AzureFunctions.FunctionApp.Functions.FunctionOptions;
+using Aliencube.AzureFunctions.FunctionAppV2.Functions.FunctionOptions;
 
 using Microsoft.Extensions.Logging;
 
-namespace Aliencube.AzureFunctions.FunctionApp.Functions
+namespace Aliencube.AzureFunctions.FunctionAppV2.Functions
 {
     public class SampleTimerFunction : FunctionBase<ILogger>, ISampleTimerFunction
     {

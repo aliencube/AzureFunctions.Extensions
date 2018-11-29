@@ -1,4 +1,4 @@
-﻿namespace Aliencube.AzureFunctions.FunctionApp.Dependencies
+﻿namespace Aliencube.AzureFunctions.FunctionAppV1.Dependencies
 {
     public interface IMyDependency
     {

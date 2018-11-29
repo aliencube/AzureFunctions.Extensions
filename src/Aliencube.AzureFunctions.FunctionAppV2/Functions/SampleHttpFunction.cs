@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 
 using Aliencube.AzureFunctions.Extensions.DependencyInjection.Abstractions;
-using Aliencube.AzureFunctions.FunctionApp.Dependencies;
+using Aliencube.AzureFunctions.FunctionAppV2.Dependencies;
 
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -10,7 +10,7 @@ using Microsoft.Extensions.Logging;
 
 using Newtonsoft.Json;
 
-namespace Aliencube.AzureFunctions.FunctionApp.Functions
+namespace Aliencube.AzureFunctions.FunctionAppV2.Functions
 {
     public class SampleHttpFunction : FunctionBase<ILogger>, ISampleHttpFunction
     {

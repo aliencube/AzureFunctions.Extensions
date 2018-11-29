@@ -2,7 +2,7 @@
 
 using Microsoft.Extensions.Logging;
 
-namespace Aliencube.AzureFunctions.FunctionApp.Functions
+namespace Aliencube.AzureFunctions.FunctionAppV1.Functions
 {
     public interface ISampleTimerFunction : IFunction<ILogger>
     {

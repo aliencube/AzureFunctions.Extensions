@@ -1,10 +1,10 @@
 ﻿using Aliencube.AzureFunctions.Extensions.DependencyInjection.Abstractions;
-using Aliencube.AzureFunctions.FunctionApp.Dependencies;
-using Aliencube.AzureFunctions.FunctionApp.Functions;
+using Aliencube.AzureFunctions.FunctionAppV2.Dependencies;
+using Aliencube.AzureFunctions.FunctionAppV2.Functions;
 
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Aliencube.AzureFunctions.FunctionApp.Modules
+namespace Aliencube.AzureFunctions.FunctionAppV2.Modules
 {
     public class AppModule : Module
     {

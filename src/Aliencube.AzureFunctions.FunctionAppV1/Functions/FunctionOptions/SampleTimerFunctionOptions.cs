@@ -2,7 +2,7 @@
 
 using Microsoft.Azure.WebJobs;
 
-namespace Aliencube.AzureFunctions.FunctionApp.Functions.FunctionOptions
+namespace Aliencube.AzureFunctions.FunctionAppV1.Functions.FunctionOptions
 {
     public class SampleTimerFunctionOptions : FunctionOptionsBase
     {

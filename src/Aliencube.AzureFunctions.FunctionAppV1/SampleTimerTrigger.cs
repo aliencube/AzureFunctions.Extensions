@@ -2,14 +2,14 @@ using System.Threading.Tasks;
 
 using Aliencube.AzureFunctions.Extensions.DependencyInjection;
 using Aliencube.AzureFunctions.Extensions.DependencyInjection.Abstractions;
-using Aliencube.AzureFunctions.FunctionApp.Functions;
-using Aliencube.AzureFunctions.FunctionApp.Functions.FunctionOptions;
-using Aliencube.AzureFunctions.FunctionApp.Modules;
+using Aliencube.AzureFunctions.FunctionAppV1.Functions;
+using Aliencube.AzureFunctions.FunctionAppV1.Functions.FunctionOptions;
+using Aliencube.AzureFunctions.FunctionAppV1.Modules;
 
 using Microsoft.Azure.WebJobs;
 using Microsoft.Extensions.Logging;
 
-namespace Aliencube.AzureFunctions.FunctionApp
+namespace Aliencube.AzureFunctions.FunctionAppV1
 {
     public static class SampleTimerTrigger
     {
