@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 
 using Aliencube.AzureFunctions.Extensions.DependencyInjection.Abstractions;
-using Aliencube.AzureFunctions.FunctionApp.Functions;
+using Aliencube.AzureFunctions.FunctionAppV2.Functions;
 
 using FluentAssertions;
 
@@ -12,7 +12,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Moq;
 
-namespace Aliencube.AzureFunctions.FunctionApp.Tests
+namespace Aliencube.AzureFunctions.FunctionAppV2.Tests
 {
     /// <summary>
     /// This represents the test entity for the <see cref="SampleTimerTrigger"/> class.
