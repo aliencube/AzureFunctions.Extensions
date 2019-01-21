@@ -1,0 +1,17 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "AzureWebJobsDashboard": "UseDevelopmentStorage=true",
+
+    "OpenApi__Info__Version": "1.0.0",
+    "OpenApi__Info__Title": "Swagger Petstore",
+    "OpenApi__Info__Description": "A sample API that uses a petstore as an example to demonstrate features in the OpenAPI 3.0 specification",
+    "OpenApi__Info__TermsOfService": "http://swagger.io/terms/",
+    "OpenApi__Info__Contact__Name": "Swagger API Team",
+    "OpenApi__Info__Contact__Email": "apiteam@swagger.io",
+    "OpenApi__Info__Contact__Url": "http://swagger.io",
+    "OpenApi__Info__License__Name": "Apache 2.0",
+    "OpenApi__Info__License__Url": "https://www.apache.org/licenses/LICENSE-2.0.html"
+  }
+}

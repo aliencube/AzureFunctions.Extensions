@@ -16,8 +16,18 @@ namespace Aliencube.AzureFunctions.FunctionAppV1
     {
         public static IFunctionFactory Factory = new FunctionFactory<AppModule>();
 
-        [FunctionName("SampleHttpTrigger")]
-        public static async Task<HttpResponseMessage> Run([HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)]HttpRequestMessage req, ILogger log)
+        [FunctionName(nameof(GetSample))]
+        public static async Task<HttpResponseMessage> GetSample([HttpTrigger(AuthorizationLevel.Function, "get", Route = "samples")]HttpRequestMessage req, ILogger log)
+        {
+            var result = await Factory.Create<ISampleHttpFunction, ILogger>(log)
+                                      .InvokeAsync<HttpRequestMessage, HttpResponseMessage>(req)
+                                      .ConfigureAwait(false);
+
+            return result;
+        }
+
+        [FunctionName(nameof(PostSample))]
+        public static async Task<HttpResponseMessage> PostSample([HttpTrigger(AuthorizationLevel.Function, "post", Route = "samples")]HttpRequestMessage req, ILogger log)
         {
             var result = await Factory.Create<ISampleHttpFunction, ILogger>(log)
                                       .InvokeAsync<HttpRequestMessage, HttpResponseMessage>(req)
