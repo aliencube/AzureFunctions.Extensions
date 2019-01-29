@@ -20,7 +20,9 @@ namespace Aliencube.AzureFunctions.FunctionAppV1
         {
             var options = new SampleTimerFunctionOptions() { Collector = collector };
 
-            var result = await Factory.Create<ISampleTimerFunction, ILogger>(log).InvokeAsync<TimerInfo, bool>(myTimer, options).ConfigureAwait(false);
+            var result = await Factory.Create<ISampleTimerFunction, ILogger>(log)
+                                      .InvokeAsync<TimerInfo, bool>(myTimer, options)
+                                      .ConfigureAwait(false);
 
             Factory.ResultInvoked = result;
         }

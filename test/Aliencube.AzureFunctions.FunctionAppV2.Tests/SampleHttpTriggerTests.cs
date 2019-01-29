@@ -42,7 +42,7 @@ namespace Aliencube.AzureFunctions.FunctionAppV2.Tests
             req.SetupGet(p => p.Query).Returns(query);
 
             var log = new Mock<ILogger>();
-            var response = await SampleHttpTrigger.Run(req.Object, log.Object).ConfigureAwait(false);
+            var response = await SampleHttpTrigger.GetSample(req.Object, log.Object).ConfigureAwait(false);
 
             response.Should().BeOfType<OkObjectResult>();
             (response as OkObjectResult).Value.Should().Be(message);
