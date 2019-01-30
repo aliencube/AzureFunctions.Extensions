@@ -1,0 +1,17 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "AzureWebJobsDashboard": "UseDevelopmentStorage=true",
+
+    "OpenApi__Info__Version": "2.0.0",
+    "OpenApi__Info__Title": "Open API Sample on Azure Functions",
+    "OpenApi__Info__Description": "A sample API that runs on Azure Functions 2.x using Open API specification.",
+    "OpenApi__Info__TermsOfService": "https://github.com/aliencube/AzureFunctions.Extensions",
+    "OpenApi__Info__Contact__Name": "Aliencube Community",
+    "OpenApi__Info__Contact__Email": "no-reply@aliencube.org",
+    "OpenApi__Info__Contact__Url": "https://github.com/aliencube/AzureFunctions.Extensions/issues",
+    "OpenApi__Info__License__Name": "MIT",
+    "OpenApi__Info__License__Url": "http://opensource.org/licenses/MIT"
+  }
+}
