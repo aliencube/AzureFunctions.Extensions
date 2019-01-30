@@ -1,11 +1,11 @@
-using System;
+﻿using System;
 using System.Net;
 using System.Net.Http;
-using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
 using Aliencube.AzureFunctions.Extensions.DependencyInjection.Abstractions;
+using Aliencube.AzureFunctions.Extensions.OpenApi;
 using Aliencube.AzureFunctions.Extensions.OpenApi.Abstractions;
 using Aliencube.AzureFunctions.Extensions.OpenApi.Extensions;
 using Aliencube.AzureFunctions.FunctionAppV1.Configurations;
@@ -16,22 +16,22 @@ using Microsoft.Extensions.Logging;
 namespace Aliencube.AzureFunctions.FunctionAppV1.Functions
 {
     /// <summary>
-    /// This represents the function entity to render Open API document.
+    /// This represents the function entity to render Swagger UI.
     /// </summary>
-    public class RenderOpeApiDocumentFunction : FunctionBase<ILogger>, IRenderOpeApiDocumentFunction
+    public class RenderSwaggerUIFunction : FunctionBase<ILogger>, IRenderSwaggerUIFunction
     {
         private readonly AppSettings _settings;
-        private readonly IDocument _document;
+        private readonly ISwaggerUI _ui;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="RenderOpeApiDocumentFunction"/> class.
+        /// Initializes a new instance of the <see cref="RenderSwaggerUIFunction"/> class.
         /// </summary>
         /// <param name="settings"><see cref="AppSettings"/> instance.</param>
-        /// <param name="document"><see cref="IDocument"/> instance.</param>
-        public RenderOpeApiDocumentFunction(AppSettings settings, IDocument document)
+        /// <param name="ui"><see cref="ISwaggerUI"/> instance.</param>
+        public RenderSwaggerUIFunction(AppSettings settings, ISwaggerUI ui)
         {
             this._settings = settings;
-            this._document = document;
+            this._ui = ui;
         }
 
         /// <inheritdoc />
@@ -40,17 +40,16 @@ namespace Aliencube.AzureFunctions.FunctionAppV1.Functions
             this.Log.LogInformation("C# HTTP trigger function processed a request.");
 
             var req = input as HttpRequestMessage;
-            var opt = options as RenderOpeApiDocumentFunctionOptions;
+            var opt = options as RenderSwaggerUIFunctionOptions;
 
-            var contentType = opt.Format.GetContentType();
-            var result = await this._document
+            var result = await this._ui
                                    .AddMetadata(this._settings.OpenApiInfo)
                                    .AddServer(req, this._settings.HttpSettings.RoutePrefix)
-                                   .Build(Assembly.GetExecutingAssembly())
-                                   .RenderAsync(opt.Version, opt.Format)
+                                   .BuildAsync(typeof(SwaggerUI).Assembly)
+                                   .RenderAsync(opt.Endpoint)
                                    .ConfigureAwait(false);
 
-            var content = new StringContent(result, Encoding.UTF8, contentType);
+            var content = new StringContent(result, Encoding.UTF8, "text/html");
             var response = new HttpResponseMessage(HttpStatusCode.OK) { Content = content };
 
             return (TOutput)Convert.ChangeType(response, typeof(TOutput));

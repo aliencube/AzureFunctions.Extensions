@@ -25,9 +25,11 @@ namespace Aliencube.AzureFunctions.FunctionAppV2.Configurations
             this.OpenApiInfo = config.Get<OpenApiInfo>("OpenApi:Info");
 
             var version = host.GetSection("version").Value;
-            this.HttpSettings = version.Equals("2.0", StringComparison.CurrentCultureIgnoreCase)
-                ? host.Get<HttpSettings>("extensions:http")
-                : host.Get<HttpSettings>("http");
+            this.HttpSettings = string.IsNullOrWhiteSpace(version)
+                ? host.Get<HttpSettings>("http")
+                : (version.Equals("2.0", StringComparison.CurrentCultureIgnoreCase)
+                       ? host.Get<HttpSettings>("extensions:http")
+                       : host.Get<HttpSettings>("http"));
         }
 
         /// <summary>
