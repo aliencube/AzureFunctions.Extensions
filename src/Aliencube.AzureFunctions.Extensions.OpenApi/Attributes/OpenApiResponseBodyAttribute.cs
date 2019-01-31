@@ -11,7 +11,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Attributes
     public class OpenApiResponseBodyAttribute : OpenApiPayloadAttribute
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="OpenApiRequestBodyAttribute"/> class.
+        /// Initializes a new instance of the <see cref="OpenApiResponseBodyAttribute"/> class.
         /// </summary>
         /// <param name="statusCode">HTTP status code.</param>
         /// <param name="contentType">Content type.</param>
