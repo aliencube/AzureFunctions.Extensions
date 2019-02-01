@@ -43,6 +43,7 @@ namespace Aliencube.AzureFunctions.FunctionAppV2.Functions
 
             var contentType = opt.Format.GetContentType();
             var result = await this._document
+                                   .InitialiseDocument()
                                    .AddMetadata(this._settings.OpenApiInfo)
                                    .AddServer(req, this._settings.HttpSettings.RoutePrefix)
                                    .Build(Assembly.GetExecutingAssembly())
