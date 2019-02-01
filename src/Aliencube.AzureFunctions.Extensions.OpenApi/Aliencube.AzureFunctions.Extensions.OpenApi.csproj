@@ -14,7 +14,7 @@
     <Product>Aliencube.AzureFunctions.Extensions.OpenApi</Product>
     <Summary>This package provides Open API definition to be rendered through Azure Functions endpoints.</Summary>
     <Description>This package provides Open API definition to be rendered through Azure Functions endpoints.</Description>
-    <PackageTags>Azure Functions, Swagger, Open API</PackageTags>
+    <PackageTags>Azure-Functions, Swagger, Open-API</PackageTags>
     <Copyright>Aliencube Community</Copyright>
     <PackageLicenseUrl>https://github.com/aliencube/AzureFunctions.Extensions/blob/master/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/aliencube/AzureFunctions.Extensions</PackageProjectUrl>
