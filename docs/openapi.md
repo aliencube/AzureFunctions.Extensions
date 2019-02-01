@@ -3,7 +3,83 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/6ex8if2l1ffdahfq/branch/dev?svg=true)](https://ci.appveyor.com/project/justinyoo/azurefunctions-extensions/branch/dev) [![](https://img.shields.io/nuget/dt/Aliencube.AzureFunctions.Extensions.OpenApi.svg)](https://www.nuget.org/packages/Aliencube.AzureFunctions.Extensions.OpenApi/) [![](https://img.shields.io/nuget/v/Aliencube.AzureFunctions.Extensions.OpenApi.svg)](https://www.nuget.org/packages/Aliencube.AzureFunctions.Extensions.OpenApi/)
 
 
-This enables Azure Functions to render Open API definition and Swagger UI. The more details around the Swagger UI on Azure Functions can be found on this [blog post](https://devkimchi.com/tba/).
+This enables Azure Functions to render Open API document and Swagger UI. The more details around the Swagger UI on Azure Functions can be found on this [blog post](https://devkimchi.com/tba/).
+
+> **NOTE**: This extension supports both [Open API 2.0 (aka Swagger)](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md) and [Open API 3.0.1](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md) spec.
+
+
+## Getting Started ##
+
+In order to include an HTTP endpoint in the Open API document, use attribute classes (decorators) like:
+
+```csharp
+[FunctionName(nameof(PostSample))]
+[OpenApiOperation("add", "sample")]
+[OpenApiRequestBody("application/json", typeof(SampleRequestModel))]
+[OpenApiResponseBody(HttpStatusCode.OK, "application/json", typeof(SampleResponseModel))]
+public static async Task<IActionResult> PostSample(
+    [HttpTrigger(AuthorizationLevel.Function, "post", Route = "samples")] HttpRequest req,
+    ILogger log)
+{
+    ...
+}
+```
+
+Then, define another HTTP endpoint to render Swagger document:
+
+```csharp
+[FunctionName(nameof(RenderSwaggerDocument))]
+[OpenApiIgnore]
+public static async Task<IActionResult> RenderSwaggerDocument(
+    [HttpTrigger(AuthorizationLevel.Function, "get", Route = "swagger.json")] HttpRequest req,
+    ILogger log)
+{
+    var settings = new AppSettings();
+    var helper = new DocumentHelper();
+    var document = new Document(helper);
+    var result = await document.InitialiseDocument()
+                               .AddMetadata(settings.OpenApiInfo)
+                               .AddServer(req, settings.HttpSettings.RoutePrefix)
+                               .Build(Assembly.GetExecutingAssembly())
+                               .RenderAsync(OpenApiSpecVersion.OpenApi2_0, OpenApiFormat.Json)
+                               .ConfigureAwait(false);
+    var response = new ContentResult()
+                       {
+                           Content = result,
+                           ContentType = "application/json",
+                           StatusCode = (int)HttpStatusCode.OK
+                       };
+
+    return response;
+}
+```
+
+In order to render Swagger UI, define another HTTP endpoint for it:
+
+```csharp
+[FunctionName(nameof(RenderSwaggerUI))]
+[OpenApiIgnore]
+public static async Task<IActionResult> RenderSwaggerUI(
+    [HttpTrigger(AuthorizationLevel.Function, "get", Route = "swagger/ui")] HttpRequest req,
+    ILogger log)
+{
+    var settings = new AppSettings();
+    var ui = new SwaggerUI();
+    var result = await ui.AddMetadata(settings.OpenApiInfo)
+                         .AddServer(req, settings.HttpSettings.RoutePrefix)
+                         .BuildAsync(typeof(SwaggerUI).Assembly)
+                         .RenderAsync("swagger.json")
+                         .ConfigureAwait(false);
+    var response = new ContentResult()
+                       {
+                           Content = result,
+                           ContentType = "text/html",
+                           StatusCode = (int)HttpStatusCode.OK
+                       };
+
+    return response;
+}
+```
 
 
 ## App Settings ##
@@ -21,7 +97,14 @@ On either your `local.settings.json` or App Settings on Azure Functions instance
 * `OpenApi__Info__License__Url`: License URL. eg. http://opensource.org/licenses/MIT
 
 
-## `OpenApiIgnoreAttribute` ##
+## Decorators ##
+
+In order to render Open API document, this uses attribute classes (decorators).
+
+> **NOTE**: Not all Open API specs have been implemented.
+
+
+### `OpenApiIgnoreAttribute` ###
 
 If there is any HTTP trigger that you want to exclude from the Open API document, use this decorator. Typically this is used for the endpoints that render Open API document and Swagger UI.
 
@@ -38,9 +121,9 @@ public static async Task<IActionResult> RenderSwaggerDocument(
 ```
 
 
-## `OpenApiOperationAttribute` ##
+### `OpenApiOperationAttribute` ###
 
-This decorator implements a part of [Operation object](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.2.md#operationObject) spec.
+This decorator implements a part of [Operation object](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#operationObject) spec.
 
 ```csharp
 [FunctionName(nameof(GetSample))]
@@ -55,3 +138,71 @@ public static async Task<IActionResult> GetSample(
 ```
 
 If the operation ID is omitted, a combination of function name and verb is considered as the operation ID.
+
+
+### `OpenApiParameterAttribute` ###
+
+This decorator implements the [Parameter object](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#parameterObject) spec.
+
+```csharp
+[FunctionName(nameof(GetSample))]
+// This defines the parameter name, location and type.
+[OpenApiParameter("name", In = ParameterLocation.Query, Required = true, Type = typeof(string))]
+...
+public static async Task<IActionResult> GetSample(
+    [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "samples")] HttpRequest req,
+    ILogger log)
+{
+    ...
+}
+```
+
+* `Name`: is the name of the parameter.
+* `Description`: is the description of the parameter.
+* `In`: identifies where the parameter is located &ndash; `header`, `path`, `query` or `cookie`. Default value is `path`.
+* `Required`: indicates whether the parameter is required or not. Default value is `false`.
+* `Type`: defines the parameter type. Default value is `typeof(string)`.
+
+
+### `OpenApiRequestBodyAttribute` ###
+
+This decorator implements the [Request Body object](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#requestBodyObject) spec.
+
+```csharp
+[FunctionName(nameof(PostSample))]
+[OpenApiRequestBody("application/json", typeof(SampleRequestModel))]
+...
+public static async Task<IActionResult> PostSample(
+    [HttpTrigger(AuthorizationLevel.Function, "post", Route = "samples")] HttpRequest req,
+    ILogger log)
+{
+    ...
+}
+```
+
+* `ContentType`: defines the content type of the request body payload. eg) `application/json` or `text/xml`
+* `BodyType`: defines the type of the request payload.
+* `Description`: is the description of the request body payload.
+
+
+### `OpenApiResponseBodyAttribute` ###
+
+This decorator implements the [Response object](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#responseObject) spec.
+
+```csharp
+[FunctionName(nameof(PostSample))]
+[OpenApiResponseBody(HttpStatusCode.OK, "application/json", typeof(SampleResponseModel))]
+...
+public static async Task<IActionResult> PostSample(
+    [HttpTrigger(AuthorizationLevel.Function, "post", Route = "samples")] HttpRequest req,
+    ILogger log)
+{
+    ...
+}
+```
+
+* `StatusCode`: defines the HTTP status code. eg) `HttpStatusCode.OK`
+* `ContentType`: defines the content type of the response body payload. eg) `application/json` or `text/xml`
+* `BodyType`: defines the type of the response payload.
+* `Description`: is the description of the response body payload.
+
