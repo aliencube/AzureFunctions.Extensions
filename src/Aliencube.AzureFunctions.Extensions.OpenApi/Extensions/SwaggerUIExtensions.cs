@@ -23,6 +23,11 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
                 throw new ArgumentNullException(nameof(ui));
             }
 
+            if (string.IsNullOrWhiteSpace(endpoint))
+            {
+                throw new ArgumentNullException(nameof(endpoint));
+            }
+
             var instance = await ui.ConfigureAwait(false);
 
             return await instance.RenderAsync(endpoint).ConfigureAwait(false);

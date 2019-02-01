@@ -23,6 +23,11 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
         /// </remarks>
         public static OpenApiSchema ToOpenApiSchema(this Type type)
         {
+            if (type == null)
+            {
+                throw new ArgumentNullException(nameof(type));
+            }
+
             var typeCode = Type.GetTypeCode(type);
             var schema = new OpenApiSchema()
                              {

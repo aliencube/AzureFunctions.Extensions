@@ -1,4 +1,5 @@
 ﻿using System;
+
 using Microsoft.OpenApi;
 
 namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions

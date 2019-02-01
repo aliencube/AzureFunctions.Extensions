@@ -48,6 +48,21 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
             bool required = false,
             ParameterLocation @in = ParameterLocation.Query)
         {
+            if (parameters == null)
+            {
+                throw new ArgumentNullException(nameof(parameters));
+            }
+
+            if (type == null)
+            {
+                throw new ArgumentNullException(nameof(type));
+            }
+
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                throw new ArgumentNullException(nameof(name));
+            }
+
             var typeCode = Type.GetTypeCode(type);
             var schema = new OpenApiSchema()
                              {

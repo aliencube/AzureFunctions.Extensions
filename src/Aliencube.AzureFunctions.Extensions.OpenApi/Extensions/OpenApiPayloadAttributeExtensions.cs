@@ -1,4 +1,6 @@
-﻿using Aliencube.AzureFunctions.Extensions.OpenApi.Attributes;
+﻿using System;
+
+using Aliencube.AzureFunctions.Extensions.OpenApi.Attributes;
 
 using Microsoft.OpenApi.Models;
 
@@ -17,6 +19,11 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
         /// <returns><see cref="OpenApiMediaType"/> instance.</returns>
         public static OpenApiMediaType ToOpenApiMediaType<T>(this T attribute) where T : OpenApiPayloadAttribute
         {
+            if (attribute == null)
+            {
+                throw new ArgumentNullException(nameof(attribute));
+            }
+
             var reference = new OpenApiReference()
                                 {
                                     Type = ReferenceType.Schema,
