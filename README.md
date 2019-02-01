@@ -9,6 +9,12 @@ This provides some useful extensions for Azure Functions.
 * [Aliencube.AzureFunctions.Extensions.OpenApi](./docs/openapi.md): [![](https://img.shields.io/nuget/dt/Aliencube.AzureFunctions.Extensions.OpenApi.svg)](https://www.nuget.org/packages/Aliencube.AzureFunctions.Extensions.OpenApi/) [![](https://img.shields.io/nuget/v/Aliencube.AzureFunctions.Extensions.OpenApi.svg)](https://www.nuget.org/packages/Aliencube.AzureFunctions.Extensions.OpenApi/)
 
 
+## Acknowledgement ##
+
+* In order to read JSON configuration on Azure Functions 1.x, these extensions have copied the source code of [Microsoft.Extensions.Configuration.Json](https://github.com/aspnet/Extensions/tree/master/src/Configuration/Config.Json) to make use of [Newtonsoft.Json 9.0.1](https://www.nuget.org/packages/Newtonsoft.Json/9.0.1) under the [MIT License](http://opensource.org/licenses/MIT).
+* [Swagger UI](https://github.com/swagger-api/swagger-ui) version used for this library is [3.20.5](https://github.com/swagger-api/swagger-ui/releases/tag/v3.20.5) under the [Apache 2.0 license](https://opensource.org/licenses/Apache-2.0).
+
+
 ## Contribution ##
 
 Your contributions are always welcome! All your work should be done in your forked repository. Once you finish your work with corresponding tests, please send us a pull request onto our `dev` branch for review.
