@@ -103,7 +103,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi
         }
 
         /// <inheritdoc />
-        public async Task<string> RenderAsync(string endpoint)
+        public async Task<string> RenderAsync(string endpoint, string authKey = null)
         {
             if (string.IsNullOrWhiteSpace(endpoint))
             {
@@ -111,16 +111,20 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi
             }
 
             var html = await Task.Factory
-                                 .StartNew(() => this.Render(endpoint))
+                                 .StartNew(() => this.Render(endpoint, authKey))
                                  .ConfigureAwait(false);
 
             return html;
         }
 
-        private string Render(string endpoint)
+        private string Render(string endpoint, string authKey = null)
         {
             var swaggerUiTitle = $"{this._info.Title} - Swagger UI";
             var swaggerUrl = $"{this._baseUrl}/{endpoint}";
+            if (!string.IsNullOrWhiteSpace(authKey))
+            {
+                swaggerUrl += $"?code={authKey}";
+            }
 
             var html = this._indexHtml.Replace(SwaggerUITitlePlaceholder, swaggerUiTitle)
                                       .Replace(SwaggerUICssPlaceholder, this._swaggerUiCss)

@@ -53,7 +53,8 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Abstractions
         /// Renders Open API UI in HTML.
         /// </summary>
         /// <param name="endpoint">The endpoint of the Swagger document.</param>
+        /// <param name="authKey">API key of the HTTP endpoint to render Open API document.</param>
         /// <returns>Open API UI in HTML.</returns>
-        Task<string> RenderAsync(string endpoint);
+        Task<string> RenderAsync(string endpoint, string authKey = null);
     }
 }

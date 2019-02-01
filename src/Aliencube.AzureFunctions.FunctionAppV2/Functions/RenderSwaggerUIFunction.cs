@@ -45,7 +45,7 @@ namespace Aliencube.AzureFunctions.FunctionAppV2.Functions
                                    .AddMetadata(this._settings.OpenApiInfo)
                                    .AddServer(req, this._settings.HttpSettings.RoutePrefix)
                                    .BuildAsync(typeof(SwaggerUI).Assembly)
-                                   .RenderAsync(opt.Endpoint)
+                                   .RenderAsync(opt.Endpoint, this._settings.SwaggerAuthKey)
                                    .ConfigureAwait(false);
 
             return (TOutput)(IActionResult)new ContentResult() { Content = result, ContentType = "text/html", StatusCode = (int)HttpStatusCode.OK };

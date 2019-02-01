@@ -1,5 +1,7 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
+using System.Reflection;
 
 using Aliencube.AzureFunctions.Extensions.DependencyInjection;
 using Aliencube.AzureFunctions.Extensions.OpenApi.Configurations;
@@ -19,17 +21,25 @@ namespace Aliencube.AzureFunctions.FunctionAppV2.Configurations
         /// </summary>
         public AppSettings()
         {
-            var config = new ConfigurationBuilder().AddEnvironmentVariables().Build();
-            var host = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("host.json").Build();
+            var config = new ConfigurationBuilder()
+                             .AddEnvironmentVariables()
+                             .Build();
+
+            var basePath = GetBasePath();
+            var host = new ConfigurationBuilder()
+                           .SetBasePath(basePath)
+                           .AddJsonFile("host.json")
+                           .Build();
 
             this.OpenApiInfo = config.Get<OpenApiInfo>("OpenApi:Info");
+            this.SwaggerAuthKey = config.GetValue<string>("OpenApi:ApiKey");
 
             var version = host.GetSection("version").Value;
             this.HttpSettings = string.IsNullOrWhiteSpace(version)
-                ? host.Get<HttpSettings>("http")
-                : (version.Equals("2.0", StringComparison.CurrentCultureIgnoreCase)
-                       ? host.Get<HttpSettings>("extensions:http")
-                       : host.Get<HttpSettings>("http"));
+                                    ? host.Get<HttpSettings>("http")
+                                    : (version.Equals("2.0", StringComparison.CurrentCultureIgnoreCase)
+                                           ? host.Get<HttpSettings>("extensions:http")
+                                           : host.Get<HttpSettings>("http"));
         }
 
         /// <summary>
@@ -37,6 +47,23 @@ namespace Aliencube.AzureFunctions.FunctionAppV2.Configurations
         /// </summary>
         public virtual OpenApiInfo OpenApiInfo { get; }
 
+        /// <summary>
+        /// Gets the <see cref="Extensions.OpenApi.Configurations.HttpSettings"/> instance.
+        /// </summary>
         public virtual HttpSettings HttpSettings { get; }
+
+        /// <summary>
+        /// Gets the Function API key for Open API document.
+        /// </summary>
+        public virtual string SwaggerAuthKey { get; }
+
+        private static string GetBasePath()
+        {
+            var location = Assembly.GetExecutingAssembly().Location;
+            var segments = location.Split(new[] { Path.DirectorySeparatorChar }, StringSplitOptions.RemoveEmptyEntries).ToList();
+            var basePath = string.Join(Path.DirectorySeparatorChar.ToString(), segments.Take(segments.Count - 2));
+
+            return basePath;
+        }
     }
 }
