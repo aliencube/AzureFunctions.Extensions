@@ -14,7 +14,7 @@
     <Product>Aliencube.AzureFunctions.Extensions.DependencyInjection</Product>
     <Summary>This package makes dependency injections on Azure Functions easier, using ASP.NET Core dependency injection features.</Summary>
     <Description>This package makes dependency injections on Azure Functions easier, using ASP.NET Core dependency injection features.</Description>
-    <PackageTags>Azure Functions, Dependency Injection, IoC Container</PackageTags>
+    <PackageTags>Azure-Functions, Dependency-Injection, IoC-Container</PackageTags>
     <Copyright>Aliencube Community</Copyright>
     <PackageLicenseUrl>https://github.com/aliencube/AzureFunctions.Extensions/blob/master/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/aliencube/AzureFunctions.Extensions</PackageProjectUrl>
