@@ -3,7 +3,7 @@
     /// <summary>
     /// This represents the settings entity for "host.json".
     /// </summary>
-    public class HostSettings
+    public class HostJsonSettings
     {
         /// <summary>
         /// Gets or sets the version.

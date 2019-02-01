@@ -26,7 +26,8 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi
     public class Document : IDocument
     {
         private readonly IDocumentHelper _helper;
-        private readonly OpenApiDocument _document;
+
+        private OpenApiDocument _document;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Document"/> class.
@@ -34,7 +35,17 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi
         public Document(IDocumentHelper helper)
         {
             this._helper = helper ?? throw new ArgumentNullException(nameof(helper));
-            this._document = new OpenApiDocument() { Components = new OpenApiComponents() };
+        }
+
+        /// <inheritdoc />
+        public IDocument InitialiseDocument()
+        {
+            this._document = new OpenApiDocument()
+                                 {
+                                     Components = new OpenApiComponents()
+                                 };
+
+            return this;
         }
 
         /// <inheritdoc />

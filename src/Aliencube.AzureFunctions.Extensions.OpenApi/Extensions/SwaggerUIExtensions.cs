@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 
 using Aliencube.AzureFunctions.Extensions.OpenApi.Abstractions;
 
@@ -7,7 +8,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
     /// <summary>
     /// This represents the extension entity for <see cref="SwaggerUI"/>.
     /// </summary>
-    public static class DocumentUIExtensions
+    public static class SwaggerUIExtensions
     {
         /// <summary>
         /// Renders the Open API UI in HTML.
@@ -17,6 +18,16 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
         /// <returns>The Open API UI in HTML.</returns>
         public static async Task<string> RenderAsync(this Task<ISwaggerUI> ui, string endpoint)
         {
+            if (ui == null)
+            {
+                throw new ArgumentNullException(nameof(ui));
+            }
+
+            if (string.IsNullOrWhiteSpace(endpoint))
+            {
+                throw new ArgumentNullException(nameof(endpoint));
+            }
+
             var instance = await ui.ConfigureAwait(false);
 
             return await instance.RenderAsync(endpoint).ConfigureAwait(false);

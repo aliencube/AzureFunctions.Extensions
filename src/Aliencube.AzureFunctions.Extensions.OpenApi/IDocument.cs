@@ -20,6 +20,12 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Abstractions
     public interface IDocument
     {
         /// <summary>
+        /// Initializes the document instance.
+        /// </summary>
+        /// <returns><see cref="IDocument"/> instance.</returns>
+        IDocument InitialiseDocument();
+
+        /// <summary>
         /// Adds metadata to build Open API document.
         /// </summary>
         /// <param name="info"><see cref="OpenApiInfo"/> instance.</param>

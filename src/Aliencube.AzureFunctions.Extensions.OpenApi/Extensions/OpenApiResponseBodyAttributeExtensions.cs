@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 using Aliencube.AzureFunctions.Extensions.OpenApi.Attributes;
 
@@ -18,6 +19,11 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
         /// <returns><see cref="OpenApiResponse"/> instance.</returns>
         public static OpenApiResponse ToOpenApiResponse(this OpenApiResponseBodyAttribute attribute)
         {
+            if (attribute == null)
+            {
+                throw new ArgumentNullException(nameof(attribute));
+            }
+
             var description = string.IsNullOrWhiteSpace(attribute.Description)
                                   ? $"Payload of {attribute.BodyType.Name}"
                                   : attribute.Description;

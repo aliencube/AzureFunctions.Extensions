@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 
 #if NET461
 using System.Net.Http;
@@ -104,6 +105,11 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi
         /// <inheritdoc />
         public async Task<string> RenderAsync(string endpoint)
         {
+            if (string.IsNullOrWhiteSpace(endpoint))
+            {
+                throw new ArgumentNullException(nameof(endpoint));
+            }
+
             var html = await Task.Factory
                                  .StartNew(() => this.Render(endpoint))
                                  .ConfigureAwait(false);
