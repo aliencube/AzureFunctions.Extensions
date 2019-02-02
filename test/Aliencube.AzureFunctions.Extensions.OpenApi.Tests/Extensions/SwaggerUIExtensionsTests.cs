@@ -35,7 +35,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Tests.Extensions
             var rendered = "hello world";
 
             var ui = new Mock<ISwaggerUI>();
-            ui.Setup(p => p.RenderAsync(It.IsAny<string>())).ReturnsAsync(rendered);
+            ui.Setup(p => p.RenderAsync(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(rendered);
 
             var task = Task.FromResult(ui.Object);
 

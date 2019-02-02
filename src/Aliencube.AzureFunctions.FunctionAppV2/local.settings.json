@@ -12,6 +12,8 @@
     "OpenApi__Info__Contact__Email": "no-reply@aliencube.org",
     "OpenApi__Info__Contact__Url": "https://github.com/aliencube/AzureFunctions.Extensions/issues",
     "OpenApi__Info__License__Name": "MIT",
-    "OpenApi__Info__License__Url": "http://opensource.org/licenses/MIT"
+    "OpenApi__Info__License__Url": "http://opensource.org/licenses/MIT",
+
+    "OpenApi__ApiKey": ""
   }
 }
