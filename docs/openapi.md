@@ -100,6 +100,7 @@ On either your `local.settings.json` or App Settings on Azure Functions instance
 * `OpenApi__Info__Contact__Url`: Contact URL. eg. https://github.com/aliencube/AzureFunctions.Extensions/issues
 * `OpenApi__Info__License__Name`: **REQUIRED** License name. eg. MIT
 * `OpenApi__Info__License__Url`: License URL. eg. http://opensource.org/licenses/MIT
+* `OpenApi__ApiKey`: API Key of the endpoint that renders the Open API document.
 
 
 ## Decorators ##
