@@ -73,7 +73,7 @@ public static async Task<IActionResult> RenderSwaggerUI(
     var result = await ui.AddMetadata(settings.OpenApiInfo)
                          .AddServer(req, settings.HttpSettings.RoutePrefix)
                          .BuildAsync(typeof(SwaggerUI).Assembly)
-                         .RenderAsync("swagger.json")
+                         .RenderAsync("swagger.json", settings.SwaggerAuthKey)
                          .ConfigureAwait(false);
     var response = new ContentResult()
                        {
