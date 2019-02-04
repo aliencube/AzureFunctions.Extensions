@@ -8,6 +8,7 @@
     <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="1.0.24" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Aliencube.AzureFunctions.Extensions.Configuration.Json\Aliencube.AzureFunctions.Extensions.Configuration.Json.csproj" />
     <ProjectReference Include="..\Aliencube.AzureFunctions.Extensions.DependencyInjection\Aliencube.AzureFunctions.Extensions.DependencyInjection.csproj" />
     <ProjectReference Include="..\Aliencube.AzureFunctions.Extensions.OpenApi\Aliencube.AzureFunctions.Extensions.OpenApi.csproj" />
   </ItemGroup>

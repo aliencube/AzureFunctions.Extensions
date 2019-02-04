@@ -1,0 +1,46 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net461</TargetFramework>
+    <IsPackable>true</IsPackable>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <PackageId>Aliencube.AzureFunctions.Extensions.Configuration.Json</PackageId>
+    <Owners>Aliencube</Owners>
+    <Authors>Justin Yoo</Authors>
+    <Company>Aliencube Community</Company>
+    <Version>1.0.0</Version>
+    <Title>Aliencube.AzureFunctions.Extensions.Configuration.Json</Title>
+    <Product>Aliencube.AzureFunctions.Extensions.Configuration.Json</Product>
+    <Summary>This package is a direct port of Microsoft.Extensions.Configuration.Json 2.1.1 for Newtonsoft.Json 9.0.1 support.</Summary>
+    <Description>This package is a direct port of Microsoft.Extensions.Configuration.Json 2.1.1 for Newtonsoft.Json 9.0.1 support.</Description>
+    <PackageTags>Configuration, JSON</PackageTags>
+    <Copyright>Aliencube Community</Copyright>
+    <PackageLicenseUrl>https://github.com/aliencube/AzureFunctions.Extensions/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/aliencube/AzureFunctions.Extensions</PackageProjectUrl>
+    <PackageIconUrl>https://raw.githubusercontent.com/aliencube/AzureFunctions.Extensions/master/icons/Aliencube.AzureFunctions.Extensions.Configuration.Json.png</PackageIconUrl>
+    <RepositoryUrl>https://github.com/aliencube/AzureFunctions.Extensions</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="2.1.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
+</Project>
