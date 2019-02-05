@@ -165,4 +165,5 @@
     name: Aliencube.AzureFunctions.Extensions.Configuration.Json
   deploy:
   - provider: Environment
-    name: NuGet for Aliencube.AzureFunctions.Extensions.Configuration.Json
+    name: Aliencube.AzureFunctions.Extensions
+    artifactName: Aliencube.AzureFunctions.Extensions.Configuration.Json
