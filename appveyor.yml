@@ -77,7 +77,8 @@
     name: Aliencube.AzureFunctions.Extensions.DependencyInjection
   deploy:
   - provider: Environment
-    name: NuGet for Aliencube.AzureFunctions.Extensions.DependencyInjection
+    name: Aliencube.AzureFunctions.Extensions
+    artifactName: Aliencube.AzureFunctions.Extensions.DependencyInjection
 
 # release/swagger
 -
@@ -121,12 +122,13 @@
     name: Aliencube.AzureFunctions.Extensions.OpenApi
   deploy:
   - provider: Environment
-    name: NuGet for Aliencube.AzureFunctions.Extensions.OpenApi
+    name: Aliencube.AzureFunctions.Extensions
+    artifactName: Aliencube.AzureFunctions.Extensions.OpenApi
 
 # release/configjson
 -
   environment:
-    package_semantic_version: 0.0.1
+    package_semantic_version: 2.1.1
   version: $(package_semantic_version).{build}
   pull_requests:
     do_not_increment_build_number: true
