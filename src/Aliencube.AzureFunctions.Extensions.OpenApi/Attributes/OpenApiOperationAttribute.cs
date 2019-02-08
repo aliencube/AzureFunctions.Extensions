@@ -1,5 +1,7 @@
 ﻿using System;
 
+using Aliencube.AzureFunctions.Extensions.OpenApi.Enums;
+
 namespace Aliencube.AzureFunctions.Extensions.OpenApi.Attributes
 {
     /// <summary>
@@ -28,5 +30,20 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Attributes
         /// Gets the list of tags.
         /// </summary>
         public virtual string[] Tags { get; }
+
+        /// <summary>
+        /// Gets or sets the summary.
+        /// </summary>
+        public virtual string Summary { get; set; }
+
+        /// <summary>
+        /// Gets or sets the description.
+        /// </summary>
+        public virtual string Description { get; set; }
+
+        /// <summary>
+        /// Gets or sets the <see cref="OpenApiVisibilityType"/> value. Default is <see cref="OpenApiVisibilityType.Undefined"/>.
+        /// </summary>
+        public virtual OpenApiVisibilityType Visibility { get; set; } = OpenApiVisibilityType.Undefined;
     }
 }

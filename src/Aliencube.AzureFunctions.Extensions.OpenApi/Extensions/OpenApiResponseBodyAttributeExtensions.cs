@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 using Aliencube.AzureFunctions.Extensions.OpenApi.Attributes;
 
+using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
 
 namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
@@ -37,6 +38,13 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
                                    Description = description,
                                    Content = content
                                };
+
+            if (!string.IsNullOrWhiteSpace(attribute.Summary))
+            {
+                var summary = new OpenApiString(attribute.Summary);
+
+                response.Extensions.Add("x-ms-summary", summary);
+            }
 
             return response;
         }

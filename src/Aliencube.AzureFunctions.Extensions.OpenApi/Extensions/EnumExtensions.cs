@@ -1,4 +1,8 @@
 ﻿using System;
+using System.Linq;
+using System.Reflection;
+
+using Aliencube.AzureFunctions.Extensions.OpenApi.Attributes;
 
 using Microsoft.OpenApi;
 
@@ -9,6 +13,22 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
     /// </summary>
     public static class EnumExtensions
     {
+        /// <summary>
+        /// Gets the display name of the enum value.
+        /// </summary>
+        /// <param name="enum">Enum value.</param>
+        /// <returns>Display name of the enum value.</returns>
+        public static string ToDisplayName(this Enum @enum)
+        {
+            var type = @enum.GetType();
+            var member = type.GetMember(@enum.ToString()).First();
+            var attribute = member.GetCustomAttribute<DisplayAttribute>(inherit: false);
+            var name = attribute == null ? @enum.ToString() : attribute.Name;
+
+
+            return name;
+        }
+
         /// <summary>
         /// Converts the <see cref="TypeCode"/> value into data type specified in Open API spec.
         /// </summary>
