@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 
+using Aliencube.AzureFunctions.Extensions.OpenApi.Attributes;
+using Aliencube.AzureFunctions.Extensions.OpenApi.Enums;
+
 using Newtonsoft.Json;
 
 namespace Aliencube.AzureFunctions.FunctionAppV2.Models
@@ -29,6 +32,7 @@ namespace Aliencube.AzureFunctions.FunctionAppV2.Models
         /// <summary>
         /// Gets or sets the name.
         /// </summary>
+        [OpenApiSchemaVisibility(OpenApiVisibilityType.Advanced)]
         public string Name { get; set; }
 
         /// <summary>

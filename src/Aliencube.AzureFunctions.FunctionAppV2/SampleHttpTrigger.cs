@@ -37,7 +37,7 @@ namespace Aliencube.AzureFunctions.FunctionAppV2
         [FunctionName(nameof(GetSample))]
         [OpenApiOperation("list", "sample", Summary = "Gets the list of samples", Description = "This gets the list of samples.", Visibility = OpenApiVisibilityType.Important)]
         [OpenApiParameter("name", In = ParameterLocation.Query, Required = true, Type = typeof(string), Summary = "The name parameter", Visibility = OpenApiVisibilityType.Advanced)]
-        [OpenApiParameter("limit", In = ParameterLocation.Query, Required = false, Type = typeof(int))]
+        [OpenApiParameter("limit", In = ParameterLocation.Query, Required = false, Type = typeof(int), Description = "The number of samples to return")]
         [OpenApiResponseBody(HttpStatusCode.OK, "application/json", typeof(SampleResponseModel), Summary = "Sample response")]
         public static async Task<IActionResult> GetSample(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "samples")] HttpRequest req,
