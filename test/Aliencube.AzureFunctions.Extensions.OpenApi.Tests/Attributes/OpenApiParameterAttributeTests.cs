@@ -1,6 +1,7 @@
 ﻿using System;
 
 using Aliencube.AzureFunctions.Extensions.OpenApi.Attributes;
+using Aliencube.AzureFunctions.Extensions.OpenApi.Enums;
 
 using FluentAssertions;
 
@@ -27,10 +28,12 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Tests.Attributes
             var attribute = new OpenApiParameterAttribute(name);
 
             attribute.Name.Should().BeEquivalentTo(name);
+            attribute.Summary.Should().BeNullOrWhiteSpace();
             attribute.Description.Should().BeNullOrWhiteSpace();
             attribute.Type.Should().Be<string>();
             attribute.In.Should().Be(ParameterLocation.Path);
             attribute.Required.Should().Be(false);
+            attribute.Visibility.Should().Be(OpenApiVisibilityType.Undefined);
         }
     }
 }
