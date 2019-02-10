@@ -1,5 +1,7 @@
 ﻿using System;
 
+using Aliencube.AzureFunctions.Extensions.OpenApi.Enums;
+
 using Microsoft.OpenApi.Models;
 
 namespace Aliencube.AzureFunctions.Extensions.OpenApi.Attributes
@@ -25,6 +27,11 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Attributes
         public virtual string Name { get; }
 
         /// <summary>
+        /// Gets or sets the summary.
+        /// </summary>
+        public virtual string Summary { get; set; }
+
+        /// <summary>
         /// Gets or sets the parameter description.
         /// </summary>
         public virtual string Description { get; set; }
@@ -43,5 +50,10 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Attributes
         /// Gets or sets the value indicating whether the parameter is required or not. Default is <c>false</c>.
         /// </summary>
         public virtual bool Required { get; set; } = false;
+
+        /// <summary>
+        /// Gets or sets the <see cref="OpenApiVisibilityType"/> value. Default is <see cref="OpenApiVisibilityType.Undefined"/>.
+        /// </summary>
+        public virtual OpenApiVisibilityType Visibility { get; set; } = OpenApiVisibilityType.Undefined;
     }
 }

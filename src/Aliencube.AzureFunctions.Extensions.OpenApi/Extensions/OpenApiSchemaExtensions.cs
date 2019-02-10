@@ -1,7 +1,11 @@
 ﻿using System;
 using System.Collections;
 using System.Linq;
+using System.Reflection;
 
+using Aliencube.AzureFunctions.Extensions.OpenApi.Attributes;
+
+using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
 
 using Newtonsoft.Json;
@@ -17,11 +21,12 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
         /// Converts <see cref="Type"/> to <see cref="OpenApiSchema"/>.
         /// </summary>
         /// <param name="type"><see cref="Type"/> instance.</param>
+        /// <param name="attribute"><see cref="OpenApiSchemaVisibilityAttribute"/> instance. Default is <c>null</c>.</param>
         /// <returns><see cref="OpenApiSchema"/> instance.</returns>
         /// <remarks>
         /// It runs recursively to build the entire object type. It only takes properties without <see cref="JsonIgnoreAttribute"/>.
         /// </remarks>
-        public static OpenApiSchema ToOpenApiSchema(this Type type)
+        public static OpenApiSchema ToOpenApiSchema(this Type type, OpenApiSchemaVisibilityAttribute attribute = null)
         {
             if (type == null)
             {
@@ -34,6 +39,12 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
                                  Type = typeCode.ToDataType(),
                                  Format = typeCode.ToDataFormat()
                              };
+            if (attribute != null)
+            {
+                var visibility = new OpenApiString(attribute.Visibility.ToDisplayName());
+
+                schema.Extensions.Add("x-ms-visibility", visibility);
+            }
 
             if (typeCode != TypeCode.Object)
             {
@@ -59,7 +70,9 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
                                  .Where(p => !p.ExistsCustomAttribute<JsonIgnoreAttribute>());
             foreach (var property in properties)
             {
-                schema.Properties[property.Name] = property.PropertyType.ToOpenApiSchema();
+                var visiblity = property.GetCustomAttribute<OpenApiSchemaVisibilityAttribute>(inherit: false);
+
+                schema.Properties[property.Name] = property.PropertyType.ToOpenApiSchema(visiblity);
             }
 
             return schema;

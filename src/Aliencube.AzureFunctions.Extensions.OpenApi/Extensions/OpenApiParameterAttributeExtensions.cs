@@ -1,7 +1,9 @@
 ﻿using System;
 
 using Aliencube.AzureFunctions.Extensions.OpenApi.Attributes;
+using Aliencube.AzureFunctions.Extensions.OpenApi.Enums;
 
+using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
 
 namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
@@ -37,6 +39,20 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
                                     In = attribute.In,
                                     Schema = schema
                                 };
+
+            if (!string.IsNullOrWhiteSpace(attribute.Summary))
+            {
+                var summary = new OpenApiString(attribute.Summary);
+
+                parameter.Extensions.Add("x-ms-summary", summary);
+            }
+
+            if (attribute.Visibility != OpenApiVisibilityType.Undefined)
+            {
+                var visibility = new OpenApiString(attribute.Visibility.ToDisplayName());
+
+                parameter.Extensions.Add("x-ms-visibility", visibility);
+            }
 
             return parameter;
         }

@@ -5,10 +5,12 @@ using System.Reflection;
 
 using Aliencube.AzureFunctions.Extensions.OpenApi.Abstractions;
 using Aliencube.AzureFunctions.Extensions.OpenApi.Attributes;
+using Aliencube.AzureFunctions.Extensions.OpenApi.Enums;
 using Aliencube.AzureFunctions.Extensions.OpenApi.Extensions;
 
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
+using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
 
 namespace Aliencube.AzureFunctions.Extensions.OpenApi
@@ -80,8 +82,16 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi
             var operation = new OpenApiOperation()
                                 {
                                     OperationId = string.IsNullOrWhiteSpace(op.OperationId) ? $"{function.Name}_{verb}" : op.OperationId,
-                                    Tags = op.Tags.Select(p => new OpenApiTag() { Name = p }).ToList()
+                                    Tags = op.Tags.Select(p => new OpenApiTag() { Name = p }).ToList(),
+                                    Summary = op.Summary
                                 };
+
+            if (op.Visibility != OpenApiVisibilityType.Undefined)
+            {
+                var visibility = new OpenApiString(op.Visibility.ToDisplayName());
+
+                operation.Extensions.Add("x-ms-visibility", visibility);
+            }
 
             return operation;
         }

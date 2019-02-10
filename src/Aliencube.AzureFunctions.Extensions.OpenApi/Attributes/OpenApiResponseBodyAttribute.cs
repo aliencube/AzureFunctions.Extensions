@@ -26,5 +26,10 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Attributes
         /// Gets the HTTP status code value.
         /// </summary>
         public virtual HttpStatusCode StatusCode { get; }
+
+        /// <summary>
+        /// Gets or sets the summary.
+        /// </summary>
+        public virtual string Summary { get; set; }
     }
 }

@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Aliencube.AzureFunctions.Extensions.DependencyInjection;
 using Aliencube.AzureFunctions.Extensions.DependencyInjection.Abstractions;
 using Aliencube.AzureFunctions.Extensions.OpenApi.Attributes;
+using Aliencube.AzureFunctions.Extensions.OpenApi.Enums;
 using Aliencube.AzureFunctions.FunctionAppV2.Functions;
 using Aliencube.AzureFunctions.FunctionAppV2.Models;
 using Aliencube.AzureFunctions.FunctionAppV2.Modules;
@@ -34,10 +35,10 @@ namespace Aliencube.AzureFunctions.FunctionAppV2
         /// <param name="log"><see cref="ILogger"/> instance.</param>
         /// <returns><see cref="SampleResponseModel"/> instance.</returns>
         [FunctionName(nameof(GetSample))]
-        [OpenApiOperation("list", "sample")]
-        [OpenApiParameter("name", In = ParameterLocation.Query, Required = true, Type = typeof(string))]
-        [OpenApiParameter("limit", In = ParameterLocation.Query, Required = false, Type = typeof(int))]
-        [OpenApiResponseBody(HttpStatusCode.OK, "application/json", typeof(SampleResponseModel))]
+        [OpenApiOperation("list", "sample", Summary = "Gets the list of samples", Description = "This gets the list of samples.", Visibility = OpenApiVisibilityType.Important)]
+        [OpenApiParameter("name", In = ParameterLocation.Query, Required = true, Type = typeof(string), Summary = "The name parameter", Visibility = OpenApiVisibilityType.Advanced)]
+        [OpenApiParameter("limit", In = ParameterLocation.Query, Required = false, Type = typeof(int), Description = "The number of samples to return")]
+        [OpenApiResponseBody(HttpStatusCode.OK, "application/json", typeof(SampleResponseModel), Summary = "Sample response")]
         public static async Task<IActionResult> GetSample(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "samples")] HttpRequest req,
             ILogger log)
@@ -58,7 +59,7 @@ namespace Aliencube.AzureFunctions.FunctionAppV2
         [FunctionName(nameof(PostSample))]
         [OpenApiOperation("add", "sample")]
         [OpenApiRequestBody("application/json", typeof(SampleRequestModel))]
-        [OpenApiResponseBody(HttpStatusCode.OK, "application/json", typeof(SampleResponseModel))]
+        [OpenApiResponseBody(HttpStatusCode.OK, "application/json", typeof(SampleResponseModel), Summary = "Sample response")]
         public static async Task<IActionResult> PostSample(
             [HttpTrigger(AuthorizationLevel.Function, "post", Route = "samples")] HttpRequest req,
             ILogger log)
