@@ -3,7 +3,6 @@ using System;
 #endif
 
 using System.Net;
-using System.Reflection;
 
 #if NET461
 using System.Net.Http;
@@ -16,7 +15,6 @@ using System.Text;
 using System.Threading.Tasks;
 
 using Aliencube.AzureFunctions.Extensions.DependencyInjection.Abstractions;
-using Aliencube.AzureFunctions.Extensions.OpenApi;
 using Aliencube.AzureFunctions.Extensions.OpenApi.Abstractions;
 using Aliencube.AzureFunctions.Extensions.OpenApi.Extensions;
 using Aliencube.AzureFunctions.FunctionAppCommon.Configurations;
