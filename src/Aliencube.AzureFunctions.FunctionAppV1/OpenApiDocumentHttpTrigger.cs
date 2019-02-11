@@ -1,12 +1,13 @@
 ﻿using System.Net.Http;
+using System.Reflection;
 using System.Threading.Tasks;
 
 using Aliencube.AzureFunctions.Extensions.DependencyInjection;
 using Aliencube.AzureFunctions.Extensions.DependencyInjection.Abstractions;
 using Aliencube.AzureFunctions.Extensions.OpenApi.Attributes;
-using Aliencube.AzureFunctions.FunctionAppV1.Functions;
-using Aliencube.AzureFunctions.FunctionAppV1.Functions.FunctionOptions;
-using Aliencube.AzureFunctions.FunctionAppV1.Modules;
+using Aliencube.AzureFunctions.FunctionAppCommon.Functions;
+using Aliencube.AzureFunctions.FunctionAppCommon.Functions.FunctionOptions;
+using Aliencube.AzureFunctions.FunctionAppCommon.Modules;
 
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
@@ -36,7 +37,7 @@ namespace Aliencube.AzureFunctions.FunctionAppV1
             [HttpTrigger(AuthorizationLevel.Function, "get", Route = "swagger.json")] HttpRequestMessage req,
             ILogger log)
         {
-            var options = new RenderOpeApiDocumentFunctionOptions("v2", "json");
+            var options = new RenderOpeApiDocumentFunctionOptions("v2", "json", Assembly.GetExecutingAssembly());
             var result = await Factory.Create<IRenderOpeApiDocumentFunction, ILogger>(log)
                                       .InvokeAsync<HttpRequestMessage, HttpResponseMessage>(req, options)
                                       .ConfigureAwait(false);
@@ -56,7 +57,7 @@ namespace Aliencube.AzureFunctions.FunctionAppV1
             [HttpTrigger(AuthorizationLevel.Function, "get", Route = "swagger.yaml")] HttpRequestMessage req,
             ILogger log)
         {
-            var options = new RenderOpeApiDocumentFunctionOptions("v2", "yaml");
+            var options = new RenderOpeApiDocumentFunctionOptions("v2", "yaml", Assembly.GetExecutingAssembly());
             var result = await Factory.Create<IRenderOpeApiDocumentFunction, ILogger>(log)
                                       .InvokeAsync<HttpRequestMessage, HttpResponseMessage>(req, options)
                                       .ConfigureAwait(false);
@@ -76,7 +77,7 @@ namespace Aliencube.AzureFunctions.FunctionAppV1
             [HttpTrigger(AuthorizationLevel.Function, "get", Route = "openapi/v2.json")] HttpRequestMessage req,
             ILogger log)
         {
-            var options = new RenderOpeApiDocumentFunctionOptions("v2", "json");
+            var options = new RenderOpeApiDocumentFunctionOptions("v2", "json", Assembly.GetExecutingAssembly());
             var result = await Factory.Create<IRenderOpeApiDocumentFunction, ILogger>(log)
                                       .InvokeAsync<HttpRequestMessage, HttpResponseMessage>(req, options)
                                       .ConfigureAwait(false);
@@ -96,7 +97,7 @@ namespace Aliencube.AzureFunctions.FunctionAppV1
             [HttpTrigger(AuthorizationLevel.Function, "get", Route = "openapi/v2.yaml")] HttpRequestMessage req,
             ILogger log)
         {
-            var options = new RenderOpeApiDocumentFunctionOptions("v2", "yaml");
+            var options = new RenderOpeApiDocumentFunctionOptions("v2", "yaml", Assembly.GetExecutingAssembly());
             var result = await Factory.Create<IRenderOpeApiDocumentFunction, ILogger>(log)
                                       .InvokeAsync<HttpRequestMessage, HttpResponseMessage>(req, options)
                                       .ConfigureAwait(false);
@@ -116,7 +117,7 @@ namespace Aliencube.AzureFunctions.FunctionAppV1
             [HttpTrigger(AuthorizationLevel.Function, "get", Route = "openapi/v3.json")] HttpRequestMessage req,
             ILogger log)
         {
-            var options = new RenderOpeApiDocumentFunctionOptions("v3", "json");
+            var options = new RenderOpeApiDocumentFunctionOptions("v3", "json", Assembly.GetExecutingAssembly());
             var result = await Factory.Create<IRenderOpeApiDocumentFunction, ILogger>(log)
                                       .InvokeAsync<HttpRequestMessage, HttpResponseMessage>(req, options)
                                       .ConfigureAwait(false);
@@ -136,7 +137,7 @@ namespace Aliencube.AzureFunctions.FunctionAppV1
             [HttpTrigger(AuthorizationLevel.Function, "get", Route = "openapi/v3.yaml")] HttpRequestMessage req,
             ILogger log)
         {
-            var options = new RenderOpeApiDocumentFunctionOptions("v3", "yaml");
+            var options = new RenderOpeApiDocumentFunctionOptions("v3", "yaml", Assembly.GetExecutingAssembly());
             var result = await Factory.Create<IRenderOpeApiDocumentFunction, ILogger>(log)
                                       .InvokeAsync<HttpRequestMessage, HttpResponseMessage>(req, options)
                                       .ConfigureAwait(false);

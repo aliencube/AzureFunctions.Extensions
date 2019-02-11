@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 
 using Aliencube.AzureFunctions.Extensions.DependencyInjection.Abstractions;
-using Aliencube.AzureFunctions.FunctionAppV2.Functions;
+using Aliencube.AzureFunctions.FunctionAppCommon.Functions;
 
 using FluentAssertions;
 

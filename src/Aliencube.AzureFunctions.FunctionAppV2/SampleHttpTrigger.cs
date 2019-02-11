@@ -5,9 +5,9 @@ using Aliencube.AzureFunctions.Extensions.DependencyInjection;
 using Aliencube.AzureFunctions.Extensions.DependencyInjection.Abstractions;
 using Aliencube.AzureFunctions.Extensions.OpenApi.Attributes;
 using Aliencube.AzureFunctions.Extensions.OpenApi.Enums;
-using Aliencube.AzureFunctions.FunctionAppV2.Functions;
-using Aliencube.AzureFunctions.FunctionAppV2.Models;
-using Aliencube.AzureFunctions.FunctionAppV2.Modules;
+using Aliencube.AzureFunctions.FunctionAppCommon.Functions;
+using Aliencube.AzureFunctions.FunctionAppCommon.Models;
+using Aliencube.AzureFunctions.FunctionAppCommon.Modules;
 
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

@@ -45,9 +45,8 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Abstractions
         /// <summary>
         /// Builds Open API document.
         /// </summary>
-        /// <param name="assembly"><see cref="Assembly"/> instance.</param>
         /// <returns><see cref="IDocument"/> instance.</returns>
-        Task<ISwaggerUI> BuildAsync(Assembly assembly);
+        Task<ISwaggerUI> BuildAsync();
 
         /// <summary>
         /// Renders Open API UI in HTML.

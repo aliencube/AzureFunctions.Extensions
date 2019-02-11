@@ -68,12 +68,9 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi
         }
 #endif
         /// <inheritdoc />
-        public async Task<ISwaggerUI> BuildAsync(Assembly assembly)
+        public async Task<ISwaggerUI> BuildAsync()
         {
-            // Assign the executing assembly one more time.
-            // If this is omitted, embedded resources can't be read.
-            // I DON'T KNOW WHY
-            assembly = Assembly.GetExecutingAssembly();
+            var assembly = Assembly.GetExecutingAssembly();
 
             using (var stream = assembly.GetManifestResourceStream(swaggerUiCss))
             using (var reader = new StreamReader(stream))

@@ -2,9 +2,9 @@ using System.Threading.Tasks;
 
 using Aliencube.AzureFunctions.Extensions.DependencyInjection;
 using Aliencube.AzureFunctions.Extensions.DependencyInjection.Abstractions;
-using Aliencube.AzureFunctions.FunctionAppV2.Functions;
-using Aliencube.AzureFunctions.FunctionAppV2.Functions.FunctionOptions;
-using Aliencube.AzureFunctions.FunctionAppV2.Modules;
+using Aliencube.AzureFunctions.FunctionAppCommon.Functions;
+using Aliencube.AzureFunctions.FunctionAppCommon.Functions.FunctionOptions;
+using Aliencube.AzureFunctions.FunctionAppCommon.Modules;
 
 using Microsoft.Azure.WebJobs;
 using Microsoft.Extensions.Logging;
