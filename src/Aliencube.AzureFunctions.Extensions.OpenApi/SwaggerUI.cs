@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 
 #if NET461
 using System.Net.Http;
@@ -9,6 +8,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 
 using Aliencube.AzureFunctions.Extensions.OpenApi.Abstractions;
+using Aliencube.AzureFunctions.Extensions.OpenApi.Extensions;
 
 #if NETSTANDARD2_0
 using Microsoft.AspNetCore.Http;
@@ -68,12 +68,9 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi
         }
 #endif
         /// <inheritdoc />
-        public async Task<ISwaggerUI> BuildAsync(Assembly assembly)
+        public async Task<ISwaggerUI> BuildAsync()
         {
-            // Assign the executing assembly one more time.
-            // If this is omitted, embedded resources can't be read.
-            // I DON'T KNOW WHY
-            assembly = Assembly.GetExecutingAssembly();
+            var assembly = Assembly.GetExecutingAssembly();
 
             using (var stream = assembly.GetManifestResourceStream(swaggerUiCss))
             using (var reader = new StreamReader(stream))
@@ -105,10 +102,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi
         /// <inheritdoc />
         public async Task<string> RenderAsync(string endpoint, string authKey = null)
         {
-            if (string.IsNullOrWhiteSpace(endpoint))
-            {
-                throw new ArgumentNullException(nameof(endpoint));
-            }
+            endpoint.ThrowIfNullOrWhiteSpace();
 
             var html = await Task.Factory
                                  .StartNew(() => this.Render(endpoint, authKey))

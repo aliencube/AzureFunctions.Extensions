@@ -20,10 +20,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
         /// <returns><see cref="FunctionNameAttribute"/> instance.</returns>
         public static FunctionNameAttribute GetFunctionName(this MethodInfo element)
         {
-            if (element == null)
-            {
-                throw new ArgumentNullException(nameof(element));
-            }
+            element.ThrowIfNullOrDefault();
 
             var function = element.GetCustomAttribute<FunctionNameAttribute>(inherit: false);
 
@@ -37,10 +34,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
         /// <returns><see cref="HttpTriggerAttribute"/> instance.</returns>
         public static HttpTriggerAttribute GetHttpTrigger(this MethodInfo element)
         {
-            if (element == null)
-            {
-                throw new ArgumentNullException(nameof(element));
-            }
+            element.ThrowIfNullOrDefault();
 
             var trigger = element.GetParameters()
                                  .First()
@@ -56,10 +50,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
         /// <returns><see cref="HttpTriggerAttribute"/> instance.</returns>
         public static OpenApiOperationAttribute GetOpenApiOperation(this MethodInfo element)
         {
-            if (element == null)
-            {
-                throw new ArgumentNullException(nameof(element));
-            }
+            element.ThrowIfNullOrDefault();
 
             var operation = element.GetCustomAttribute<OpenApiOperationAttribute>(inherit: false);
 

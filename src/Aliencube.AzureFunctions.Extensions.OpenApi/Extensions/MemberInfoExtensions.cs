@@ -17,10 +17,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
         /// <returns><c>true</c>, if custom attribute exists; otherwise returns <c>false</c>.</returns>
         public static bool ExistsCustomAttribute<T>(this MemberInfo element, bool inherit = false) where T : Attribute
         {
-            if (element == null)
-            {
-                throw new ArgumentNullException(nameof(element));
-            }
+            element.ThrowIfNullOrDefault();
 
             var exists = element.GetCustomAttribute<T>(inherit) != null;
 

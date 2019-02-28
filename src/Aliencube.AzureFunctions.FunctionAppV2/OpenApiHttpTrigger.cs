@@ -1,11 +1,12 @@
-﻿using System.Threading.Tasks;
+﻿using System.Reflection;
+using System.Threading.Tasks;
 
 using Aliencube.AzureFunctions.Extensions.DependencyInjection;
 using Aliencube.AzureFunctions.Extensions.DependencyInjection.Abstractions;
 using Aliencube.AzureFunctions.Extensions.OpenApi.Attributes;
-using Aliencube.AzureFunctions.FunctionAppV2.Functions;
-using Aliencube.AzureFunctions.FunctionAppV2.Functions.FunctionOptions;
-using Aliencube.AzureFunctions.FunctionAppV2.Modules;
+using Aliencube.AzureFunctions.FunctionAppCommon.Functions;
+using Aliencube.AzureFunctions.FunctionAppCommon.Functions.FunctionOptions;
+using Aliencube.AzureFunctions.FunctionAppCommon.Modules;
 
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -39,7 +40,7 @@ namespace Aliencube.AzureFunctions.FunctionAppV2
             string extension,
             ILogger log)
         {
-            var options = new RenderOpeApiDocumentFunctionOptions("v2", extension);
+            var options = new RenderOpeApiDocumentFunctionOptions("v2", extension, Assembly.GetExecutingAssembly());
             var result = await Factory.Create<IRenderOpeApiDocumentFunction, ILogger>(log)
                                       .InvokeAsync<HttpRequest, IActionResult>(req, options)
                                       .ConfigureAwait(false);
@@ -63,7 +64,7 @@ namespace Aliencube.AzureFunctions.FunctionAppV2
             string extension,
             ILogger log)
         {
-            var options = new RenderOpeApiDocumentFunctionOptions(version, extension);
+            var options = new RenderOpeApiDocumentFunctionOptions(version, extension, Assembly.GetExecutingAssembly());
             var result = await Factory.Create<IRenderOpeApiDocumentFunction, ILogger>(log)
                                       .InvokeAsync<HttpRequest, IActionResult>(req, options)
                                       .ConfigureAwait(false);

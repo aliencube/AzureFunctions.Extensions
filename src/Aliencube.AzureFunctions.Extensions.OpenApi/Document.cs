@@ -34,7 +34,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi
         /// </summary>
         public Document(IDocumentHelper helper)
         {
-            this._helper = helper ?? throw new ArgumentNullException(nameof(helper));
+            this._helper = helper.ThrowIfNullOrDefault();
         }
 
         /// <inheritdoc />
@@ -85,19 +85,34 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi
             foreach (var method in methods)
             {
                 var trigger = this._helper.GetHttpTriggerAttribute(method);
-                if (trigger == null)
+                if (trigger.IsNullOrDefault())
                 {
                     continue;
                 }
 
                 var function = this._helper.GetFunctionNameAttribute(method);
+                if (function.IsNullOrDefault())
+                {
+                    continue;
+                }
+
                 var path = this._helper.GetHttpEndpoint(function, trigger);
+                if (path.IsNullOrWhiteSpace())
+                {
+                    continue;
+                }
+
                 var verb = this._helper.GetHttpVerb(trigger);
 
                 var item = this._helper.GetOpenApiPath(path, paths);
                 var operations = item.Operations;
 
                 var operation = this._helper.GetOpenApiOperation(method, function, verb);
+                if (operation.IsNullOrDefault())
+                {
+                    continue;
+                }
+
                 operation.Parameters = this._helper.GetOpenApiParameters(method, trigger);
                 operation.RequestBody = this._helper.GetOpenApiRequestBody(method);
                 operation.Responses = this._helper.GetOpenApiResponseBody(method);

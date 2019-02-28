@@ -11,6 +11,7 @@
     <ProjectReference Include="..\Aliencube.AzureFunctions.Extensions.Configuration.Json\Aliencube.AzureFunctions.Extensions.Configuration.Json.csproj" />
     <ProjectReference Include="..\Aliencube.AzureFunctions.Extensions.DependencyInjection\Aliencube.AzureFunctions.Extensions.DependencyInjection.csproj" />
     <ProjectReference Include="..\Aliencube.AzureFunctions.Extensions.OpenApi\Aliencube.AzureFunctions.Extensions.OpenApi.csproj" />
+    <ProjectReference Include="..\Aliencube.AzureFunctions.FunctionAppCommon\Aliencube.AzureFunctions.FunctionAppCommon.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
