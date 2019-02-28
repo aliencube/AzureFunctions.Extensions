@@ -4,10 +4,7 @@
 using System.IO;
 #endif
 
-#if NET461
 using System.Linq;
-#endif
-
 using System.Net;
 
 #if NET461
@@ -88,7 +85,8 @@ namespace Aliencube.AzureFunctions.FunctionAppCommon.Functions
                                    Description = "Ignored",
                                    Sub = new SubSampleResponseModel() { Value = int.MaxValue },
                                    Collection = { { "hello", "world" } },
-                                   Items = { { int.MinValue } }
+                                   Items1 = { { int.MinValue } },
+                                   Items2 = new[] { int.MinValue }.ToArray()
                                };
 #if NET461
             var content = new StringContent(JsonConvert.SerializeObject(result), Encoding.UTF8, "application/json");

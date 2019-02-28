@@ -58,7 +58,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
             if (typeof(IList).IsAssignableFrom(type))
             {
                 schema.Type = "array";
-                schema.Items = type.GetGenericArguments()[0].ToOpenApiSchema();
+                schema.Items = (type.GetElementType() ?? type.GetGenericArguments()[0]).ToOpenApiSchema();
 
                 return schema;
             }

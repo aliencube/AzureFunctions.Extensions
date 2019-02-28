@@ -52,9 +52,14 @@ namespace Aliencube.AzureFunctions.FunctionAppCommon.Models
         public Dictionary<string, string> Collection { get; set; } = new Dictionary<string, string>();
 
         /// <summary>
-        /// Gets or sets the list object.
+        /// Gets or sets the list objects 1.
         /// </summary>
-        public List<int> Items { get; set; } = new List<int>();
+        public List<int> Items1 { get; set; } = new List<int>();
+
+        /// <summary>
+        /// Gets or sets the list of objects 2.
+        /// </summary>
+        public int[] Items2 { get; set; } = new List<int>().ToArray();
     }
 
     /// <summary>
