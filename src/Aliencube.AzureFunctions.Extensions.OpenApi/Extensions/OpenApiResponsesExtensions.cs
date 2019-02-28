@@ -17,10 +17,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
         /// <returns><see cref="OpenApiResponses"/> instance.</returns>
         public static OpenApiResponses ToOpenApiResponses(this Dictionary<string, OpenApiResponse> collection)
         {
-            if (collection == null)
-            {
-                throw new ArgumentNullException(nameof(collection));
-            }
+            collection.ThrowIfNullOrDefault();
 
             var responses = new OpenApiResponses();
             foreach (var item in collection)

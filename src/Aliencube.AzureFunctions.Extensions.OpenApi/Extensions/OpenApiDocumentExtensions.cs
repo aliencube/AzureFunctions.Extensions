@@ -20,15 +20,8 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
         /// <param name="format"><see cref="OpenApiFormat"/> value.</param>
         public static void Serialise(this OpenApiDocument document, TextWriter writer, OpenApiSpecVersion version, OpenApiFormat format)
         {
-            if (document == null)
-            {
-                throw new ArgumentNullException(nameof(document));
-            }
-
-            if (writer == null)
-            {
-                throw new ArgumentNullException(nameof(writer));
-            }
+            document.ThrowIfNullOrDefault();
+            writer.ThrowIfNullOrDefault();
 
             var oaw = OpenApiWriterFactory.CreateInstance(format, writer);
             switch (version)

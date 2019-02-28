@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 using Aliencube.AzureFunctions.Extensions.OpenApi.Abstractions;
 
@@ -19,17 +18,8 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
         /// <returns>The Open API UI in HTML.</returns>
         public static async Task<string> RenderAsync(this Task<ISwaggerUI> ui, string endpoint, string authKey = null)
         {
-            if (ui == null)
-            {
-                throw new ArgumentNullException(nameof(ui));
-            }
-
-            if (string.IsNullOrWhiteSpace(endpoint))
-            {
-                throw new ArgumentNullException(nameof(endpoint));
-            }
-
-            var instance = await ui.ConfigureAwait(false);
+            var instance = await ui.ThrowIfNullOrDefault().ConfigureAwait(false);
+            endpoint.ThrowIfNullOrWhiteSpace();
 
             return await instance.RenderAsync(endpoint, authKey).ConfigureAwait(false);
         }

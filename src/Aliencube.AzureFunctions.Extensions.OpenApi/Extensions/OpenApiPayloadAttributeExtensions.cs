@@ -19,10 +19,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
         /// <returns><see cref="OpenApiMediaType"/> instance.</returns>
         public static OpenApiMediaType ToOpenApiMediaType<T>(this T attribute) where T : OpenApiPayloadAttribute
         {
-            if (attribute == null)
-            {
-                throw new ArgumentNullException(nameof(attribute));
-            }
+            attribute.ThrowIfNullOrDefault();
 
             var reference = new OpenApiReference()
                                 {

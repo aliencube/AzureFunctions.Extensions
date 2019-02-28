@@ -28,10 +28,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
         /// </remarks>
         public static OpenApiSchema ToOpenApiSchema(this Type type, OpenApiSchemaVisibilityAttribute attribute = null)
         {
-            if (type == null)
-            {
-                throw new ArgumentNullException(nameof(type));
-            }
+            type.ThrowIfNullOrDefault();
 
             var typeCode = Type.GetTypeCode(type);
             var schema = new OpenApiSchema()
