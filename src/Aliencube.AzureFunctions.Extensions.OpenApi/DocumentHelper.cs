@@ -26,6 +26,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi
             var methods = assembly.GetTypes()
                                   .SelectMany(p => p.GetMethods())
                                   .Where(p => p.ExistsCustomAttribute<FunctionNameAttribute>())
+                                  .Where(p => p.ExistsCustomAttribute<OpenApiOperationAttribute>())
                                   .Where(p => !p.ExistsCustomAttribute<OpenApiIgnoreAttribute>())
                                   .Where(p => p.GetParameters().FirstOrDefault(q => q.ExistsCustomAttribute<HttpTriggerAttribute>()) != null)
                                   .ToList();
@@ -79,6 +80,11 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi
         public OpenApiOperation GetOpenApiOperation(MethodInfo element, FunctionNameAttribute function, OperationType verb)
         {
             var op = element.GetOpenApiOperation();
+            if (op.IsNullOrDefault())
+            {
+                return null;
+            }
+
             var operation = new OpenApiOperation()
                                 {
                                     OperationId = string.IsNullOrWhiteSpace(op.OperationId) ? $"{function.Name}_{verb}" : op.OperationId,
