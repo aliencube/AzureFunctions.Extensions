@@ -1,12 +1,12 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Reflection;
 using System.Threading.Tasks;
 
-using Aliencube.AzureFunctions.Extensions.DependencyInjection;
-using Aliencube.AzureFunctions.Extensions.DependencyInjection.Abstractions;
+using Aliencube.AzureFunctions.Extensions.DependencyInjection.Extensions;
+using Aliencube.AzureFunctions.Extensions.DependencyInjection.Triggers.Abstractions;
 using Aliencube.AzureFunctions.Extensions.OpenApi.Attributes;
 using Aliencube.AzureFunctions.FunctionAppCommon.Functions;
 using Aliencube.AzureFunctions.FunctionAppCommon.Functions.FunctionOptions;
-using Aliencube.AzureFunctions.FunctionAppCommon.Modules;
 
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -19,12 +19,21 @@ namespace Aliencube.AzureFunctions.FunctionAppV2
     /// <summary>
     /// This represents the HTTP trigger for Open API.
     /// </summary>
-    public static class OpenApiHttpTrigger
+    public class OpenApiHttpTrigger : TriggerBase<ILogger>
     {
+        private readonly IRenderOpeApiDocumentFunction _openApiDoc;
+        private readonly IRenderSwaggerUIFunction _swaggerUi;
+
         /// <summary>
-        /// Gets the <see cref="IFunctionFactory"/> instance as an IoC container.
+        /// Initializes a new instance of the <see cref="OpenApiHttpTrigger"/> class.
         /// </summary>
-        public static IFunctionFactory Factory = new FunctionFactory<AppModule>();
+        /// <param name="openApiDoc"><see cref="IRenderOpeApiDocumentFunction"/> instance.</param>
+        /// <param name="swaggerUi"><see cref="IRenderSwaggerUIFunction"/> instance.</param>
+        public OpenApiHttpTrigger(IRenderOpeApiDocumentFunction openApiDoc, IRenderSwaggerUIFunction swaggerUi)
+        {
+            this._openApiDoc = openApiDoc ?? throw new ArgumentNullException(nameof(openApiDoc));
+            this._swaggerUi = swaggerUi ?? throw new ArgumentNullException(nameof(swaggerUi));
+        }
 
         /// <summary>
         /// Invokes the HTTP trigger endpoint to get Open API document.
@@ -35,15 +44,16 @@ namespace Aliencube.AzureFunctions.FunctionAppV2
         /// <returns>Open API document in a format of either JSON or YAML.</returns>
         [FunctionName(nameof(RenderSwaggerDocument))]
         [OpenApiIgnore]
-        public static async Task<IActionResult> RenderSwaggerDocument(
+        public async Task<IActionResult> RenderSwaggerDocument(
             [HttpTrigger(AuthorizationLevel.Function, "get", Route = "swagger.{extension}")] HttpRequest req,
             string extension,
             ILogger log)
         {
             var options = new RenderOpeApiDocumentFunctionOptions("v2", extension, Assembly.GetExecutingAssembly());
-            var result = await Factory.Create<IRenderOpeApiDocumentFunction, ILogger>(log)
-                                      .InvokeAsync<HttpRequest, IActionResult>(req, options)
-                                      .ConfigureAwait(false);
+            var result = await this._openApiDoc
+                                   .AddLogger(log)
+                                   .InvokeAsync<HttpRequest, IActionResult>(req, options)
+                                   .ConfigureAwait(false);
 
             return result;
         }
@@ -58,16 +68,17 @@ namespace Aliencube.AzureFunctions.FunctionAppV2
         /// <returns>Open API document in a format of either JSON or YAML.</returns>
         [FunctionName(nameof(RenderOpenApiDocument))]
         [OpenApiIgnore]
-        public static async Task<IActionResult> RenderOpenApiDocument(
+        public async Task<IActionResult> RenderOpenApiDocument(
             [HttpTrigger(AuthorizationLevel.Function, "get", Route = "openapi/{version}.{extension}")] HttpRequest req,
             string version,
             string extension,
             ILogger log)
         {
             var options = new RenderOpeApiDocumentFunctionOptions(version, extension, Assembly.GetExecutingAssembly());
-            var result = await Factory.Create<IRenderOpeApiDocumentFunction, ILogger>(log)
-                                      .InvokeAsync<HttpRequest, IActionResult>(req, options)
-                                      .ConfigureAwait(false);
+            var result = await this._openApiDoc
+                                   .AddLogger(log)
+                                   .InvokeAsync<HttpRequest, IActionResult>(req, options)
+                                   .ConfigureAwait(false);
 
             return result;
         }
@@ -80,14 +91,15 @@ namespace Aliencube.AzureFunctions.FunctionAppV2
         /// <returns>Swagger UI in HTML.</returns>
         [FunctionName(nameof(RenderSwaggerUI))]
         [OpenApiIgnore]
-        public static async Task<IActionResult> RenderSwaggerUI(
+        public async Task<IActionResult> RenderSwaggerUI(
             [HttpTrigger(AuthorizationLevel.Function, "get", Route = "swagger/ui")] HttpRequest req,
             ILogger log)
         {
             var options = new RenderSwaggerUIFunctionOptions();
-            var result = await Factory.Create<IRenderSwaggerUIFunction, ILogger>(log)
-                                      .InvokeAsync<HttpRequest, IActionResult>(req, options)
-                                      .ConfigureAwait(false);
+            var result = await this._swaggerUi
+                                   .AddLogger(log)
+                                   .InvokeAsync<HttpRequest, IActionResult>(req, options)
+                                   .ConfigureAwait(false);
 
             return result;
         }
