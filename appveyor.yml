@@ -7,7 +7,7 @@
     only:
     - master
     - dev
-    - feature/*
+    - /feature\/*/
   skip_tags: true
   skip_commits:
     files:
