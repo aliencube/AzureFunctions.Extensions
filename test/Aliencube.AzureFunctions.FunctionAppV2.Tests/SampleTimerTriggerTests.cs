@@ -28,20 +28,16 @@ namespace Aliencube.AzureFunctions.FunctionAppV2.Tests
             var function = new Mock<ISampleTimerFunction>();
             function.Setup(p => p.InvokeAsync<TimerInfo, bool>(It.IsAny<TimerInfo>(), It.IsAny<FunctionOptionsBase>())).ReturnsAsync(result);
 
-            var factory = new Mock<IFunctionFactory>();
-            factory.Setup(p => p.Create<ISampleTimerFunction, ILogger>(It.IsAny<ILogger>())).Returns(function.Object);
-            factory.SetupProperty(p => p.ResultInvoked);
-
-            SampleTimerTrigger.Factory = factory.Object;
+            var trigger = new SampleTimerTrigger(function.Object);
 
             var schedule = new Mock<TimerSchedule>();
             var timer = new TimerInfo(schedule.Object, new ScheduleStatus());
             var collector = new Mock<IAsyncCollector<string>>();
             var log = new Mock<ILogger>();
 
-            await SampleTimerTrigger.Run(timer, collector.Object, log.Object).ConfigureAwait(false);
+            await trigger.Run(timer, collector.Object, log.Object).ConfigureAwait(false);
 
-            factory.Object.ResultInvoked.Should().BeOfType<bool>().And.Be(true);
+            trigger.ResultInvoked.Should().Be(true);
         }
     }
 }

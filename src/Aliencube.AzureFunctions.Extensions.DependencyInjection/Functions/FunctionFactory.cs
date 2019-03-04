@@ -1,6 +1,7 @@
 ﻿using System;
 
 using Aliencube.AzureFunctions.Extensions.DependencyInjection.Abstractions;
+using Aliencube.AzureFunctions.Extensions.DependencyInjection.Extensions;
 
 using Microsoft.Azure.WebJobs.Host;
 using Microsoft.Extensions.DependencyInjection;
@@ -65,8 +66,9 @@ namespace Aliencube.AzureFunctions.Extensions.DependencyInjection
                 throw new ArgumentException("Invalid logger type");
             }
 
-            var function = this._container.GetService<TFunction>();
-            function.Log = log;
+            var function = this._container
+                               .GetService<TFunction>()
+                               .AddLogger(log);
 
             return function;
         }

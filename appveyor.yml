@@ -1,4 +1,4 @@
-# master/dev
+# master/dev/feature
 -
   environment:
     package_semantic_version: 2.1.1
@@ -7,6 +7,7 @@
     only:
     - master
     - dev
+    - /feature\/*/
   skip_tags: true
   skip_commits:
     files:
@@ -38,7 +39,7 @@
 # release/di
 -
   environment:
-    package_semantic_version: 2.1.0
+    package_semantic_version: 2.1.1
   version: $(package_semantic_version).{build}
   pull_requests:
     do_not_increment_build_number: true
