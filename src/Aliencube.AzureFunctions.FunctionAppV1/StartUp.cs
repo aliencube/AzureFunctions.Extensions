@@ -7,12 +7,12 @@ using Aliencube.AzureFunctions.FunctionAppCommon.Functions;
 
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Aliencube.AzureFunctions.FunctionAppCommon.Modules
+namespace Aliencube.AzureFunctions.FunctionAppV1
 {
     /// <summary>
     /// This represents the module entity to register dependencies.
     /// </summary>
-    public class AppModule : Module
+    public class StartUp : Module
     {
         /// <inheritdoc />
         public override void Load(IServiceCollection services)

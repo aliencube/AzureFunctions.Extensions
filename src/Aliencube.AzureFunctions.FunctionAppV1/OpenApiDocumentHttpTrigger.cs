@@ -7,7 +7,6 @@ using Aliencube.AzureFunctions.Extensions.DependencyInjection.Abstractions;
 using Aliencube.AzureFunctions.Extensions.OpenApi.Attributes;
 using Aliencube.AzureFunctions.FunctionAppCommon.Functions;
 using Aliencube.AzureFunctions.FunctionAppCommon.Functions.FunctionOptions;
-using Aliencube.AzureFunctions.FunctionAppCommon.Modules;
 
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
@@ -23,7 +22,7 @@ namespace Aliencube.AzureFunctions.FunctionAppV1
         /// <summary>
         /// Gets the <see cref="IFunctionFactory"/> instance as an IoC container.
         /// </summary>
-        public static IFunctionFactory Factory { get; set; } = new FunctionFactory<AppModule>();
+        public static IFunctionFactory Factory { get; set; } = new FunctionFactory<StartUp>();
 
         /// <summary>
         /// Invokes the HTTP trigger endpoint to get Open API document in JSON.
