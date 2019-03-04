@@ -4,7 +4,6 @@ using Aliencube.AzureFunctions.Extensions.DependencyInjection;
 using Aliencube.AzureFunctions.Extensions.DependencyInjection.Abstractions;
 using Aliencube.AzureFunctions.FunctionAppCommon.Functions;
 using Aliencube.AzureFunctions.FunctionAppCommon.Functions.FunctionOptions;
-using Aliencube.AzureFunctions.FunctionAppCommon.Modules;
 
 using Microsoft.Azure.WebJobs;
 using Microsoft.Extensions.Logging;
@@ -19,7 +18,7 @@ namespace Aliencube.AzureFunctions.FunctionAppV1
         /// <summary>
         /// Gets the <see cref="IFunctionFactory"/> instance as an IoC container.
         /// </summary>
-        public static IFunctionFactory Factory = new FunctionFactory(typeof(AppModule));
+        public static IFunctionFactory Factory = new FunctionFactory(typeof(StartUp));
 
         /// <summary>
         /// Invokes the timer trigger.
