@@ -89,7 +89,8 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi
                                 {
                                     OperationId = string.IsNullOrWhiteSpace(op.OperationId) ? $"{function.Name}_{verb}" : op.OperationId,
                                     Tags = op.Tags.Select(p => new OpenApiTag() { Name = p }).ToList(),
-                                    Summary = op.Summary
+                                    Summary = op.Summary,
+                                    Description = op.Description
                                 };
 
             if (op.Visibility != OpenApiVisibilityType.Undefined)
