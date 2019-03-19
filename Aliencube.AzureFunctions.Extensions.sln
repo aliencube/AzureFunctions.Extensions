@@ -35,7 +35,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Aliencube.AzureFunctions.Ex
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Aliencube.AzureFunctions.Extensions.Configuration.Json", "src\Aliencube.AzureFunctions.Extensions.Configuration.Json\Aliencube.AzureFunctions.Extensions.Configuration.Json.csproj", "{E285BCB7-CA1F-41D6-AF9C-514E55831681}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aliencube.AzureFunctions.FunctionAppCommon", "src\Aliencube.AzureFunctions.FunctionAppCommon\Aliencube.AzureFunctions.FunctionAppCommon.csproj", "{F5E638B4-B83C-408D-B0A3-8AC31658A62B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Aliencube.AzureFunctions.FunctionAppCommon", "src\Aliencube.AzureFunctions.FunctionAppCommon\Aliencube.AzureFunctions.FunctionAppCommon.csproj", "{F5E638B4-B83C-408D-B0A3-8AC31658A62B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Aliencube.AzureFunctions.Extensions.Configuration.AppSettings", "src\Aliencube.AzureFunctions.Extensions.Configuration.AppSettings\Aliencube.AzureFunctions.Extensions.Configuration.AppSettings.csproj", "{64A22A3C-D0C4-4DE9-A8D5-2CEF766EB500}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aliencube.AzureFunctions.Extensions.Configuration.AppSettings.Tests", "test\Aliencube.AzureFunctions.Extensions.Configuration.AppSettings.Tests\Aliencube.AzureFunctions.Extensions.Configuration.AppSettings.Tests.csproj", "{AEF35BD6-EA9A-4159-86F4-49AF7D17A9A8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -83,6 +87,14 @@ Global
 		{F5E638B4-B83C-408D-B0A3-8AC31658A62B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F5E638B4-B83C-408D-B0A3-8AC31658A62B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F5E638B4-B83C-408D-B0A3-8AC31658A62B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{64A22A3C-D0C4-4DE9-A8D5-2CEF766EB500}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{64A22A3C-D0C4-4DE9-A8D5-2CEF766EB500}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{64A22A3C-D0C4-4DE9-A8D5-2CEF766EB500}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{64A22A3C-D0C4-4DE9-A8D5-2CEF766EB500}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AEF35BD6-EA9A-4159-86F4-49AF7D17A9A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AEF35BD6-EA9A-4159-86F4-49AF7D17A9A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AEF35BD6-EA9A-4159-86F4-49AF7D17A9A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AEF35BD6-EA9A-4159-86F4-49AF7D17A9A8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -98,6 +110,8 @@ Global
 		{E32C7C1A-3D2E-437E-91AE-6FAE33BD068A} = {8B62E3FB-9062-4716-803A-1FA51FCE68BC}
 		{E285BCB7-CA1F-41D6-AF9C-514E55831681} = {810145E0-41CF-4E24-BD9C-E7517498BA29}
 		{F5E638B4-B83C-408D-B0A3-8AC31658A62B} = {810145E0-41CF-4E24-BD9C-E7517498BA29}
+		{64A22A3C-D0C4-4DE9-A8D5-2CEF766EB500} = {810145E0-41CF-4E24-BD9C-E7517498BA29}
+		{AEF35BD6-EA9A-4159-86F4-49AF7D17A9A8} = {8B62E3FB-9062-4716-803A-1FA51FCE68BC}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {70FEC644-BB3C-4441-AF91-DC694803C8F2}
