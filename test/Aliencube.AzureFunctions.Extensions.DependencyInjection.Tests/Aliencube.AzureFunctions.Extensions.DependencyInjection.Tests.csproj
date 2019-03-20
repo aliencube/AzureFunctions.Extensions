@@ -20,10 +20,4 @@
     <ProjectReference Include="..\Aliencube.AzureFunctions.Tests.Fakes\Aliencube.AzureFunctions.Tests.Fakes.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <None Update="fakeconfig.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-
 </Project>

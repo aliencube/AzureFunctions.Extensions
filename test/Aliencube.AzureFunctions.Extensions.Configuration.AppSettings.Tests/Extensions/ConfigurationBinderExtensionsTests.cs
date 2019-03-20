@@ -7,7 +7,7 @@ using FluentAssertions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Aliencube.AzureFunctions.Extensions.DependencyInjection.Tests
+namespace Aliencube.AzureFunctions.Extensions.Configuration.AppSettings.Extensions.Tests
 {
     /// <summary>
     /// This represents the test entity for the <see cref="ConfigurationBinderExtensions"/> class.
