@@ -84,7 +84,7 @@
 # release/swagger
 -
   environment:
-    package_semantic_version: 1.4.1
+    package_semantic_version: 1.4.2
   version: $(package_semantic_version).{build}
   pull_requests:
     do_not_increment_build_number: true
