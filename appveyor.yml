@@ -1,7 +1,7 @@
 # master/dev/feature
 -
   environment:
-    package_semantic_version: 2.1.1
+    package_semantic_version: 2.2.0
   version: $(package_semantic_version).{build}
   branches:
     only:
