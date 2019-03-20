@@ -53,14 +53,6 @@
     <PackageReference Include="Microsoft.OpenApi" Version="1.1.2" />
   </ItemGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)' == 'net461'">
-    <ProjectReference Include="..\Aliencube.AzureFunctions.Extensions.Configuration.Json\Aliencube.AzureFunctions.Extensions.Configuration.Json.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Aliencube.AzureFunctions.Extensions.Configuration.AppSettings\Aliencube.AzureFunctions.Extensions.Configuration.AppSettings.csproj" />
-  </ItemGroup>
-
   <ItemGroup>
     <EmbeddedResource Include="dist/index.html" />
     <EmbeddedResource Include="dist/swagger-ui.css" />
