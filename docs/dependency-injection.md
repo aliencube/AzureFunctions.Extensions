@@ -2,8 +2,8 @@
 
 [![Build status](https://ci.appveyor.com/api/projects/status/6ex8if2l1ffdahfq/branch/dev?svg=true)](https://ci.appveyor.com/project/justinyoo/azurefunctions-extensions/branch/dev) [![](https://img.shields.io/nuget/dt/Aliencube.AzureFunctions.Extensions.DependencyInjection.svg)](https://www.nuget.org/packages/Aliencube.AzureFunctions.Extensions.DependencyInjection/) [![](https://img.shields.io/nuget/v/Aliencube.AzureFunctions.Extensions.DependencyInjection.svg)](https://www.nuget.org/packages/Aliencube.AzureFunctions.Extensions.DependencyInjection/)
 
-
 This enables Azure Functions to utilise an IoC container offered by ASP.NET Core.
+
 
 ## Constructor Injection ##
 
