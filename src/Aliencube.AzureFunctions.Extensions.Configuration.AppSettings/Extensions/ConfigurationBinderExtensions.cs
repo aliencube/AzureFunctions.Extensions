@@ -2,7 +2,7 @@
 
 using Microsoft.Extensions.Configuration;
 
-namespace Aliencube.AzureFunctions.Extensions.DependencyInjection
+namespace Aliencube.AzureFunctions.Extensions.Configuration.AppSettings.Extensions
 {
     /// <summary>
     /// This represents the extension entity for <see cref="ConfigurationBinder"/> class.

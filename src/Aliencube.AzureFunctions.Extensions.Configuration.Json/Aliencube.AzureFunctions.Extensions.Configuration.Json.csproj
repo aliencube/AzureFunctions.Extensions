@@ -14,7 +14,7 @@
     <Product>Aliencube.AzureFunctions.Extensions.Configuration.Json</Product>
     <Summary>This package is a direct port of Microsoft.Extensions.Configuration.Json 2.1.1 for Newtonsoft.Json 9.0.1 support.</Summary>
     <Description>This package is a direct port of Microsoft.Extensions.Configuration.Json 2.1.1 for Newtonsoft.Json 9.0.1 support.</Description>
-    <PackageTags>Configuration, JSON</PackageTags>
+    <PackageTags>Azure-Functions, Configuration, JSON</PackageTags>
     <Copyright>Aliencube Community</Copyright>
     <PackageLicenseUrl>https://github.com/aliencube/AzureFunctions.Extensions/blob/master/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/aliencube/AzureFunctions.Extensions</PackageProjectUrl>
