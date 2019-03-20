@@ -38,11 +38,13 @@ namespace Aliencube.AzureFunctions.FunctionAppV2
         /// <returns><see cref="SampleResponseModel"/> instance.</returns>
         [FunctionName(nameof(GetSample))]
         [OpenApiOperation("list", "sample", Summary = "Gets the list of samples", Description = "This gets the list of samples.", Visibility = OpenApiVisibilityType.Important)]
-        [OpenApiParameter("name", In = ParameterLocation.Query, Required = true, Type = typeof(string), Summary = "The name parameter", Visibility = OpenApiVisibilityType.Advanced)]
+        [OpenApiParameter("id", In = ParameterLocation.Path, Required = true, Type = typeof(int), Summary = "The ID parameter", Visibility = OpenApiVisibilityType.Advanced)]
+        [OpenApiParameter("category", In = ParameterLocation.Path, Required = true, Type = typeof(string), Summary = "The category parameter", Visibility = OpenApiVisibilityType.Advanced)]
+        [OpenApiParameter("name", In = ParameterLocation.Query, Required = true, Type = typeof(string), Summary = "The name query key", Visibility = OpenApiVisibilityType.Advanced)]
         [OpenApiParameter("limit", In = ParameterLocation.Query, Required = false, Type = typeof(int), Description = "The number of samples to return")]
         [OpenApiResponseBody(HttpStatusCode.OK, "application/json", typeof(SampleResponseModel), Summary = "Sample response")]
         public async Task<IActionResult> GetSample(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "samples")] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "samples/{id:int}/categories/{category:regex(^[a-z]{{3,}}$)}")] HttpRequest req,
             ILogger log)
         {
             var result = await this._function
