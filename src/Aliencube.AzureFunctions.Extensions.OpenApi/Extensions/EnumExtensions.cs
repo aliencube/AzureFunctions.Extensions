@@ -29,13 +29,20 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
             return name;
         }
 
+        public static bool IsSimpleType(this Type type)
+        {
+            var @enum = Type.GetTypeCode(type);
+            return @enum != TypeCode.Object;
+        }
+
         /// <summary>
         /// Converts the <see cref="TypeCode"/> value into data type specified in Open API spec.
         /// </summary>
-        /// <param name="enum"><see cref="TypeCode"/> value.</param>
+        /// <param name="type"><see cref="Type"/> value.</param>
         /// <returns>Data type specified in Open API spec.</returns>
-        public static string ToDataType(this TypeCode @enum)
+        public static string ToDataType(this Type type)
         {
+            var @enum = Type.GetTypeCode(type);
             switch (@enum)
             {
                 case TypeCode.Int16:
@@ -56,7 +63,14 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
                     return "string";
 
                 case TypeCode.Object:
-                    return "object";
+                    if (type == typeof(Guid))
+                    {
+                        return "string";
+                    }
+                    else
+                    {
+                        return "object";
+                    }
 
                 case TypeCode.Empty:
                 case TypeCode.DBNull:
@@ -74,10 +88,11 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
         /// <summary>
         /// Converts the <see cref="TypeCode"/> value into data format specified in Open API spec.
         /// </summary>
-        /// <param name="enum"><see cref="TypeCode"/> value.</param>
+        /// <param name="type"><see cref="Type"/> value.</param>
         /// <returns>Data format specified in Open API spec.</returns>
-        public static string ToDataFormat(this TypeCode @enum)
+        public static string ToDataFormat(this Type type)
         {
+            var @enum = Type.GetTypeCode(type);
             switch (@enum)
             {
                 case TypeCode.Int16:
@@ -105,8 +120,16 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
                 case TypeCode.UInt64:
                 case TypeCode.Boolean:
                 case TypeCode.String:
-                case TypeCode.Object:
                     return null;
+                case TypeCode.Object:
+                    if (type == typeof(Guid))
+                    {
+                        return "uuid";
+                    }
+                    else
+                    {
+                        return null;
+                    }
 
                 case TypeCode.Empty:
                 case TypeCode.DBNull:
