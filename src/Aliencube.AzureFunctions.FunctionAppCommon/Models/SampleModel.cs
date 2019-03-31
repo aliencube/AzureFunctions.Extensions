@@ -16,7 +16,6 @@ namespace Aliencube.AzureFunctions.FunctionAppCommon.Models
         /// <summary>
         /// Gets or sets the Id.
         /// </summary>
-        [JsonProperty("id")]
         public string Id { get; set; }
     }
 
