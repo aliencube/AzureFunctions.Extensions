@@ -52,11 +52,10 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
             type.ThrowIfNullOrDefault();
             name.ThrowIfNullOrWhiteSpace();
 
-            var typeCode = Type.GetTypeCode(type);
             var schema = new OpenApiSchema()
                              {
-                                 Type = typeCode.ToDataType(),
-                                 Format = typeCode.ToDataFormat()
+                                 Type = type.ToDataType(),
+                                 Format = type.ToDataFormat()
                              };
             var parameter = new OpenApiParameter()
                                 {
