@@ -5,6 +5,7 @@ using System.Reflection;
 
 using Aliencube.AzureFunctions.Extensions.OpenApi.Abstractions;
 using Aliencube.AzureFunctions.Extensions.OpenApi.Attributes;
+using Aliencube.AzureFunctions.Extensions.OpenApi.Configurations;
 using Aliencube.AzureFunctions.Extensions.OpenApi.Enums;
 using Aliencube.AzureFunctions.Extensions.OpenApi.Extensions;
 
@@ -20,6 +21,17 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi
     /// </summary>
     public class DocumentHelper : IDocumentHelper
     {
+        private readonly RouteConstraintFilter _filter;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DocumentHelper"/> class.
+        /// </summary>
+        /// <param name="filter"><see cref="RouteConstraintFilter"/> instance.</param>
+        public DocumentHelper(RouteConstraintFilter filter)
+        {
+            this._filter = filter.ThrowIfNullOrDefault();
+        }
+
         /// <inheritdoc />
         public List<MethodInfo> GetHttpTriggerMethods(Assembly assembly)
         {
@@ -53,7 +65,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi
         /// <inheritdoc />
         public string GetHttpEndpoint(FunctionNameAttribute function, HttpTriggerAttribute trigger)
         {
-            var endpoint = $"/{(string.IsNullOrWhiteSpace(trigger.Route) ? function.Name : trigger.Route).Trim('/')}";
+            var endpoint = $"/{(string.IsNullOrWhiteSpace(trigger.Route) ? function.Name : this.FilterRoute(trigger.Route)).Trim('/')}";
 
             return endpoint;
         }
@@ -171,6 +183,14 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi
                               };
 
             return schemes;
+        }
+
+        private string FilterRoute(string route)
+        {
+            var segments = route.Split(new[] { "/" }, StringSplitOptions.RemoveEmptyEntries)
+                                .Select(p => this._filter.Filter.Replace(p, this._filter.Replacement));
+
+            return string.Join("/", segments);
         }
     }
 }
