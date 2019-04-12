@@ -52,7 +52,8 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi
         /// <inheritdoc />
         public ISwaggerUI AddServer(HttpRequestMessage req, string routePrefix)
         {
-            var baseUrl = $"{req.RequestUri.Scheme}://{req.RequestUri.Authority}/{routePrefix}";
+            var prefix = string.IsNullOrWhiteSpace(routePrefix) ? string.Empty : $"/{routePrefix}";
+            var baseUrl = $"{req.RequestUri.Scheme}://{req.RequestUri.Authority}{prefix}";
             this._baseUrl = baseUrl;
 
             return this;
@@ -61,7 +62,8 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi
         /// <inheritdoc />
         public ISwaggerUI AddServer(HttpRequest req, string routePrefix)
         {
-            var baseUrl = $"{req.Scheme}://{req.Host}/{routePrefix}";
+            var prefix = string.IsNullOrWhiteSpace(routePrefix) ? string.Empty : $"/{routePrefix}";
+            var baseUrl = $"{req.Scheme}://{req.Host}{prefix}";
             this._baseUrl = baseUrl;
 
             return this;

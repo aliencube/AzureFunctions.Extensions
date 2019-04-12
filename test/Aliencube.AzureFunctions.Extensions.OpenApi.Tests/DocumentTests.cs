@@ -98,5 +98,73 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Tests
             ((string)json?.basePath).Should().BeEquivalentTo($"/{routePrefix}");
             ((string)json?.schemes[0]).Should().BeEquivalentTo(scheme);
         }
+
+        [TestMethod]
+        public async Task Given_ServerDetails_WithNullRoutePrefix_RenderAsync_Should_Return_Result()
+        {
+            var helper = new Mock<IDocumentHelper>();
+
+            var scheme = "https";
+            var host = "localhost";
+            string routePrefix = null;
+            var url = $"{scheme}://{host}";
+#if NET461
+            var uri = new Uri(url);
+            var req = new HttpRequestMessage() { RequestUri = uri };
+#elif NETCOREAPP2_0
+            var req = new Mock<HttpRequest>();
+            req.SetupGet(p => p.Scheme).Returns(scheme);
+            req.SetupGet(p => p.Host).Returns(new HostString(host));
+#endif
+            var doc = new Document(helper.Object);
+
+            var result = await doc.InitialiseDocument()
+#if NET461
+                                  .AddServer(req, routePrefix)
+#elif NETCOREAPP2_0
+                                  .AddServer(req.Object, routePrefix)
+#endif
+                                  .RenderAsync(OpenApiSpecVersion.OpenApi2_0, OpenApiFormat.Json);
+
+            dynamic json = JObject.Parse(result);
+
+            ((string)json?.host).Should().BeEquivalentTo(host);
+            ((string)json?.basePath).Should().BeEquivalentTo(null);
+            ((string)json?.schemes[0]).Should().BeEquivalentTo(scheme);
+        }
+
+        [TestMethod]
+        public async Task Given_ServerDetails_WithEmptyRoutePrefix_RenderAsync_Should_Return_Result()
+        {
+            var helper = new Mock<IDocumentHelper>();
+
+            var scheme = "https";
+            var host = "localhost";
+            var routePrefix = string.Empty;
+            var url = $"{scheme}://{host}";
+#if NET461
+            var uri = new Uri(url);
+            var req = new HttpRequestMessage() { RequestUri = uri };
+#elif NETCOREAPP2_0
+            var req = new Mock<HttpRequest>();
+            req.SetupGet(p => p.Scheme).Returns(scheme);
+            req.SetupGet(p => p.Host).Returns(new HostString(host));
+#endif
+            var doc = new Document(helper.Object);
+
+            var result = await doc.InitialiseDocument()
+#if NET461
+                                  .AddServer(req, routePrefix)
+#elif NETCOREAPP2_0
+                                  .AddServer(req.Object, routePrefix)
+#endif
+                                  .RenderAsync(OpenApiSpecVersion.OpenApi2_0, OpenApiFormat.Json);
+
+            dynamic json = JObject.Parse(result);
+
+            ((string)json?.host).Should().BeEquivalentTo(host);
+            ((string)json?.basePath).Should().BeEquivalentTo(null);
+            ((string)json?.schemes[0]).Should().BeEquivalentTo(scheme);
+        }
     }
 }
