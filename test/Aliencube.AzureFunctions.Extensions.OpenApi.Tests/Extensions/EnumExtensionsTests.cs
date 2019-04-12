@@ -30,37 +30,34 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Tests.Extensions
         [TestMethod]
         public void Given_TypeCode_ToDataType_Should_Throw_Exception()
         {
-            var typeCode = TypeCode.Empty;
-
-            Action action = () => EnumExtensions.ToDataType(typeCode);
+            Action action = () => EnumExtensions.ToDataType(null);
             action.Should().Throw<InvalidOperationException>();
         }
 
         [TestMethod]
         public void Given_TypeCode_ToDataType_Should_Return_Value()
         {
-            var typeCode = TypeCode.Int16;
-            var dataType = EnumExtensions.ToDataType(typeCode);
+            var dataType = EnumExtensions.ToDataType(typeof(Int16));
 
             dataType.Should().BeEquivalentTo("integer");
 
-            typeCode = TypeCode.Single;
-            dataType = EnumExtensions.ToDataType(typeCode);
+            dataType = EnumExtensions.ToDataType(typeof(Single));
 
             dataType.Should().BeEquivalentTo("number");
 
-            typeCode = TypeCode.Boolean;
-            dataType = EnumExtensions.ToDataType(typeCode);
+            dataType = EnumExtensions.ToDataType(typeof(Boolean));
 
             dataType.Should().BeEquivalentTo("boolean");
 
-            typeCode = TypeCode.DateTime;
-            dataType = EnumExtensions.ToDataType(typeCode);
+            dataType = EnumExtensions.ToDataType(typeof(DateTime));
 
             dataType.Should().BeEquivalentTo("string");
 
-            typeCode = TypeCode.Object;
-            dataType = EnumExtensions.ToDataType(typeCode);
+            dataType = EnumExtensions.ToDataType(typeof(Guid));
+
+            dataType.Should().BeEquivalentTo("string");
+
+            dataType = EnumExtensions.ToDataType(typeof(object));
 
             dataType.Should().BeEquivalentTo("object");
         }
@@ -68,42 +65,38 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Tests.Extensions
         [TestMethod]
         public void Given_TypeCode_ToDataFormat_Should_Throw_Exception()
         {
-            var typeCode = TypeCode.Empty;
-
-            Action action = () => EnumExtensions.ToDataFormat(typeCode);
+            Action action = () => EnumExtensions.ToDataFormat(null);
             action.Should().Throw<InvalidOperationException>();
         }
 
         [TestMethod]
         public void Given_TypeCode_ToDataFormat_Should_Return_Value()
         {
-            var typeCode = TypeCode.Int16;
-            var dataType = EnumExtensions.ToDataFormat(typeCode);
+            var dataType = EnumExtensions.ToDataFormat(typeof(Int16));
 
             dataType.Should().BeEquivalentTo("int32");
 
-            typeCode = TypeCode.Int64;
-            dataType = EnumExtensions.ToDataFormat(typeCode);
+            dataType = EnumExtensions.ToDataFormat(typeof(Int64));
 
             dataType.Should().BeEquivalentTo("int64");
 
-            typeCode = TypeCode.Single;
-            dataType = EnumExtensions.ToDataFormat(typeCode);
+            dataType = EnumExtensions.ToDataFormat(typeof(Single));
 
             dataType.Should().BeEquivalentTo("float");
 
-            typeCode = TypeCode.Double;
-            dataType = EnumExtensions.ToDataFormat(typeCode);
+            dataType = EnumExtensions.ToDataFormat(typeof(Double));
 
             dataType.Should().BeEquivalentTo("double");
 
-            typeCode = TypeCode.DateTime;
-            dataType = EnumExtensions.ToDataFormat(typeCode);
+            dataType = EnumExtensions.ToDataFormat(typeof(DateTime));
 
             dataType.Should().BeEquivalentTo("date-time");
 
-            typeCode = TypeCode.Object;
-            dataType = EnumExtensions.ToDataFormat(typeCode);
+            dataType = EnumExtensions.ToDataFormat(typeof(Guid));
+
+            dataType.Should().BeEquivalentTo("uuid");
+
+            dataType = EnumExtensions.ToDataFormat(typeof(object));
 
             dataType.Should().BeNull();
         }
