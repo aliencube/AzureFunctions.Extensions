@@ -1,6 +1,7 @@
 ﻿using Aliencube.AzureFunctions.Extensions.DependencyInjection.Abstractions;
 using Aliencube.AzureFunctions.Extensions.OpenApi;
 using Aliencube.AzureFunctions.Extensions.OpenApi.Abstractions;
+using Aliencube.AzureFunctions.Extensions.OpenApi.Configurations;
 using Aliencube.AzureFunctions.FunctionAppCommon.Configurations;
 using Aliencube.AzureFunctions.FunctionAppCommon.Dependencies;
 using Aliencube.AzureFunctions.FunctionAppCommon.Functions;
@@ -18,6 +19,7 @@ namespace Aliencube.AzureFunctions.FunctionAppV1
         public override void Load(IServiceCollection services)
         {
             services.AddSingleton<AppSettings>();
+            services.AddSingleton<RouteConstraintFilter, RouteConstraintFilter>();
 
             services.AddTransient<IDocumentHelper, DocumentHelper>();
             services.AddTransient<IDocument, Document>();

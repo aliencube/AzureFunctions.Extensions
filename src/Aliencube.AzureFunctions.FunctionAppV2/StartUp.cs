@@ -1,5 +1,6 @@
 ﻿using Aliencube.AzureFunctions.Extensions.OpenApi;
 using Aliencube.AzureFunctions.Extensions.OpenApi.Abstractions;
+using Aliencube.AzureFunctions.Extensions.OpenApi.Configurations;
 using Aliencube.AzureFunctions.FunctionAppCommon.Configurations;
 using Aliencube.AzureFunctions.FunctionAppCommon.Dependencies;
 using Aliencube.AzureFunctions.FunctionAppCommon.Functions;
@@ -24,6 +25,7 @@ namespace Aliencube.AzureFunctions.FunctionAppV2
         public void Configure(IWebJobsBuilder builder)
         {
             builder.Services.AddSingleton<AppSettings>();
+            builder.Services.AddSingleton<RouteConstraintFilter, RouteConstraintFilter>();
 
             builder.Services.AddTransient<IDocumentHelper, DocumentHelper>();
             builder.Services.AddTransient<IDocument, Document>();

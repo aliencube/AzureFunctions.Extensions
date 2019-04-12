@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text.RegularExpressions;
 
 using Aliencube.AzureFunctions.Extensions.OpenApi.Abstractions;
 using Aliencube.AzureFunctions.Extensions.OpenApi.Attributes;
+using Aliencube.AzureFunctions.Extensions.OpenApi.Configurations;
 using Aliencube.AzureFunctions.Extensions.OpenApi.Enums;
 using Aliencube.AzureFunctions.Extensions.OpenApi.Extensions;
 
@@ -21,17 +21,15 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi
     /// </summary>
     public class DocumentHelper : IDocumentHelper
     {
-        private const string Pattern = @"^(\{[^\{\:]+)(\:.+)(\})$";
-        private const string Replacement = "$1$3";
-
-        private readonly Regex _filter;
+        private readonly RouteConstraintFilter _filter;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DocumentHelper"/> class.
         /// </summary>
-        public DocumentHelper()
+        /// <param name="filter"><see cref="RouteConstraintFilter"/> instance.</param>
+        public DocumentHelper(RouteConstraintFilter filter)
         {
-            this._filter = new Regex(Pattern, RegexOptions.IgnoreCase | RegexOptions.Compiled);
+            this._filter = filter.ThrowIfNullOrDefault();
         }
 
         /// <inheritdoc />
@@ -190,7 +188,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi
         private string FilterRoute(string route)
         {
             var segments = route.Split(new[] { "/" }, StringSplitOptions.RemoveEmptyEntries)
-                                .Select(p => this._filter.Replace(p, Replacement));
+                                .Select(p => this._filter.Filter.Replace(p, this._filter.Replacement));
 
             return string.Join("/", segments);
         }
