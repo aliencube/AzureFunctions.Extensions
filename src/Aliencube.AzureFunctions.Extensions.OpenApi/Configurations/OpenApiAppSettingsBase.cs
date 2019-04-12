@@ -42,13 +42,13 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Configurations
         public virtual OpenApiInfo OpenApiInfo { get; }
 
         /// <summary>
-        /// Gets the <see cref="Configurations.HttpSettings"/> instance.
-        /// </summary>
-        public virtual HttpSettings HttpSettings { get; }
-
-        /// <summary>
         /// Gets the Function API key for Open API document.
         /// </summary>
         public virtual string SwaggerAuthKey { get; }
+
+        /// <summary>
+        /// Gets the <see cref="Configurations.HttpSettings"/> instance.
+        /// </summary>
+        public virtual HttpSettings HttpSettings { get; }
     }
 }
