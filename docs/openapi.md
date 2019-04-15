@@ -40,7 +40,7 @@ public static async Task<IActionResult> RenderSwaggerDocument(
     ILogger log)
 {
     var settings = new AppSettings();
-    var helper = new DocumentHelper();
+    var helper = new DocumentHelper(new RouteConstraintFilter());
     var document = new Document(helper);
     var result = await document.InitialiseDocument()
                                .AddMetadata(settings.OpenApiInfo)
