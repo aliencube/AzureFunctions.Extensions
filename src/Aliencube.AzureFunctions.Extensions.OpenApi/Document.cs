@@ -20,6 +20,8 @@ using Microsoft.OpenApi.Models;
 
 namespace Aliencube.AzureFunctions.Extensions.OpenApi
 {
+    using Newtonsoft.Json.Serialization;
+
     /// <summary>
     /// This represents the document entity handling Open API document.
     /// </summary>
@@ -79,7 +81,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi
         }
 #endif
         /// <inheritdoc />
-        public IDocument Build(Assembly assembly)
+        public IDocument Build(Assembly assembly, NamingStrategy namingStrategy = null)
         {
             var paths = new OpenApiPaths();
 
@@ -126,7 +128,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi
             }
 
             this._document.Paths = paths;
-            this._document.Components.Schemas = this._helper.GetOpenApiSchemas(methods);
+            this._document.Components.Schemas = this._helper.GetOpenApiSchemas(methods, namingStrategy ?? new DefaultNamingStrategy());
             this._document.Components.SecuritySchemes = this._helper.GetOpenApiSecuritySchemes();
 
             return this;

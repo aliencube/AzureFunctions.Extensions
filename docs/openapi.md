@@ -60,6 +60,18 @@ public static async Task<IActionResult> RenderSwaggerDocument(
 }
 ```
 
+In order to render property names in camelCase (or other C# -> JSON name mapping), 
+change the `.Build()` call to include a `Newtonsoft.Json.Serialization.NamingStrategy`, 
+e.g.:
+
+```csharp
+    var result =               ...
+                               .Build(Assembly.GetExecutingAssembly(), new CamelCaseNamingStrategy())
+                               ...
+
+```
+
+
 In order to render Swagger UI, define another HTTP endpoint for it:
 
 ```csharp
@@ -218,3 +230,14 @@ public static async Task<IActionResult> PostSample(
 * `BodyType`: defines the type of the response payload.
 * `Description`: is the description of the response body payload.
 * `Summary`: is the summary of the response body payload.
+
+## The following JSON Attributes are supported from Newtonsoft.Json ###
+
+### `JsonIgnore` ###
+
+Properties tagged with the JsonIgnore attribute will not be included in the response.
+
+### `JsonConverter` ###
+
+Enums types tagged with `[JsonConverter(typeof(StringEnumConverter))]` will appear in the document
+with their string names (names mangled based on default property naming standard)

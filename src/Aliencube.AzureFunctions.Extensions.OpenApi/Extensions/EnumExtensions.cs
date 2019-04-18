@@ -25,14 +25,13 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
             var attribute = member.GetCustomAttribute<DisplayAttribute>(inherit: false);
             var name = attribute == null ? @enum.ToString() : attribute.Name;
 
-
             return name;
         }
 
         public static bool IsSimpleType(this Type type)
         {
             var @enum = Type.GetTypeCode(type);
-            return @enum != TypeCode.Object;
+            return @enum != TypeCode.Object || type == typeof(DateTimeOffset) || type == typeof(Guid);
         }
 
         /// <summary>
@@ -64,6 +63,10 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
 
                 case TypeCode.Object:
                     if (type == typeof(Guid))
+                    {
+                        return "string";
+                    }
+                    else if (type == typeof(DateTimeOffset))
                     {
                         return "string";
                     }
@@ -126,7 +129,10 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
                     {
                         return "uuid";
                     }
-                    else
+                    else if (type == typeof(DateTimeOffset))
+                    {
+                        return "date-time";
+                    } else
                     {
                         return null;
                     }

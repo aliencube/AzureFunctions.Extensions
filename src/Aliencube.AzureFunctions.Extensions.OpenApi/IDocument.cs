@@ -14,6 +14,8 @@ using Microsoft.OpenApi.Models;
 
 namespace Aliencube.AzureFunctions.Extensions.OpenApi.Abstractions
 {
+    using Newtonsoft.Json.Serialization;
+
     /// <summary>
     /// This provides interfaces to the <see cref="Document"/> class.
     /// </summary>
@@ -53,8 +55,9 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Abstractions
         /// Builds Open API document.
         /// </summary>
         /// <param name="assembly"><see cref="Assembly"/> instance.</param>
+        /// <param name="namingStrategy">The naming strategy to use to create the Json schema from .NET Types</param>
         /// <returns><see cref="IDocument"/> instance.</returns>
-        IDocument Build(Assembly assembly);
+        IDocument Build(Assembly assembly, NamingStrategy namingStrategy = null);
 
         /// <summary>
         /// Renders Open API document.

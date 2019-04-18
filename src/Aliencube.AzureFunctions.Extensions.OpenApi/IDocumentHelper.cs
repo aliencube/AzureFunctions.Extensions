@@ -6,6 +6,8 @@ using Microsoft.OpenApi.Models;
 
 namespace Aliencube.AzureFunctions.Extensions.OpenApi.Abstractions
 {
+    using Newtonsoft.Json.Serialization;
+
     /// <summary>
     /// This provides interfaces to the <see cref="DocumentHelper"/> class.
     /// </summary>
@@ -90,8 +92,9 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Abstractions
         /// Gets the collection of <see cref="OpenApiSchema"/> instances.
         /// </summary>
         /// <param name="elements">List of <see cref="MethodInfo"/> instance.</param>
+        /// <param name="namingStrategy"></param>
         /// <returns>Collection of <see cref="OpenApiSchema"/> instance.</returns>
-        Dictionary<string, OpenApiSchema> GetOpenApiSchemas(List<MethodInfo> elements);
+        Dictionary<string, OpenApiSchema> GetOpenApiSchemas(List<MethodInfo> elements, NamingStrategy namingStrategy);
 
         /// <summary>
         /// Gets the collection of <see cref="OpenApiSecurityScheme"/> instances.
