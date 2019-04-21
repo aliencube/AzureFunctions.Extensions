@@ -40,7 +40,8 @@ public static async Task<IActionResult> RenderSwaggerDocument(
     ILogger log)
 {
     var settings = new AppSettings();
-    var helper = new DocumentHelper(new RouteConstraintFilter());
+    var filter = new RouteConstraintFilter();
+    var helper = new DocumentHelper(filter);
     var document = new Document(helper);
     var result = await document.InitialiseDocument()
                                .AddMetadata(settings.OpenApiInfo)
@@ -133,7 +134,7 @@ This decorator implements a part of [Operation object](https://github.com/OAI/Op
 
 ```csharp
 [FunctionName(nameof(GetSample))]
-[OpenApiOperation("list", "sample")] // This defines the operation ID and tags.
+[OpenApiOperation(operationId: "list", tags: new[] { "sample" })]
 ...
 public static async Task<IActionResult> GetSample(
     [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "samples")] HttpRequest req,
@@ -143,7 +144,11 @@ public static async Task<IActionResult> GetSample(
 }
 ```
 
-If the operation ID is omitted, a combination of function name and verb is considered as the operation ID.
+* `OperationId`: is the ID of the operation. If this is omitted, a combination of function name and verb is considered as the operation ID. eg) `Get_GetSample`
+* `Tags`: are the list of tags of operation.
+* `Summary`: is the summary of the operation.
+* `Description`: is the description of the operation.
+* `Visibility`: indicates how the operation is visible in Azure Logic Apps &ndash; `important`, `advanced` or `internal`. Default value is `undefined`.
 
 
 ### `OpenApiParameterAttribute` ###
@@ -152,8 +157,7 @@ This decorator implements the [Parameter object](https://github.com/OAI/OpenAPI-
 
 ```csharp
 [FunctionName(nameof(GetSample))]
-// This defines the parameter name, location and type.
-[OpenApiParameter("name", In = ParameterLocation.Query, Required = true, Type = typeof(string))]
+[OpenApiParameter(name: "name", In = ParameterLocation.Query, Required = true, Type = typeof(string))]
 ...
 public static async Task<IActionResult> GetSample(
     [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "samples")] HttpRequest req,
@@ -164,10 +168,12 @@ public static async Task<IActionResult> GetSample(
 ```
 
 * `Name`: is the name of the parameter.
+* `Summary`: is the summary of the parameter.
 * `Description`: is the description of the parameter.
+* `Type`: defines the parameter type. Default value is `typeof(string)`.
 * `In`: identifies where the parameter is located &ndash; `header`, `path`, `query` or `cookie`. Default value is `path`.
 * `Required`: indicates whether the parameter is required or not. Default value is `false`.
-* `Type`: defines the parameter type. Default value is `typeof(string)`.
+* `Visibility`: indicates how the parameter is visible in Azure Logic Apps &ndash; `important`, `advanced` or `internal`. Default value is `undefined`.
 
 
 ### `OpenApiRequestBodyAttribute` ###
@@ -176,7 +182,7 @@ This decorator implements the [Request Body object](https://github.com/OAI/OpenA
 
 ```csharp
 [FunctionName(nameof(PostSample))]
-[OpenApiRequestBody("application/json", typeof(SampleRequestModel))]
+[OpenApiRequestBody(contentType: "application/json", bodyType: typeof(SampleRequestModel))]
 ...
 public static async Task<IActionResult> PostSample(
     [HttpTrigger(AuthorizationLevel.Function, "post", Route = "samples")] HttpRequest req,
@@ -197,7 +203,7 @@ This decorator implements the [Response object](https://github.com/OAI/OpenAPI-S
 
 ```csharp
 [FunctionName(nameof(PostSample))]
-[OpenApiResponseBody(HttpStatusCode.OK, "application/json", typeof(SampleResponseModel))]
+[OpenApiResponseBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(SampleResponseModel))]
 ...
 public static async Task<IActionResult> PostSample(
     [HttpTrigger(AuthorizationLevel.Function, "post", Route = "samples")] HttpRequest req,
@@ -211,4 +217,4 @@ public static async Task<IActionResult> PostSample(
 * `ContentType`: defines the content type of the response body payload. eg) `application/json` or `text/xml`
 * `BodyType`: defines the type of the response payload.
 * `Description`: is the description of the response body payload.
-
+* `Summary`: is the summary of the response body payload.

@@ -17,7 +17,7 @@ namespace Aliencube.AzureFunctions.FunctionAppV1
     /// <summary>
     /// This represents the HTTP trigger for Open API.
     /// </summary>
-    public static class OpenApiDocumentHttpTrigger
+    public static class OpenApiHttpTrigger
     {
         /// <summary>
         /// Gets the <see cref="IFunctionFactory"/> instance as an IoC container.

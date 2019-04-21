@@ -33,12 +33,12 @@ namespace Aliencube.AzureFunctions.FunctionAppV1
         /// <param name="log"><see cref="ILogger"/> instance.</param>
         /// <returns><see cref="SampleResponseModel"/> instance.</returns>
         [FunctionName(nameof(GetSample))]
-        [OpenApiOperation("list", "sample", Summary = "Gets the list of samples", Description = "This gets the list of samples.", Visibility = OpenApiVisibilityType.Important)]
-        [OpenApiParameter("id", In = ParameterLocation.Path, Required = true, Type = typeof(int), Summary = "The ID parameter", Visibility = OpenApiVisibilityType.Advanced)]
-        [OpenApiParameter("category", In = ParameterLocation.Path, Required = true, Type = typeof(string), Summary = "The category parameter", Visibility = OpenApiVisibilityType.Advanced)]
-        [OpenApiParameter("name", In = ParameterLocation.Query, Required = true, Type = typeof(string), Summary = "The name query key", Visibility = OpenApiVisibilityType.Advanced)]
-        [OpenApiParameter("limit", In = ParameterLocation.Query, Required = false, Type = typeof(int), Description = "The number of samples to return")]
-        [OpenApiResponseBody(HttpStatusCode.OK, "application/json", typeof(SampleResponseModel), Summary = "Sample response")]
+        [OpenApiOperation(operationId: "list", tags: new[] { "sample" }, Summary = "Gets the list of samples", Description = "This gets the list of samples.", Visibility = OpenApiVisibilityType.Important)]
+        [OpenApiParameter(name: "id", In = ParameterLocation.Path, Required = true, Type = typeof(int), Summary = "The ID parameter", Visibility = OpenApiVisibilityType.Advanced)]
+        [OpenApiParameter(name: "category", In = ParameterLocation.Path, Required = true, Type = typeof(string), Summary = "The category parameter", Visibility = OpenApiVisibilityType.Advanced)]
+        [OpenApiParameter(name: "name", In = ParameterLocation.Query, Required = true, Type = typeof(string), Summary = "The name query key", Visibility = OpenApiVisibilityType.Advanced)]
+        [OpenApiParameter(name: "limit", In = ParameterLocation.Query, Required = false, Type = typeof(int), Description = "The number of samples to return")]
+        [OpenApiResponseBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(SampleResponseModel), Summary = "Sample response")]
         public static async Task<HttpResponseMessage> GetSample(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "samples/{id:int}/categories/{category:regex(^[a-z]{{3,}}$)}")] HttpRequestMessage req,
             ILogger log)
@@ -57,9 +57,9 @@ namespace Aliencube.AzureFunctions.FunctionAppV1
         /// <param name="log"><see cref="ILogger"/> instance.</param>
         /// <returns><see cref="SampleResponseModel"/> instance.</returns>
         [FunctionName(nameof(PostSample))]
-        [OpenApiOperation("add", "sample")]
-        [OpenApiRequestBody("application/json", typeof(SampleRequestModel))]
-        [OpenApiResponseBody(HttpStatusCode.OK, "application/json", typeof(SampleResponseModel))]
+        [OpenApiOperation(operationId: "add", tags: new[] { "sample" })]
+        [OpenApiRequestBody(contentType: "application/json", bodyType: typeof(SampleRequestModel))]
+        [OpenApiResponseBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(SampleResponseModel))]
         public static async Task<HttpResponseMessage> PostSample(
             [HttpTrigger(AuthorizationLevel.Function, "post", Route = "samples")] HttpRequestMessage req,
             ILogger log)
