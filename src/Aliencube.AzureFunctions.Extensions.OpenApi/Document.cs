@@ -59,7 +59,8 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi
         /// <inheritdoc />
         public IDocument AddServer(HttpRequestMessage req, string routePrefix)
         {
-            var baseUrl = $"{req.RequestUri.Scheme}://{req.RequestUri.Authority}/{routePrefix}";
+            var prefix = string.IsNullOrWhiteSpace(routePrefix) ? string.Empty : $"/{routePrefix}";
+            var baseUrl = $"{req.RequestUri.Scheme}://{req.RequestUri.Authority}{prefix}";
 
             this._document.Servers.Add(new OpenApiServer { Url = baseUrl });
 
@@ -69,7 +70,8 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi
         /// <inheritdoc />
         public IDocument AddServer(HttpRequest req, string routePrefix)
         {
-            var baseUrl = $"{req.Scheme}://{req.Host}/{routePrefix}";
+            var prefix = string.IsNullOrWhiteSpace(routePrefix) ? string.Empty : $"/{routePrefix}";
+            var baseUrl = $"{req.Scheme}://{req.Host}{prefix}";
 
             this._document.Servers.Add(new OpenApiServer { Url = baseUrl });
 

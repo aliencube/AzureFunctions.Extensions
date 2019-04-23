@@ -29,12 +29,20 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
         public static OpenApiSchema ToOpenApiSchema(this Type type, OpenApiSchemaVisibilityAttribute attribute = null)
         {
             type.ThrowIfNullOrDefault();
+            OpenApiSchema schema = null;
 
-            var typeCode = Type.GetTypeCode(type);
-            var schema = new OpenApiSchema()
+            var unwrappedValueType = Nullable.GetUnderlyingType(type);
+            if (unwrappedValueType != null)
             {
-                Type = typeCode.ToDataType(),
-                Format = typeCode.ToDataFormat()
+                schema = unwrappedValueType.ToOpenApiSchema();
+                schema.Nullable = true;
+                return schema;
+            }
+
+            schema = new OpenApiSchema()
+            {
+                Type = type.ToDataType(),
+                Format = type.ToDataFormat()
             };
             if (attribute != null)
             {
@@ -43,7 +51,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
                 schema.Extensions.Add("x-ms-visibility", visibility);
             }
 
-            if (typeCode != TypeCode.Object)
+            if (type.IsSimpleType())
             {
                 return schema;
             }
@@ -62,6 +70,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
 
                 return schema;
             }
+
 
             var properties = type.GetProperties()
                                  .Where(p => !p.ExistsCustomAttribute<JsonIgnoreAttribute>());
