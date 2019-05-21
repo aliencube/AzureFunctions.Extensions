@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
 
@@ -42,6 +43,28 @@ namespace Aliencube.AzureFunctions.FunctionAppV2
         [OpenApiResponseBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(SampleResponseModel), Summary = "Sample response")]
         public static async Task<IActionResult> GetSample(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "samples/{id:int}/categories/{category:regex(^[a-z]{{3,}}$)}")] HttpRequest req,
+            ILogger log)
+        {
+            var result = await Factory.Create<ISampleHttpFunction, ILogger>(log)
+                                      .InvokeAsync<HttpRequest, IActionResult>(req)
+                                      .ConfigureAwait(false);
+
+            return result;
+        }
+
+        /// <summary>
+        /// Invokes the HTTP trigger endpoint to get an array sample.
+        /// </summary>
+        /// <param name="req"><see cref="HttpRequest"/> instance.</param>
+        /// <param name="log"><see cref="ILogger"/> instance.</param>
+        /// <returns><see cref="SampleResponseModel"/> instance.</returns>
+        [FunctionName(nameof(GetArraySample))]
+        [OpenApiOperation(operationId: "list", tags: new[] { "sample" }, Summary = "Gets the list of samples", Description = "This gets the list of samples.", Visibility = OpenApiVisibilityType.Important)]
+        [OpenApiParameter(name: "id", In = ParameterLocation.Path, Required = true, Type = typeof(int), Summary = "The ID parameter", Visibility = OpenApiVisibilityType.Advanced)]
+        [OpenApiParameter(name: "limit", In = ParameterLocation.Query, Required = false, Type = typeof(int), Description = "The number of samples to return")]
+        [OpenApiResponseBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(IList<SampleResponseModel>), Summary = "Sample response")]
+        public static async Task<IActionResult> GetArraySample(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "samples/{id:int}/categories")] HttpRequest req,
             ILogger log)
         {
             var result = await Factory.Create<ISampleHttpFunction, ILogger>(log)

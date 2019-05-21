@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
 using Aliencube.AzureFunctions.Extensions.OpenApi.Attributes;
-
+using Aliencube.AzureFunctions.Extensions.OpenApi.Lists;
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
 
@@ -63,7 +64,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
                 return schema;
             }
 
-            if (typeof(IList).IsAssignableFrom(type))
+            if (Generics.IsList(type))
             {
                 schema.Type = "array";
                 schema.Items = (type.GetElementType() ?? type.GetGenericArguments()[0]).ToOpenApiSchema();

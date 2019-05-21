@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 
 using Aliencube.AzureFunctions.Extensions.OpenApi.Attributes;
-
+using Aliencube.AzureFunctions.Extensions.OpenApi.Lists;
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
 
@@ -23,7 +23,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
             attribute.ThrowIfNullOrDefault();
 
             var description = string.IsNullOrWhiteSpace(attribute.Description)
-                                  ? $"Payload of {attribute.BodyType.Name}"
+                                  ? $"Payload of {GenerateTypeDescription(attribute.BodyType)}"
                                   : attribute.Description;
             var mediaType = attribute.ToOpenApiMediaType<OpenApiResponseBodyAttribute>();
             var content = new Dictionary<string, OpenApiMediaType>()
@@ -31,10 +31,10 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
                                   { attribute.ContentType, mediaType }
                               };
             var response = new OpenApiResponse()
-                               {
-                                   Description = description,
-                                   Content = content
-                               };
+            {
+                Description = description,
+                Content = content
+            };
 
             if (!string.IsNullOrWhiteSpace(attribute.Summary))
             {
@@ -45,5 +45,8 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
 
             return response;
         }
+
+        private static String GenerateTypeDescription(Type t) =>
+            Generics.IsList(t) ? t.Name + " of " + t.GetGenericArguments()[0].Name : t.Name;
     }
 }
