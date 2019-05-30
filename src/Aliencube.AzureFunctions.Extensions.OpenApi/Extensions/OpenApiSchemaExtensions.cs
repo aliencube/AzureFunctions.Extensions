@@ -29,13 +29,15 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
         public static OpenApiSchema ToOpenApiSchema(this Type type, OpenApiSchemaVisibilityAttribute attribute = null)
         {
             type.ThrowIfNullOrDefault();
-            OpenApiSchema schema = null;
+
+            var schema = (OpenApiSchema)null;
 
             var unwrappedValueType = Nullable.GetUnderlyingType(type);
-            if (unwrappedValueType != null)
+            if (!unwrappedValueType.IsNullOrDefault())
             {
                 schema = unwrappedValueType.ToOpenApiSchema();
                 schema.Nullable = true;
+
                 return schema;
             }
 
@@ -44,7 +46,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
                              Type = type.ToDataType(),
                              Format = type.ToDataFormat()
                          };
-            if (attribute != null)
+            if (!attribute.IsNullOrDefault())
             {
                 var visibility = new OpenApiString(attribute.Visibility.ToDisplayName());
 
@@ -76,7 +78,6 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
             foreach (var property in properties)
             {
                 var visiblity = property.GetCustomAttribute<OpenApiSchemaVisibilityAttribute>(inherit: false);
-
                 var propertyName = property.GetJsonPropertyName();
 
                 schema.Properties[propertyName] = property.PropertyType.ToOpenApiSchema(visiblity);
