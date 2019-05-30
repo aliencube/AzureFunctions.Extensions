@@ -9,6 +9,7 @@ using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
 
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
 {
@@ -31,6 +32,13 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
             type.ThrowIfNullOrDefault();
 
             var schema = (OpenApiSchema)null;
+
+            if (type == typeof(JObject))
+            {
+                schema = typeof(object).ToOpenApiSchema();
+
+                return schema;
+            }
 
             var unwrappedValueType = Nullable.GetUnderlyingType(type);
             if (!unwrappedValueType.IsNullOrDefault())

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -13,6 +14,8 @@ using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
+
+using Newtonsoft.Json.Linq;
 
 namespace Aliencube.AzureFunctions.Extensions.OpenApi
 {
@@ -158,8 +161,12 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi
         public Dictionary<string, OpenApiSchema> GetOpenApiSchemas(List<MethodInfo> elements)
         {
             var requests = elements.SelectMany(p => p.GetCustomAttributes<OpenApiRequestBodyAttribute>(inherit: false))
+                                   .Where(p => !typeof(IDictionary).IsAssignableFrom(p.BodyType))
+                                   .Where(p => !typeof(JObject).IsAssignableFrom(p.BodyType))
                                    .Select(p => p.BodyType);
             var responses = elements.SelectMany(p => p.GetCustomAttributes<OpenApiResponseBodyAttribute>(inherit: false))
+                                    .Where(p => !typeof(IDictionary).IsAssignableFrom(p.BodyType))
+                                    .Where(p => !typeof(JObject).IsAssignableFrom(p.BodyType))
                                     .Select(p => p.BodyType);
             var types = requests.Union(responses)
                                 .Distinct();

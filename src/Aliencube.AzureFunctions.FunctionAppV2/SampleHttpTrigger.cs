@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
 
@@ -14,6 +15,8 @@ using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+
+using Newtonsoft.Json.Linq;
 
 namespace Aliencube.AzureFunctions.FunctionAppV2
 {
@@ -40,6 +43,8 @@ namespace Aliencube.AzureFunctions.FunctionAppV2
         [OpenApiParameter(name: "name", In = ParameterLocation.Query, Required = true, Type = typeof(string), Summary = "The name query key", Visibility = OpenApiVisibilityType.Advanced)]
         [OpenApiParameter(name: "limit", In = ParameterLocation.Query, Required = false, Type = typeof(int), Description = "The number of samples to return")]
         [OpenApiResponseBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(SampleResponseModel), Summary = "Sample response")]
+        [OpenApiResponseBody(statusCode: HttpStatusCode.NotFound, contentType: "application/json", bodyType: typeof(JObject), Summary = "Sample response")]
+        [OpenApiResponseBody(statusCode: HttpStatusCode.InternalServerError, contentType: "application/json", bodyType: typeof(Dictionary<string, int>), Summary = "Sample response")]
         public static async Task<IActionResult> GetSample(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "samples/{id:int}/categories/{category:regex(^[a-z]{{3,}}$)}")] HttpRequest req,
             ILogger log)
