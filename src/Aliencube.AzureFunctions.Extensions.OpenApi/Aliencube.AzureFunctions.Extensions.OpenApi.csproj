@@ -66,4 +66,8 @@
     <EmbeddedResource Include="dist/swagger-ui-bundle.js" />
     <EmbeddedResource Include="dist/swagger-ui-standalone-preset.js" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Lists\" />
+  </ItemGroup>
 </Project>

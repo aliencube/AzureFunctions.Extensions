@@ -41,13 +41,33 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Tests.Extensions
         }
 
         [TestMethod]
-        public void Given_GenericList_Should_Be_Array()
+        public void Given_GenericIList_Should_Be_Array_With_Matching_Type()
         {
             Type list = typeof(IList<string>);
             var result = list.ToOpenApiSchema();
             result.Type.Should().Be("array");
             result.Items.Type.Should().Be("string");
         }
+
+        [TestMethod]
+        public void Given_GenericList_Should_Be_Array_With_Matching_Type()
+        {
+            Type list = typeof(List<string>);
+            var result = list.ToOpenApiSchema();
+            result.Type.Should().Be("array");
+            result.Items.Type.Should().Be("string");
+        }
+
+
+        [TestMethod]
+        public void Given_UntypedList_Should_Be_Array_With_Object_Type()
+        {
+            Type list = typeof(List<>);
+            var result = list.ToOpenApiSchema();
+            result.Type.Should().Be("array");
+            result.Items.Type.Should().Be("object");
+        }
+
 
         [TestMethod]
         public void Given_Array_Should_Be_Array()

@@ -1,5 +1,4 @@
 ﻿using Aliencube.AzureFunctions.Extensions.OpenApi.Attributes;
-using Aliencube.AzureFunctions.Extensions.OpenApi.Lists;
 using Microsoft.OpenApi.Models;
 
 namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
@@ -19,12 +18,12 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
         {
             attribute.ThrowIfNullOrDefault();
 
-            bool isList = Generics.IsList(attribute.BodyType);
+            bool isList = attribute.BodyType.IsOpenApiArray();
 
             var reference = new OpenApiReference()
             {
                 Type = ReferenceType.Schema,
-                Id = isList ? attribute.BodyType.GetGenericArguments()[0].Name :
+                Id = isList ? attribute.BodyType.ToOpenAPISubType() :
                               attribute.BodyType.Name
             };
             var schema = new OpenApiSchema() { Reference = reference };
