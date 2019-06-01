@@ -40,6 +40,13 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
                 return schema;
             }
 
+            if (type == typeof(JToken))
+            {
+                schema = typeof(object).ToOpenApiSchema();
+
+                return schema;
+            }
+
             var unwrappedValueType = Nullable.GetUnderlyingType(type);
             if (!unwrappedValueType.IsNullOrDefault())
             {

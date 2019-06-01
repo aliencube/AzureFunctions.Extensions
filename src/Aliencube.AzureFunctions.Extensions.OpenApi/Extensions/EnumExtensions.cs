@@ -25,14 +25,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
             var attribute = member.GetCustomAttribute<DisplayAttribute>(inherit: false);
             var name = attribute == null ? @enum.ToString() : attribute.Name;
 
-
             return name;
-        }
-
-        public static bool IsSimpleType(this Type type)
-        {
-            var @enum = Type.GetTypeCode(type);
-            return @enum != TypeCode.Object;
         }
 
         /// <summary>

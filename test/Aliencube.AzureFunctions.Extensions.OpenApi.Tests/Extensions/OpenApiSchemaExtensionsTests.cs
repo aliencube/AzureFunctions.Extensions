@@ -1,10 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 
+using Aliencube.AzureFunctions.Extensions.OpenApi.Attributes;
+using Aliencube.AzureFunctions.Extensions.OpenApi.Enums;
 using Aliencube.AzureFunctions.Extensions.OpenApi.Extensions;
+using Aliencube.AzureFunctions.Tests.Fakes;
 
 using FluentAssertions;
 
+using Microsoft.OpenApi.Any;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Newtonsoft.Json.Linq;
@@ -33,6 +37,16 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Tests.Extensions
         }
 
         [TestMethod]
+        public void Given_Type_JToken_It_Should_Return_Result()
+        {
+            var type = typeof(JToken);
+
+            var schema = OpenApiSchemaExtensions.ToOpenApiSchema(type);
+
+            schema.Type.Should().BeEquivalentTo("object");
+        }
+
+        [TestMethod]
         public void Given_Type_Nullable_It_Should_Return_Result()
         {
             var type = typeof(int?);
@@ -42,6 +56,67 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Tests.Extensions
             schema.Nullable.Should().BeTrue();
             schema.Type.Should().BeEquivalentTo("integer");
             schema.Format.Should().BeEquivalentTo("int32");
+        }
+
+        [TestMethod]
+        public void Given_Type_Simple_It_Should_Return_Result()
+        {
+            var type = typeof(int);
+
+            var schema = OpenApiSchemaExtensions.ToOpenApiSchema(type);
+
+            schema.Type.Should().BeEquivalentTo("integer");
+            schema.Format.Should().BeEquivalentTo("int32");
+        }
+
+        [TestMethod]
+        public void Given_Visibility_It_Should_Return_Result()
+        {
+            var type = typeof(int);
+            var visibilityType = OpenApiVisibilityType.Important;
+            var visibility = new OpenApiSchemaVisibilityAttribute(visibilityType);
+
+            var schema = OpenApiSchemaExtensions.ToOpenApiSchema(type, visibility);
+
+            schema.Extensions.ContainsKey("x-ms-visibility").Should().BeTrue();
+            schema.Extensions["x-ms-visibility"].Should().BeEquivalentTo(new OpenApiString(visibilityType.ToDisplayName()));
+            schema.Type.Should().BeEquivalentTo("integer");
+            schema.Format.Should().BeEquivalentTo("int32");
+        }
+
+        [TestMethod]
+        public void Given_Dictionary_It_Should_Return_Result()
+        {
+            var type = typeof(Dictionary<string, int>);
+
+            var schema = OpenApiSchemaExtensions.ToOpenApiSchema(type);
+
+            schema.Type.Should().BeEquivalentTo("object");
+            schema.AdditionalProperties.Type.Should().BeEquivalentTo("integer");
+            schema.AdditionalProperties.Format.Should().BeEquivalentTo("int32");
+        }
+
+        [TestMethod]
+        public void Given_IDictionary_It_Should_Return_Result()
+        {
+            var type = typeof(Dictionary<string, int>);
+
+            var schema = OpenApiSchemaExtensions.ToOpenApiSchema(type);
+
+            schema.Type.Should().BeEquivalentTo("object");
+            schema.AdditionalProperties.Type.Should().BeEquivalentTo("integer");
+            schema.AdditionalProperties.Format.Should().BeEquivalentTo("int32");
+        }
+
+        [TestMethod]
+        public void Given_IDictionaryWithFakeModel_It_Should_Return_Result()
+        {
+            var type = typeof(Dictionary<string, FakeModel>);
+
+            var schema = OpenApiSchemaExtensions.ToOpenApiSchema(type);
+
+            schema.Type.Should().BeEquivalentTo("object");
+            schema.AdditionalProperties.Type.Should().BeEquivalentTo("object");
         }
 
         [TestMethod]

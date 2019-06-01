@@ -22,7 +22,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
             attribute.ThrowIfNullOrDefault();
 
             var description = string.IsNullOrWhiteSpace(attribute.Description)
-                                  ? $"Payload of {attribute.BodyType.ToOpenApiDescription()}"
+                                  ? $"Payload of {attribute.BodyType.GetOpenApiDescription()}"
                                   : attribute.Description;
             var mediaType = attribute.ToOpenApiMediaType<OpenApiResponseBodyAttribute>();
             var content = new Dictionary<string, OpenApiMediaType>()

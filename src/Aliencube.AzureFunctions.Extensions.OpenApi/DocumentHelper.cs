@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -161,15 +160,16 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi
         public Dictionary<string, OpenApiSchema> GetOpenApiSchemas(List<MethodInfo> elements)
         {
             var requests = elements.SelectMany(p => p.GetCustomAttributes<OpenApiRequestBodyAttribute>(inherit: false))
-                                   .Where(p => !typeof(IDictionary).IsAssignableFrom(p.BodyType))
-                                   .Where(p => !typeof(JObject).IsAssignableFrom(p.BodyType))
                                    .Select(p => p.BodyType);
             var responses = elements.SelectMany(p => p.GetCustomAttributes<OpenApiResponseBodyAttribute>(inherit: false))
-                                    .Where(p => !typeof(IDictionary).IsAssignableFrom(p.BodyType))
-                                    .Where(p => !typeof(JObject).IsAssignableFrom(p.BodyType))
                                     .Select(p => p.BodyType);
             var types = requests.Union(responses)
-                                .Distinct();
+                                .Distinct()
+                                .Where(p => p != typeof(JObject))
+                                .Where(p => p != typeof(JToken))
+                                .Where(p => !typeof(Array).IsAssignableFrom(p))
+                                .Where(p => !p.IsGenericType)
+                                ;
             var schemas = types.ToDictionary(p => p.Name, p => p.ToOpenApiSchema());
 
             return schemas;

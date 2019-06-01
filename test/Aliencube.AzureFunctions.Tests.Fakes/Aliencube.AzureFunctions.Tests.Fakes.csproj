@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Aliencube.AzureFunctions.Extensions.DependencyInjection\Aliencube.AzureFunctions.Extensions.DependencyInjection.csproj" />
+    <ProjectReference Include="..\..\src\Aliencube.AzureFunctions.Extensions.OpenApi\Aliencube.AzureFunctions.Extensions.OpenApi.csproj" />
   </ItemGroup>
 
 </Project>
