@@ -43,6 +43,8 @@ namespace Aliencube.AzureFunctions.FunctionAppV2
         [OpenApiParameter(name: "name", In = ParameterLocation.Query, Required = true, Type = typeof(string), Summary = "The name query key", Visibility = OpenApiVisibilityType.Advanced)]
         [OpenApiParameter(name: "limit", In = ParameterLocation.Query, Required = false, Type = typeof(int), Description = "The number of samples to return")]
         [OpenApiResponseBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(SampleResponseModel), Summary = "Sample response")]
+        [OpenApiResponseBody(statusCode: HttpStatusCode.Created, contentType: "application/json", bodyType: typeof(IList<SampleResponseModel>), Summary = "Sample response of a IList")]
+        [OpenApiResponseBody(statusCode: HttpStatusCode.NonAuthoritativeInformation, contentType: "application/json", bodyType: typeof(SampleResponseModel[]), Summary = "Sample response of a Array")]
 
         // Both JObject and Dictionary<> as the root level payload type are not accepted
         //[OpenApiResponseBody(statusCode: HttpStatusCode.NotFound, contentType: "application/json", bodyType: typeof(JObject), Summary = "Sample response")]
