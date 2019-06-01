@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
 using Aliencube.AzureFunctions.Extensions.OpenApi.Attributes;
+
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
 
@@ -54,6 +54,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
                              Type = type.ToDataType(),
                              Format = type.ToDataFormat()
                          };
+
             if (!attribute.IsNullOrDefault())
             {
                 var visibility = new OpenApiString(attribute.Visibility.ToDisplayName());

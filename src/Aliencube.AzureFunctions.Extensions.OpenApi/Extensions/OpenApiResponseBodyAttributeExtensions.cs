@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 using Aliencube.AzureFunctions.Extensions.OpenApi.Attributes;
+
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
 
