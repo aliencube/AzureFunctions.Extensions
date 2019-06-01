@@ -5,6 +5,7 @@ using Aliencube.AzureFunctions.Extensions.OpenApi.Attributes;
 using Aliencube.AzureFunctions.Extensions.OpenApi.Enums;
 
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Aliencube.AzureFunctions.FunctionAppCommon.Models
 {
@@ -50,6 +51,11 @@ namespace Aliencube.AzureFunctions.FunctionAppCommon.Models
         /// Gets or sets the dictionary object.
         /// </summary>
         public Dictionary<string, string> Collection { get; set; } = new Dictionary<string, string>();
+
+        /// <summary>
+        /// Gets or sets the <see cref="JObject"/> instance.
+        /// </summary>
+        public JObject JsonObject { get; set; } = new JObject();
 
         /// <summary>
         /// Gets or sets the list objects 1.

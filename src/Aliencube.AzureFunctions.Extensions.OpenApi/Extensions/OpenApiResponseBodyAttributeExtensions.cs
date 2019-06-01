@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 using Aliencube.AzureFunctions.Extensions.OpenApi.Attributes;
 
@@ -23,7 +22,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
             attribute.ThrowIfNullOrDefault();
 
             var description = string.IsNullOrWhiteSpace(attribute.Description)
-                                  ? $"Payload of {attribute.BodyType.Name}"
+                                  ? $"Payload of {attribute.BodyType.GetOpenApiDescription()}"
                                   : attribute.Description;
             var mediaType = attribute.ToOpenApiMediaType<OpenApiResponseBodyAttribute>();
             var content = new Dictionary<string, OpenApiMediaType>()
@@ -31,10 +30,10 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
                                   { attribute.ContentType, mediaType }
                               };
             var response = new OpenApiResponse()
-                               {
-                                   Description = description,
-                                   Content = content
-                               };
+            {
+                Description = description,
+                Content = content
+            };
 
             if (!string.IsNullOrWhiteSpace(attribute.Summary))
             {

@@ -14,6 +14,8 @@ using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
 
+using Newtonsoft.Json.Linq;
+
 namespace Aliencube.AzureFunctions.Extensions.OpenApi
 {
     /// <summary>
@@ -162,7 +164,12 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi
             var responses = elements.SelectMany(p => p.GetCustomAttributes<OpenApiResponseBodyAttribute>(inherit: false))
                                     .Select(p => p.BodyType);
             var types = requests.Union(responses)
-                                .Distinct();
+                                .Distinct()
+                                .Where(p => p != typeof(JObject))
+                                .Where(p => p != typeof(JToken))
+                                .Where(p => !typeof(Array).IsAssignableFrom(p))
+                                .Where(p => !p.IsGenericType)
+                                ;
             var schemas = types.ToDictionary(p => p.Name, p => p.ToOpenApiSchema());
 
             return schemas;

@@ -9,6 +9,7 @@ using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
 
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
 {
@@ -29,22 +30,39 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
         public static OpenApiSchema ToOpenApiSchema(this Type type, OpenApiSchemaVisibilityAttribute attribute = null)
         {
             type.ThrowIfNullOrDefault();
-            OpenApiSchema schema = null;
+
+            var schema = (OpenApiSchema)null;
+
+            if (type == typeof(JObject))
+            {
+                schema = typeof(object).ToOpenApiSchema();
+
+                return schema;
+            }
+
+            if (type == typeof(JToken))
+            {
+                schema = typeof(object).ToOpenApiSchema();
+
+                return schema;
+            }
 
             var unwrappedValueType = Nullable.GetUnderlyingType(type);
-            if (unwrappedValueType != null)
+            if (!unwrappedValueType.IsNullOrDefault())
             {
                 schema = unwrappedValueType.ToOpenApiSchema();
                 schema.Nullable = true;
+
                 return schema;
             }
 
             schema = new OpenApiSchema()
-                             {
-                                 Type = type.ToDataType(),
-                                 Format = type.ToDataFormat()
-                             };
-            if (attribute != null)
+                         {
+                             Type = type.ToDataType(),
+                             Format = type.ToDataFormat()
+                         };
+
+            if (!attribute.IsNullOrDefault())
             {
                 var visibility = new OpenApiString(attribute.Visibility.ToDisplayName());
 
@@ -63,7 +81,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
                 return schema;
             }
 
-            if (typeof(IList).IsAssignableFrom(type))
+            if (type.IsOpenApiArray())
             {
                 schema.Type = "array";
                 schema.Items = (type.GetElementType() ?? type.GetGenericArguments()[0]).ToOpenApiSchema();
@@ -76,8 +94,9 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
             foreach (var property in properties)
             {
                 var visiblity = property.GetCustomAttribute<OpenApiSchemaVisibilityAttribute>(inherit: false);
+                var propertyName = property.GetJsonPropertyName();
 
-                schema.Properties[property.Name] = property.PropertyType.ToOpenApiSchema(visiblity);
+                schema.Properties[propertyName] = property.PropertyType.ToOpenApiSchema(visiblity);
             }
 
             return schema;
