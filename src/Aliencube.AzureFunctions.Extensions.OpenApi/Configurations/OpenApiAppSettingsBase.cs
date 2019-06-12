@@ -19,7 +19,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Configurations
         protected OpenApiAppSettingsBase()
             : base()
         {
-            var basePath = GetBasePath();
+            var basePath = this.GetBasePath();
             var host = new ConfigurationBuilder()
                            .SetBasePath(basePath)
                            .AddJsonFile("host.json")
