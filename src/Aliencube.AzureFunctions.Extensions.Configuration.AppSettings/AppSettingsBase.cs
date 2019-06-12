@@ -33,7 +33,7 @@ namespace Aliencube.AzureFunctions.Extensions.Configuration.AppSettings
         /// Gets the base path
         /// </summary>
         /// <returns></returns>
-        protected static string GetBasePath()
+        protected string GetBasePath()
         {
             var location = Assembly.GetExecutingAssembly().Location;
             var segments = location.Split(new[] { Path.DirectorySeparatorChar }, StringSplitOptions.RemoveEmptyEntries).ToList();
@@ -43,7 +43,13 @@ namespace Aliencube.AzureFunctions.Extensions.Configuration.AppSettings
             {
                 basePath = $"/{basePath}";
             }
-
+#if NET461
+            var scriptRootPath = this.Config.GetValue<string>("AzureWebJobsScriptRoot");
+            if (!string.IsNullOrWhiteSpace(scriptRootPath))
+            {
+                basePath = scriptRootPath;
+            }
+#endif
             return basePath;
         }
     }
