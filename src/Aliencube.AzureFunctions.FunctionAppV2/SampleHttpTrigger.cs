@@ -54,6 +54,8 @@ namespace Aliencube.AzureFunctions.FunctionAppV2
         [OpenApiResponseBody(statusCode: HttpStatusCode.BadGateway, contentType: "application/json", bodyType: typeof(Dictionary<string, int>), Summary = "Sample response of a Dictionary")]
         public static async Task<IActionResult> GetSample(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "samples/{id:int}/categories/{category:regex(^[a-z]{{3,}}$)}")] HttpRequest req,
+            int id,
+            string category,
             ILogger log)
         {
             var result = await Factory.Create<ISampleHttpFunction, ILogger>(log)
