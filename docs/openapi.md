@@ -103,6 +103,8 @@ On either your `local.settings.json` or App Settings on Azure Functions instance
 * `OpenApi__Info__License__Url`: License URL. eg. http://opensource.org/licenses/MIT
 * `OpenApi__ApiKey`: API Key of the endpoint that renders the Open API document.
 
+> **NOTE**: In order to deploy Azure Functions v1 to Azure, the `AzureWebJobsScriptRoot` **MUST** be specified in the app settings section; otherwise it will throw an error that can't find `host.json`. Local debugging is fine, though. For more details, please visit [this page](https://docs.microsoft.com/bs-latn-ba/azure/azure-functions/functions-app-settings#azurewebjobsscriptroot).
+
 
 ## Decorators ##
 
