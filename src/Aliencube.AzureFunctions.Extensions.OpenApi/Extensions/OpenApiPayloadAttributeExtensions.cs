@@ -2,6 +2,8 @@
 
 using Microsoft.OpenApi.Models;
 
+using Newtonsoft.Json.Serialization;
+
 namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
 {
     /// <summary>
@@ -14,8 +16,9 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
         /// </summary>
         /// <typeparam name="T">Type of payload attribute inheriting <see cref="OpenApiPayloadAttribute"/>.</typeparam>
         /// <param name="attribute">OpenApi payload attribute.</param>
+        /// <param name="namingStrategy"><see cref="NamingStrategy"/> insance to create the JSON schema from .NET Types.</param>
         /// <returns><see cref="OpenApiMediaType"/> instance.</returns>
-        public static OpenApiMediaType ToOpenApiMediaType<T>(this T attribute) where T : OpenApiPayloadAttribute
+        public static OpenApiMediaType ToOpenApiMediaType<T>(this T attribute, NamingStrategy namingStrategy = null) where T : OpenApiPayloadAttribute
         {
             attribute.ThrowIfNullOrDefault();
 
@@ -47,7 +50,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
                              {
                                  Type = "object",
                                  AdditionalProperties = isSimpleType
-                                                        ? attribute.BodyType.GetOpenApiSubType().ToOpenApiSchema()
+                                                        ? attribute.BodyType.GetOpenApiSubType().ToOpenApiSchema(namingStrategy)
                                                         : schema
                              };
             }
@@ -57,13 +60,13 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
                              {
                                  Type = "array",
                                  Items = isSimpleType
-                                         ? attribute.BodyType.GetOpenApiSubType().ToOpenApiSchema()
+                                         ? attribute.BodyType.GetOpenApiSubType().ToOpenApiSchema(namingStrategy)
                                          : schema
                              };
             }
             else if (isSimpleType)
             {
-                schema = attribute.BodyType.ToOpenApiSchema();
+                schema = attribute.BodyType.ToOpenApiSchema(namingStrategy);
             }
 
             var mediaType = new OpenApiMediaType() { Schema = schema };

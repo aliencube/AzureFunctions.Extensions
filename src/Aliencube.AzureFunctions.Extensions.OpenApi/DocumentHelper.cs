@@ -15,6 +15,7 @@ using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
 
 using Newtonsoft.Json.Linq;
+using Newtonsoft.Json.Serialization;
 
 namespace Aliencube.AzureFunctions.Extensions.OpenApi
 {
@@ -133,7 +134,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi
         }
 
         /// <inheritdoc />
-        public OpenApiRequestBody GetOpenApiRequestBody(MethodInfo element)
+        public OpenApiRequestBody GetOpenApiRequestBody(MethodInfo element, NamingStrategy namingStrategy = null)
         {
             var contents = element.GetCustomAttributes<OpenApiRequestBodyAttribute>(inherit: false)
                                   .ToDictionary(p => p.ContentType, p => p.ToOpenApiMediaType());
@@ -147,17 +148,17 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi
         }
 
         /// <inheritdoc />
-        public OpenApiResponses GetOpenApiResponseBody(MethodInfo element)
+        public OpenApiResponses GetOpenApiResponseBody(MethodInfo element, NamingStrategy namingStrategy = null)
         {
             var responses = element.GetCustomAttributes<OpenApiResponseBodyAttribute>(inherit: false)
-                                   .ToDictionary(p => ((int)p.StatusCode).ToString(), p => p.ToOpenApiResponse())
+                                   .ToDictionary(p => ((int)p.StatusCode).ToString(), p => p.ToOpenApiResponse(namingStrategy))
                                    .ToOpenApiResponses();
 
             return responses;
         }
 
         /// <inheritdoc />
-        public Dictionary<string, OpenApiSchema> GetOpenApiSchemas(List<MethodInfo> elements)
+        public Dictionary<string, OpenApiSchema> GetOpenApiSchemas(List<MethodInfo> elements, NamingStrategy namingStrategy)
         {
             var requests = elements.SelectMany(p => p.GetCustomAttributes<OpenApiRequestBodyAttribute>(inherit: false))
                                    .Select(p => p.BodyType);
@@ -172,7 +173,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi
                                 .Where(p => !typeof(Array).IsAssignableFrom(p))
                                 .Where(p => !p.IsGenericType)
                                 ;
-            var schemas = types.ToDictionary(p => p.Name, p => p.ToOpenApiSchema());
+            var schemas = types.ToDictionary(p => p.Name, p => p.ToOpenApiSchema(namingStrategy)); // schemaGenerator.Generate(p)
 
             return schemas;
         }

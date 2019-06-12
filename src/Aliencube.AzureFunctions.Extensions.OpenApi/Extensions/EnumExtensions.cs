@@ -60,6 +60,14 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
                     {
                         return "string";
                     }
+                    else if (type == typeof(DateTime))
+                    {
+                        return "string";
+                    }
+                    else if (type == typeof(DateTimeOffset))
+                    {
+                        return "string";
+                    }
                     else
                     {
                         return "object";
@@ -118,6 +126,14 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
                     if (type == typeof(Guid))
                     {
                         return "uuid";
+                    }
+                    else if (type == typeof(DateTime))
+                    {
+                        return "date-time";
+                    }
+                    else if (type == typeof(DateTimeOffset))
+                    {
+                        return "date-time";
                     }
                     else
                     {

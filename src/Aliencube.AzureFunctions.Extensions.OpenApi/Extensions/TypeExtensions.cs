@@ -91,6 +91,14 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
                     {
                         return true;
                     }
+                    else if (type == typeof(DateTime))
+                    {
+                        return true;
+                    }
+                    else if (type == typeof(DateTimeOffset))
+                    {
+                        return true;
+                    }
                     else
                     {
                         return false;

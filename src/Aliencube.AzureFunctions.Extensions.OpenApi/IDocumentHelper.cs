@@ -4,6 +4,8 @@ using System.Reflection;
 using Microsoft.Azure.WebJobs;
 using Microsoft.OpenApi.Models;
 
+using Newtonsoft.Json.Serialization;
+
 namespace Aliencube.AzureFunctions.Extensions.OpenApi.Abstractions
 {
     /// <summary>
@@ -76,22 +78,25 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Abstractions
         /// Gets the <see cref="OpenApiRequestBody"/> instance.
         /// </summary>
         /// <param name="element"><see cref="MethodInfo"/> instance.</param>
+        /// <param name="namingStrategy"><see cref="NamingStrategy"/> insance to create the JSON schema from .NET Types.</param>
         /// <returns><see cref="OpenApiRequestBody"/> instance.</returns>
-        OpenApiRequestBody GetOpenApiRequestBody(MethodInfo element);
+        OpenApiRequestBody GetOpenApiRequestBody(MethodInfo element, NamingStrategy namingStrategy = null);
 
         /// <summary>
         /// Gets the <see cref="OpenApiResponses"/> instance.
         /// </summary>
         /// <param name="element"><see cref="MethodInfo"/> instance.</param>
+        /// <param name="namingStrategy"><see cref="NamingStrategy"/> insance to create the JSON schema from .NET Types.</param>
         /// <returns><see cref="OpenApiResponses"/> instance.</returns>
-        OpenApiResponses GetOpenApiResponseBody(MethodInfo element);
+        OpenApiResponses GetOpenApiResponseBody(MethodInfo element, NamingStrategy namingStrategy = null);
 
         /// <summary>
         /// Gets the collection of <see cref="OpenApiSchema"/> instances.
         /// </summary>
         /// <param name="elements">List of <see cref="MethodInfo"/> instance.</param>
+        /// <param name="namingStrategy"><see cref="NamingStrategy"/> insance to create the JSON schema from .NET Types.</param>
         /// <returns>Collection of <see cref="OpenApiSchema"/> instance.</returns>
-        Dictionary<string, OpenApiSchema> GetOpenApiSchemas(List<MethodInfo> elements);
+        Dictionary<string, OpenApiSchema> GetOpenApiSchemas(List<MethodInfo> elements, NamingStrategy namingStrategy);
 
         /// <summary>
         /// Gets the collection of <see cref="OpenApiSecurityScheme"/> instances.
