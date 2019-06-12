@@ -1,13 +1,22 @@
-﻿using System;
+﻿using Newtonsoft.Json;
 
 namespace Aliencube.AzureFunctions.FunctionAppCommon.Models
 {
     /// <summary>
-    /// Model to be used as generic type of Lists 
+    /// This represents the item model of a collection.
     /// </summary>
     public class SampleItemModel
     {
-        public String FirstName { get; set; }
-        public String LastName { get; set; }
+        /// <summary>
+        /// Gets or sets the first name.
+        /// </summary>
+        [JsonProperty("firstName")]
+        public string FirstName { get; set; }
+
+        /// <summary>
+        /// Gets or sets the last name.
+        /// </summary>
+        [JsonProperty("lastName")]
+        public string LastName { get; set; }
     }
 }
