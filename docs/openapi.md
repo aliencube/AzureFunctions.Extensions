@@ -85,7 +85,7 @@ public static async Task<IActionResult> RenderSwaggerUI(
     var ui = new SwaggerUI();
     var result = await ui.AddMetadata(settings.OpenApiInfo)
                          .AddServer(req, settings.HttpSettings.RoutePrefix)
-                         .BuildAsync(typeof(SwaggerUI).Assembly)
+                         .BuildAsync()
                          .RenderAsync("swagger.json", settings.SwaggerAuthKey)
                          .ConfigureAwait(false);
     var response = new ContentResult()
@@ -114,6 +114,8 @@ On either your `local.settings.json` or App Settings on Azure Functions instance
 * `OpenApi__Info__License__Name`: **REQUIRED** License name. eg. MIT
 * `OpenApi__Info__License__Url`: License URL. eg. http://opensource.org/licenses/MIT
 * `OpenApi__ApiKey`: API Key of the endpoint that renders the Open API document.
+
+> **NOTE**: In order to deploy Azure Functions v1 to Azure, the `AzureWebJobsScriptRoot` **MUST** be specified in the app settings section; otherwise it will throw an error that can't find `host.json`. Local debugging is fine, though. For more details, please visit [this page](https://docs.microsoft.com/bs-latn-ba/azure/azure-functions/functions-app-settings#azurewebjobsscriptroot).
 
 
 ## Decorators ##

@@ -1,30 +1,23 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Aliencube.AzureFunctions.Extensions.DependencyInjection.Abstractions;
+
 using Aliencube.AzureFunctions.Extensions.OpenApi;
 using Aliencube.AzureFunctions.Extensions.OpenApi.Configurations;
-using Aliencube.AzureFunctions.FunctionAppCommon.Configurations;
-using Aliencube.AzureFunctions.FunctionAppCommon.Functions;
-using Aliencube.AzureFunctions.FunctionAppCommon.Functions.FunctionOptions;
 using Aliencube.AzureFunctions.FunctionAppCommon.Models;
-using Aliencube.AzureFunctions.Tests.Fakes;
+
 using FluentAssertions;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Internal;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
+
 using Microsoft.OpenApi;
-using Microsoft.OpenApi.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
+
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
 
 namespace Aliencube.AzureFunctions.FunctionAppV2.Tests
 {
     [TestClass]
-    public class OpenApiDocumentationTests
+    public class OpenApiHttpTriggerTests
     {
         [TestMethod]
         public async Task Given_Naming_Strategy_Should_Vary_Case()
@@ -37,7 +30,7 @@ namespace Aliencube.AzureFunctions.FunctionAppV2.Tests
                 .Build(assembly, new DefaultNamingStrategy())
                 .RenderAsync(OpenApiSpecVersion.OpenApi3_0, OpenApiFormat.Json)
                 .ConfigureAwait(false);
-            
+
             var testPropName = nameof(SampleResponseModel.DateTimeOffsetValue);
 
             // Check that the property is defined as "DateTimeOffsetValue" in pascal case.
@@ -46,14 +39,14 @@ namespace Aliencube.AzureFunctions.FunctionAppV2.Tests
             var pcProperties = pcModel["properties"];
             pcProperties[testPropName].Should().NotBeNull();
             pcProperties[testPropName].HasValues.Should().BeTrue();
-            
+
             // Now run with camel casing
             var ccResult = JObject.Parse(await document
                 .InitialiseDocument()
                 .Build(assembly, new CamelCaseNamingStrategy())
                 .RenderAsync(OpenApiSpecVersion.OpenApi3_0, OpenApiFormat.Json)
                 .ConfigureAwait(false));
-            
+
             var ccModel = ccResult.SelectToken("$.." + typeof(SampleResponseModel).Name);
             var ccProperties = ccModel["properties"];
 
@@ -62,7 +55,7 @@ namespace Aliencube.AzureFunctions.FunctionAppV2.Tests
             ccProperties[expectedName].Should().NotBeNull();
             ccProperties[expectedName].HasValues.Should().BeTrue();
         }
-        
+
         [TestMethod]
         public async Task Given_Enum_Type_With_StringConverter_Spec_Should_Contain_Enum_Names()
         {
@@ -74,18 +67,17 @@ namespace Aliencube.AzureFunctions.FunctionAppV2.Tests
                 .Build(assembly, new DefaultNamingStrategy())
                 .RenderAsync(OpenApiSpecVersion.OpenApi3_0, OpenApiFormat.Json)
                 .ConfigureAwait(false));
-            
+
             var enumPropToken = result.SelectToken(
                 $"$..{typeof(SampleResponseModel).Name}.properties.{nameof(SampleResponseModel.EnumValueAsString)}");
 
             enumPropToken.Should().NotBeNull();
-            
+
             var enumValues = enumPropToken["enum"];
             enumValues.Should().NotBeNull();
-            
+
             enumValues.Children().Select(t => t.Value<string>()).Should()
                 .BeEquivalentTo(Enum.GetNames(typeof(StringEnum)));
-
         }
 
         [TestMethod]
@@ -99,18 +91,17 @@ namespace Aliencube.AzureFunctions.FunctionAppV2.Tests
                 .Build(assembly, new DefaultNamingStrategy())
                 .RenderAsync(OpenApiSpecVersion.OpenApi3_0, OpenApiFormat.Json)
                 .ConfigureAwait(false));
-            
+
             var enumPropToken = result.SelectToken(
                 $"$..{typeof(SampleResponseModel).Name}.properties.{nameof(SampleResponseModel.EnumValueAsNumber)}");
 
             enumPropToken.Should().NotBeNull();
-            
+
             var enumValues = enumPropToken["enum"];
             enumValues.Should().NotBeNull();
-            
+
             enumValues.Children().Select(t => t.Value<string>()).Should()
                 .BeEquivalentTo(Enum.GetValues(typeof(NumericEnum)));
         }
-
     }
 }

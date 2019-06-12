@@ -1,7 +1,7 @@
 ﻿using System;
 
-using Aliencube.AzureFunctions.Extensions.OpenApi.Attributes;
 using Aliencube.AzureFunctions.Extensions.OpenApi.Extensions;
+using Aliencube.AzureFunctions.Tests.Fakes;
 
 using FluentAssertions;
 
@@ -100,13 +100,5 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Tests.Extensions
 
             dataType.Should().BeNull();
         }
-    }
-
-    public enum FakeEnum
-    {
-        Value1,
-
-        [Display("lorem")]
-        Value2
     }
 }

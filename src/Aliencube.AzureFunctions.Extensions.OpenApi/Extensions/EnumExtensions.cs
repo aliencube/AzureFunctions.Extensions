@@ -28,12 +28,6 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
             return name;
         }
 
-        public static bool IsSimpleType(this Type type)
-        {
-            var @enum = Type.GetTypeCode(type);
-            return @enum != TypeCode.Object || type == typeof(DateTimeOffset) || type == typeof(Guid);
-        }
-
         /// <summary>
         /// Converts the <see cref="TypeCode"/> value into data type specified in Open API spec.
         /// </summary>
@@ -63,6 +57,10 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
 
                 case TypeCode.Object:
                     if (type == typeof(Guid))
+                    {
+                        return "string";
+                    }
+                    else if (type == typeof(DateTime))
                     {
                         return "string";
                     }
@@ -129,10 +127,15 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
                     {
                         return "uuid";
                     }
+                    else if (type == typeof(DateTime))
+                    {
+                        return "date-time";
+                    }
                     else if (type == typeof(DateTimeOffset))
                     {
                         return "date-time";
-                    } else
+                    }
+                    else
                     {
                         return null;
                     }

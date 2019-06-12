@@ -14,10 +14,11 @@ using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
 
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json.Serialization;
+
 namespace Aliencube.AzureFunctions.Extensions.OpenApi
 {
-    using Newtonsoft.Json.Serialization;
-
     /// <summary>
     /// This represents the helper entity for the <see cref="Document"/> class.
     /// </summary>
@@ -133,7 +134,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi
         }
 
         /// <inheritdoc />
-        public OpenApiRequestBody GetOpenApiRequestBody(MethodInfo element)
+        public OpenApiRequestBody GetOpenApiRequestBody(MethodInfo element, NamingStrategy namingStrategy = null)
         {
             var contents = element.GetCustomAttributes<OpenApiRequestBodyAttribute>(inherit: false)
                                   .ToDictionary(p => p.ContentType, p => p.ToOpenApiMediaType());
@@ -147,10 +148,10 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi
         }
 
         /// <inheritdoc />
-        public OpenApiResponses GetOpenApiResponseBody(MethodInfo element)
+        public OpenApiResponses GetOpenApiResponseBody(MethodInfo element, NamingStrategy namingStrategy = null)
         {
             var responses = element.GetCustomAttributes<OpenApiResponseBodyAttribute>(inherit: false)
-                                   .ToDictionary(p => ((int)p.StatusCode).ToString(), p => p.ToOpenApiResponse())
+                                   .ToDictionary(p => ((int)p.StatusCode).ToString(), p => p.ToOpenApiResponse(namingStrategy))
                                    .ToOpenApiResponses();
 
             return responses;
@@ -164,7 +165,14 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi
             var responses = elements.SelectMany(p => p.GetCustomAttributes<OpenApiResponseBodyAttribute>(inherit: false))
                                     .Select(p => p.BodyType);
             var types = requests.Union(responses)
-                                .Distinct();
+                                .Select(p => p.IsOpenApiArray() ? p.GetOpenApiSubType() : p )
+                                .Distinct()
+                                .Where(p => !p.IsSimpleType())
+                                .Where(p => p != typeof(JObject))
+                                .Where(p => p != typeof(JToken))
+                                .Where(p => !typeof(Array).IsAssignableFrom(p))
+                                .Where(p => !p.IsGenericType)
+                                ;
             var schemas = types.ToDictionary(p => p.Name, p => p.ToOpenApiSchema(namingStrategy)); // schemaGenerator.Generate(p)
 
             return schemas;

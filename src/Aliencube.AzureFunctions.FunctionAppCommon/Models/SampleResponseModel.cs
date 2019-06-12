@@ -1,25 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Runtime.Serialization;
+
 using Aliencube.AzureFunctions.Extensions.OpenApi.Attributes;
 using Aliencube.AzureFunctions.Extensions.OpenApi.Enums;
 
 using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 
 namespace Aliencube.AzureFunctions.FunctionAppCommon.Models
 {
-    /// <summary>
-    /// This represents the model entity for sample request.
-    /// </summary>
-    public class SampleRequestModel
-    {
-        /// <summary>
-        /// Gets or sets the Id.
-        /// </summary>
-        public string Id { get; set; }
-    }
-
     /// <summary>
     /// This represents the model entity for sample response.
     /// </summary>
@@ -61,50 +49,25 @@ namespace Aliencube.AzureFunctions.FunctionAppCommon.Models
         /// Gets or sets the list of objects 2.
         /// </summary>
         public int[] Items2 { get; set; } = new List<int>().ToArray();
-        
+
         /// <summary>
-        /// Gets or sets the date time offset
+        /// Gets or sets the date time value.
+        /// </summary>
+        public DateTime DateTimeValue { get; set; }
+
+        /// <summary>
+        /// Gets or sets the date time offset value.
         /// </summary>
         public DateTimeOffset DateTimeOffsetValue { get; set; }
-        
+
         /// <summary>
-        /// Gets or sets an enum value
+        /// Gets or sets an enum value.
         /// </summary>
         public StringEnum EnumValueAsString { get; set; }
 
         /// <summary>
-        /// Gets or sets an enum value
+        /// Gets or sets an enum value.
         /// </summary>
         public NumericEnum EnumValueAsNumber { get; set; }
-    }
-    
-    /// <summary>
-    /// An enum that will be serialized as a string
-    /// </summary>
-    [JsonConverter(typeof(StringEnumConverter))]
-    public enum StringEnum {
-        Off = 0,
-        On = 1
-    }
-
-    /// <summary>
-    /// An enum that will be serialized as a number
-    /// </summary>
-    public enum NumericEnum : short
-    {
-        FirstValue = 1,
-        SecondValue = 2,
-        ThirdValue = 3
-    }
-
-    /// <summary>
-    /// This represents the sub model entity for sample response
-    /// </summary>
-    public class SubSampleResponseModel
-    {
-        /// <summary>
-        /// Gets or sets the value.
-        /// </summary>
-        public int Value { get; set; }
     }
 }
