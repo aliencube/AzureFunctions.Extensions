@@ -164,7 +164,9 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi
             var responses = elements.SelectMany(p => p.GetCustomAttributes<OpenApiResponseBodyAttribute>(inherit: false))
                                     .Select(p => p.BodyType);
             var types = requests.Union(responses)
+                                .Select(p => p.IsOpenApiArray() ? p.GetOpenApiSubType() : p )
                                 .Distinct()
+                                .Where(p => !p.IsSimpleType())
                                 .Where(p => p != typeof(JObject))
                                 .Where(p => p != typeof(JToken))
                                 .Where(p => !typeof(Array).IsAssignableFrom(p))
