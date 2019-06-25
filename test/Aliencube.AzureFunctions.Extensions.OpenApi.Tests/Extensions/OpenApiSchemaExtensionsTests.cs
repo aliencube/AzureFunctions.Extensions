@@ -187,5 +187,16 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Tests.Extensions
             result.Type.Should().NotBe("array");
             result.Items.Should().BeNull();
         }
+
+        [TestMethod]
+        public void Given_Interface_With_Inheritance_Should_Contain_All_Properties()
+        {
+            var interfaceType = typeof(IFakeInheritedInterface);
+            var strategy = new CamelCaseNamingStrategy();
+
+            var result = interfaceType.ToOpenApiSchema(strategy);
+
+            result.Properties.Count.Should().Be(4);
+        }
     }
 }
