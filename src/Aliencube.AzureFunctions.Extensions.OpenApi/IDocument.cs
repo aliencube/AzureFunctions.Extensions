@@ -55,7 +55,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Abstractions
         /// Builds Open API document.
         /// </summary>
         /// <param name="assembly"><see cref="Assembly"/> instance.</param>
-        /// <param name="namingStrategy"><see cref="NamingStrategy"/> insance to create the JSON schema from .NET Types.</param>
+        /// <param name="namingStrategy"><see cref="NamingStrategy"/> instance to create the JSON schema from .NET Types.</param>
         /// <returns><see cref="IDocument"/> instance.</returns>
         IDocument Build(Assembly assembly, NamingStrategy namingStrategy = null);
 

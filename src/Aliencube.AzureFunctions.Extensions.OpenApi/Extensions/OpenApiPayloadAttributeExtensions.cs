@@ -16,13 +16,13 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
         /// </summary>
         /// <typeparam name="T">Type of payload attribute inheriting <see cref="OpenApiPayloadAttribute"/>.</typeparam>
         /// <param name="attribute">OpenApi payload attribute.</param>
-        /// <param name="namingStrategy"><see cref="NamingStrategy"/> insance to create the JSON schema from .NET Types.</param>
+        /// <param name="namingStrategy"><see cref="NamingStrategy"/> instance to create the JSON schema from .NET Types.</param>
         /// <returns><see cref="OpenApiMediaType"/> instance.</returns>
         public static OpenApiMediaType ToOpenApiMediaType<T>(this T attribute, NamingStrategy namingStrategy = null) where T : OpenApiPayloadAttribute
         {
             attribute.ThrowIfNullOrDefault();
 
-            bool isJObject = attribute.BodyType.IsJObject();
+            bool isJObject = attribute.BodyType.IsJObjectType();
             bool isDictionary = attribute.BodyType.IsOpenApiDictionary();
             bool isList = attribute.BodyType.IsOpenApiArray();
             bool isSimpleType = (isDictionary || isList)

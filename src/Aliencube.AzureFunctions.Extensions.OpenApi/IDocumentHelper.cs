@@ -78,7 +78,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Abstractions
         /// Gets the <see cref="OpenApiRequestBody"/> instance.
         /// </summary>
         /// <param name="element"><see cref="MethodInfo"/> instance.</param>
-        /// <param name="namingStrategy"><see cref="NamingStrategy"/> insance to create the JSON schema from .NET Types.</param>
+        /// <param name="namingStrategy"><see cref="NamingStrategy"/> instance to create the JSON schema from .NET Types.</param>
         /// <returns><see cref="OpenApiRequestBody"/> instance.</returns>
         OpenApiRequestBody GetOpenApiRequestBody(MethodInfo element, NamingStrategy namingStrategy = null);
 
@@ -86,7 +86,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Abstractions
         /// Gets the <see cref="OpenApiResponses"/> instance.
         /// </summary>
         /// <param name="element"><see cref="MethodInfo"/> instance.</param>
-        /// <param name="namingStrategy"><see cref="NamingStrategy"/> insance to create the JSON schema from .NET Types.</param>
+        /// <param name="namingStrategy"><see cref="NamingStrategy"/> instance to create the JSON schema from .NET Types.</param>
         /// <returns><see cref="OpenApiResponses"/> instance.</returns>
         OpenApiResponses GetOpenApiResponseBody(MethodInfo element, NamingStrategy namingStrategy = null);
 
@@ -94,7 +94,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Abstractions
         /// Gets the collection of <see cref="OpenApiSchema"/> instances.
         /// </summary>
         /// <param name="elements">List of <see cref="MethodInfo"/> instance.</param>
-        /// <param name="namingStrategy"><see cref="NamingStrategy"/> insance to create the JSON schema from .NET Types.</param>
+        /// <param name="namingStrategy"><see cref="NamingStrategy"/> instance to create the JSON schema from .NET Types.</param>
         /// <returns>Collection of <see cref="OpenApiSchema"/> instance.</returns>
         Dictionary<string, OpenApiSchema> GetOpenApiSchemas(List<MethodInfo> elements, NamingStrategy namingStrategy);
 

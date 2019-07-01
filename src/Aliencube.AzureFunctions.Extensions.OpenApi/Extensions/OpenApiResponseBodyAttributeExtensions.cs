@@ -18,7 +18,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
         /// Converts <see cref="OpenApiResponseBodyAttribute"/> to <see cref="OpenApiResponse"/>.
         /// </summary>
         /// <param name="attribute"><see cref="OpenApiResponseBodyAttribute"/> instance.</param>
-        /// <param name="namingStrategy"><see cref="NamingStrategy"/> insance to create the JSON schema from .NET Types.</param>
+        /// <param name="namingStrategy"><see cref="NamingStrategy"/> instance to create the JSON schema from .NET Types.</param>
         /// <returns><see cref="OpenApiResponse"/> instance.</returns>
         public static OpenApiResponse ToOpenApiResponse(this OpenApiResponseBodyAttribute attribute, NamingStrategy namingStrategy = null)
         {

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Linq;
 using System.Reflection;
 
@@ -10,7 +9,6 @@ using Microsoft.OpenApi.Models;
 
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
-using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
 
 namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
@@ -24,7 +22,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
         /// Converts <see cref="Type"/> to <see cref="OpenApiSchema"/>.
         /// </summary>
         /// <param name="type"><see cref="Type"/> instance.</param>
-        /// <param name="namingStrategy"><see cref="NamingStrategy"/> insance to create the JSON schema from .NET Types.</param>
+        /// <param name="namingStrategy"><see cref="NamingStrategy"/> instance to create the JSON schema from .NET Types.</param>
         /// <param name="attribute"><see cref="OpenApiSchemaVisibilityAttribute"/> instance. Default is <c>null</c>.</param>
         /// <returns><see cref="OpenApiSchema"/> instance.</returns>
         /// <remarks>
@@ -36,14 +34,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
 
             var schema = (OpenApiSchema)null;
 
-            if (type == typeof(JObject))
-            {
-                schema = typeof(object).ToOpenApiSchema(namingStrategy);
-
-                return schema;
-            }
-
-            if (type == typeof(JToken))
+            if (type.IsJObjectType())
             {
                 schema = typeof(object).ToOpenApiSchema(namingStrategy);
 
@@ -72,35 +63,19 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
                 schema.Extensions.Add("x-ms-visibility", visibility);
             }
 
-            if (typeof(Enum).IsAssignableFrom(type))
+            if (type.IsUnflaggedEnumType())
             {
-                var isFlags = type.IsDefined(typeof(FlagsAttribute), false);
-                if (!isFlags)
+                var converterAttribute = type.GetCustomAttribute<JsonConverterAttribute>();
+                if (!converterAttribute.IsNullOrDefault()
+                    && typeof(StringEnumConverter).IsAssignableFrom(converterAttribute.ConverterType))
                 {
-                    var converterAttribute = type.GetCustomAttribute<JsonConverterAttribute>();
-                    if (!converterAttribute.IsNullOrDefault()
-                        && typeof(StringEnumConverter).IsAssignableFrom(converterAttribute.ConverterType))
-                    {
-                        var names = Enum.GetNames(type);
-                        schema.Enum = names.Select(p => (IOpenApiAny)new OpenApiString(namingStrategy.GetPropertyName(p, false))).ToList();
-                        schema.Type = "string";
-                        schema.Format = null;
-                    }
-                    else if (type.GetEnumUnderlyingType() == typeof(short))
-                    {
-                        var values = Enum.GetValues(type);
-                        schema.Enum = values.Cast<short>().Select(p => (IOpenApiAny)new OpenApiInteger(p)).ToList();
-                    }
-                    else if (type.GetEnumUnderlyingType() == typeof(int))
-                    {
-                        var values = Enum.GetValues(type);
-                        schema.Enum = values.Cast<int>().Select(p => (IOpenApiAny)new OpenApiInteger(p)).ToList();
-                    }
-                    else if (type.GetEnumUnderlyingType() == typeof(long))
-                    {
-                        var values = Enum.GetValues(type);
-                        schema.Enum = values.Cast<long>().Select(p => (IOpenApiAny)new OpenApiLong(p)).ToList();
-                    }
+                    schema.Type = "string";
+                    schema.Format = null;
+                    schema.Enum = type.ToOpenApiStringCollection(namingStrategy);
+                }
+                else
+                {
+                    schema.Enum = type.ToOpenApiIntegerCollection();
                 }
             }
 
@@ -109,7 +84,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
                 return schema;
             }
 
-            if (typeof(IDictionary).IsAssignableFrom(type))
+            if (type.IsOpenApiDictionary())
             {
                 schema.AdditionalProperties = type.GetGenericArguments()[1].ToOpenApiSchema(namingStrategy);
 
@@ -124,9 +99,9 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
                 return schema;
             }
 
-            var allProperties = !type.IsInterface
-                ? type.GetProperties()
-                : new Type[] { type }.Concat(type.GetInterfaces()).SelectMany(i => i.GetProperties());
+            var allProperties = type.IsInterface
+                                    ? new[] { type }.Concat(type.GetInterfaces()).SelectMany(i => i.GetProperties())
+                                    : type.GetProperties();
             var properties = allProperties.Where(p => !p.ExistsCustomAttribute<JsonIgnoreAttribute>());
 
             foreach (var property in properties)

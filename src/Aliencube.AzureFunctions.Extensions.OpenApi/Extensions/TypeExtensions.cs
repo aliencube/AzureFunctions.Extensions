@@ -1,7 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+
+using Microsoft.OpenApi.Any;
 
 using Newtonsoft.Json.Linq;
+using Newtonsoft.Json.Serialization;
 
 namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
 {
@@ -11,65 +15,10 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
     public static class TypeExtensions
     {
         /// <summary>
-        /// Checks whether the given type is Json.NET related <see cref="JObject"/>, <see cref="JToken"/> or not.
-        /// </summary>
-        /// <param name="type"><see cref="Type"/> instance.</param>
-        /// <returns>Returns <c>True</c>, if the type is identified as either <see cref="JObject"/> or <see cref="JToken"/>; otherwise returns <c>False</c>.</returns>
-        public static bool IsJObject(this Type type)
-        {
-            if (type.IsNullOrDefault())
-            {
-                return false;
-            }
-
-            if (type == typeof(JObject))
-            {
-                return true;
-            }
-
-            if (type == typeof(JToken))
-            {
-                return true;
-            }
-
-            return false;
-        }
-
-        /// <summary>
-        /// Checks whether the given type is array or not, from the Open API perspective.
-        /// </summary>
-        /// <param name="type"><see cref="Type"/> instance.</param>
-        /// <returns>Returns <c>True</c>, if the type is identified as array; otherwise returns <c>False</c>.</returns>
-        public static bool IsOpenApiArray(this Type type)
-        {
-            if (type.IsNullOrDefault())
-            {
-                return false;
-            }
-
-            return type.IsArrayType();
-        }
-
-        /// <summary>
-        /// Checks whether the given type is array or not, from the Open API perspective.
-        /// </summary>
-        /// <param name="type"><see cref="Type"/> instance.</param>
-        /// <returns>Returns <c>True</c>, if the type is identified as array; otherwise returns <c>False</c>.</returns>
-        public static bool IsOpenApiDictionary(this Type type)
-        {
-            if (type.IsNullOrDefault())
-            {
-                return false;
-            }
-
-            return type.IsDictionaryType();
-        }
-
-        /// <summary>
         /// Checks whether the given type is simple type or not.
         /// </summary>
         /// <param name="type"></param>
-        /// <returns></returns>
+        /// <returns>Returns <c>True</c>, if simple type; otherwise returns <c>False</c>.</returns>
         public static bool IsSimpleType(this Type type)
         {
             var @enum = Type.GetTypeCode(type);
@@ -115,6 +64,139 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
                 default:
                     return false;
             }
+        }
+
+        /// <summary>
+        /// Checks whether the given type is Json.NET related <see cref="JObject"/>, <see cref="JToken"/> or not.
+        /// </summary>
+        /// <param name="type"><see cref="Type"/> instance.</param>
+        /// <returns>Returns <c>True</c>, if the type is identified as either <see cref="JObject"/> or <see cref="JToken"/>; otherwise returns <c>False</c>.</returns>
+        public static bool IsJObjectType(this Type type)
+        {
+            if (type.IsNullOrDefault())
+            {
+                return false;
+            }
+
+            if (type == typeof(JObject))
+            {
+                return true;
+            }
+
+            if (type == typeof(JToken))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Checks whether the given type is enum without flags or not.
+        /// </summary>
+        /// <param name="type"><see cref="Type"/> instance.</param>
+        /// <returns>Returns <c>True</c>, if the type is identified as enum without flags; otherwise returns <c>False</c>.</returns>
+        public static bool IsUnflaggedEnumType(this Type type)
+        {
+            var isEnum = typeof(Enum).IsAssignableFrom(type);
+            if (!isEnum)
+            {
+                return false;
+            }
+
+            var isFlagged = type.IsDefined(typeof(FlagsAttribute), false);
+            if (isFlagged)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Converts the given <see cref="Type"/> instance to the list of underlying enum name.
+        /// </summary>
+        /// <param name="type"><see cref="Type"/> instance.</param>
+        /// <param name="namingStrategy"><see cref="NamingStrategy"/> instance.</param>
+        /// <returns>Returns the list of underlying enum name.</returns>
+        public static List<IOpenApiAny> ToOpenApiStringCollection(this Type type, NamingStrategy namingStrategy)
+        {
+            if (!type.IsUnflaggedEnumType())
+            {
+                return null;
+            }
+
+            var names = Enum.GetNames(type);
+
+            return names.Select(p => (IOpenApiAny)new OpenApiString(namingStrategy.GetPropertyName(p, false)))
+                        .ToList();
+        }
+
+        /// <summary>
+        /// Converts the given <see cref="Type"/> instance to the list of underlying enum value.
+        /// </summary>
+        /// <param name="type"><see cref="Type"/> instance.</param>
+        /// <returns>Returns the list of underlying enum value.</returns>
+        public static List<IOpenApiAny> ToOpenApiIntegerCollection(this Type type)
+        {
+            if (!type.IsUnflaggedEnumType())
+            {
+                return null;
+            }
+
+            var values = Enum.GetValues(type);
+            if (type.GetEnumUnderlyingType() == typeof(short))
+            {
+                return values.Cast<short>()
+                             .Select(p => (IOpenApiAny)new OpenApiInteger(p))
+                             .ToList();
+            }
+
+            if (type.GetEnumUnderlyingType() == typeof(int))
+            {
+                return values.Cast<int>()
+                             .Select(p => (IOpenApiAny)new OpenApiInteger(p))
+                             .ToList();
+            }
+
+            if (type.GetEnumUnderlyingType() == typeof(long))
+            {
+                return values.Cast<long>()
+                             .Select(p => (IOpenApiAny)new OpenApiLong(p))
+                             .ToList();
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Checks whether the given type is array or not, from the Open API perspective.
+        /// </summary>
+        /// <param name="type"><see cref="Type"/> instance.</param>
+        /// <returns>Returns <c>True</c>, if the type is identified as array; otherwise returns <c>False</c>.</returns>
+        public static bool IsOpenApiArray(this Type type)
+        {
+            if (type.IsNullOrDefault())
+            {
+                return false;
+            }
+
+            return type.IsArrayType();
+        }
+
+        /// <summary>
+        /// Checks whether the given type is array or not, from the Open API perspective.
+        /// </summary>
+        /// <param name="type"><see cref="Type"/> instance.</param>
+        /// <returns>Returns <c>True</c>, if the type is identified as array; otherwise returns <c>False</c>.</returns>
+        public static bool IsOpenApiDictionary(this Type type)
+        {
+            if (type.IsNullOrDefault())
+            {
+                return false;
+            }
+
+            return type.IsDictionaryType();
         }
 
         /// <summary>
