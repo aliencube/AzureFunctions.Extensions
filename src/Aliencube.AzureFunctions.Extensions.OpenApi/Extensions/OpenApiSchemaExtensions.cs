@@ -124,7 +124,11 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
                 return schema;
             }
 
-            var properties = type.GetProperties().Where(p => !p.ExistsCustomAttribute<JsonIgnoreAttribute>());
+            var allProperties = !type.IsInterface
+                ? type.GetProperties()
+                : new Type[] { type }.Concat(type.GetInterfaces()).SelectMany(i => i.GetProperties());
+            var properties = allProperties.Where(p => !p.ExistsCustomAttribute<JsonIgnoreAttribute>());
+
             foreach (var property in properties)
             {
                 var visiblity = property.GetCustomAttribute<OpenApiSchemaVisibilityAttribute>(inherit: false);
