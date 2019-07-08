@@ -2,6 +2,8 @@
 
 using Microsoft.OpenApi.Models;
 
+using Newtonsoft.Json.Serialization;
+
 namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
 {
     /// <summary>
@@ -14,14 +16,16 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
         /// </summary>
         /// <typeparam name="T">Type of payload attribute inheriting <see cref="OpenApiPayloadAttribute"/>.</typeparam>
         /// <param name="attribute">OpenApi payload attribute.</param>
+        /// <param name="namingStrategy"><see cref="NamingStrategy"/> instance to create the JSON schema from .NET Types.</param>
         /// <returns><see cref="OpenApiMediaType"/> instance.</returns>
-        public static OpenApiMediaType ToOpenApiMediaType<T>(this T attribute) where T : OpenApiPayloadAttribute
+        public static OpenApiMediaType ToOpenApiMediaType<T>(this T attribute, NamingStrategy namingStrategy = null) where T : OpenApiPayloadAttribute
         {
             attribute.ThrowIfNullOrDefault();
 
-            bool isJObject = attribute.BodyType.IsJObject();
+            bool isJObject = attribute.BodyType.IsJObjectType();
             bool isDictionary = attribute.BodyType.IsOpenApiDictionary();
             bool isList = attribute.BodyType.IsOpenApiArray();
+            bool isGeneric = attribute.BodyType.IsGenericType;
             bool isSimpleType = (isDictionary || isList)
                                 ? attribute.BodyType.GetOpenApiSubType().IsSimpleType()
                                 : attribute.BodyType.IsSimpleType();
@@ -47,7 +51,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
                              {
                                  Type = "object",
                                  AdditionalProperties = isSimpleType
-                                                        ? attribute.BodyType.GetOpenApiSubType().ToOpenApiSchema()
+                                                        ? attribute.BodyType.GetOpenApiSubType().ToOpenApiSchema(namingStrategy)
                                                         : schema
                              };
             }
@@ -57,13 +61,23 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
                              {
                                  Type = "array",
                                  Items = isSimpleType
-                                         ? attribute.BodyType.GetOpenApiSubType().ToOpenApiSchema()
+                                         ? attribute.BodyType.GetOpenApiSubType().ToOpenApiSchema(namingStrategy)
                                          : schema
                              };
             }
+            else if (isGeneric)
+            {
+                reference = new OpenApiReference()
+                                {
+                                    Type = ReferenceType.Schema,
+                                    Id = attribute.BodyType.GetOpenApiRootReferenceId()
+                                };
+
+                schema = new OpenApiSchema() { Reference = reference };
+            }
             else if (isSimpleType)
             {
-                schema = attribute.BodyType.ToOpenApiSchema();
+                schema = attribute.BodyType.ToOpenApiSchema(namingStrategy);
             }
 
             var mediaType = new OpenApiMediaType() { Schema = schema };

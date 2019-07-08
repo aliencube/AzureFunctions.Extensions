@@ -43,7 +43,7 @@ namespace Aliencube.AzureFunctions.FunctionAppV2
         [OpenApiParameter(name: "name", In = ParameterLocation.Query, Required = true, Type = typeof(string), Summary = "The name query key", Visibility = OpenApiVisibilityType.Advanced)]
         [OpenApiParameter(name: "limit", In = ParameterLocation.Query, Required = false, Type = typeof(int), Description = "The number of samples to return")]
         [OpenApiResponseBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(SampleResponseModel), Summary = "Sample response")]
-        [OpenApiResponseBody(statusCode: HttpStatusCode.Created, contentType: "application/json", bodyType: typeof(List<SampleResponseModel>), Summary = "Sample response of a List")]
+        [OpenApiResponseBody(statusCode: HttpStatusCode.Created, contentType: "application/json", bodyType: typeof(List<SampleItemModel>), Summary = "Sample response of a List")]
         [OpenApiResponseBody(statusCode: HttpStatusCode.Accepted, contentType: "application/json", bodyType: typeof(IList<SampleResponseModel>), Summary = "Sample response of a IList")]
         [OpenApiResponseBody(statusCode: HttpStatusCode.NonAuthoritativeInformation, contentType: "application/json", bodyType: typeof(SampleResponseModel[]), Summary = "Sample response of a Array")]
         [OpenApiResponseBody(statusCode: HttpStatusCode.BadRequest, contentType: "application/json", bodyType: typeof(Dictionary<string, SampleResponseModel>), Summary = "Sample response of a Dictionary")]
@@ -51,9 +51,12 @@ namespace Aliencube.AzureFunctions.FunctionAppV2
         [OpenApiResponseBody(statusCode: HttpStatusCode.Forbidden, contentType: "application/json", bodyType: typeof(JObject), Summary = "Sample response of a JObject")]
         [OpenApiResponseBody(statusCode: HttpStatusCode.NotFound, contentType: "application/json", bodyType: typeof(JToken), Summary = "Sample response of a JToken")]
         [OpenApiResponseBody(statusCode: HttpStatusCode.InternalServerError, contentType: "application/json", bodyType: typeof(List<string>), Summary = "Sample response of a List")]
-        [OpenApiResponseBody(statusCode: HttpStatusCode.BadGateway, contentType: "application/json", bodyType: typeof(Dictionary<string, int>), Summary = "Sample response of a Dictionary")]
+        [OpenApiResponseBody(statusCode: HttpStatusCode.NotImplemented, contentType: "application/json", bodyType: typeof(Dictionary<string, int>), Summary = "Sample response of a Dictionary")]
+        [OpenApiResponseBody(statusCode: HttpStatusCode.BadGateway, contentType: "application/json", bodyType: typeof(SampleGenericResponseModel<SampleResponseModel>), Summary = "Sample response of a Generic")]
         public static async Task<IActionResult> GetSample(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "samples/{id:int}/categories/{category:regex(^[a-z]{{3,}}$)}")] HttpRequest req,
+            int id,
+            string category,
             ILogger log)
         {
             var result = await Factory.Create<ISampleHttpFunction, ILogger>(log)

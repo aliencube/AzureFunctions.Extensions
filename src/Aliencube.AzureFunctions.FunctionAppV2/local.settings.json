@@ -4,6 +4,8 @@
     "AzureWebJobsStorage": "UseDevelopmentStorage=true",
     "AzureWebJobsDashboard": "UseDevelopmentStorage=true",
 
+    "FUNCTIONS_WORKER_RUNTIME": "dotnet",
+
     "OpenApi__Info__Version": "2.0.0",
     "OpenApi__Info__Title": "Open API Sample on Azure Functions",
     "OpenApi__Info__Description": "A sample API that runs on Azure Functions 2.x using Open API specification.",

@@ -1,7 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+
+using Microsoft.OpenApi.Any;
 
 using Newtonsoft.Json.Linq;
+using Newtonsoft.Json.Serialization;
 
 namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
 {
@@ -11,11 +15,63 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
     public static class TypeExtensions
     {
         /// <summary>
+        /// Checks whether the given type is simple type or not.
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns>Returns <c>True</c>, if simple type; otherwise returns <c>False</c>.</returns>
+        public static bool IsSimpleType(this Type type)
+        {
+            var @enum = Type.GetTypeCode(type);
+            switch (@enum)
+            {
+                case TypeCode.Int16:
+                case TypeCode.Int32:
+                case TypeCode.Int64:
+                case TypeCode.Single:
+                case TypeCode.Double:
+                case TypeCode.Decimal:
+                case TypeCode.Boolean:
+                case TypeCode.DateTime:
+                case TypeCode.String:
+                    return true;
+
+                case TypeCode.Object:
+                    if (type == typeof(Guid))
+                    {
+                        return true;
+                    }
+                    else if (type == typeof(DateTime))
+                    {
+                        return true;
+                    }
+                    else if (type == typeof(DateTimeOffset))
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+
+                case TypeCode.Empty:
+                case TypeCode.DBNull:
+                case TypeCode.Char:
+                case TypeCode.SByte:
+                case TypeCode.Byte:
+                case TypeCode.UInt16:
+                case TypeCode.UInt32:
+                case TypeCode.UInt64:
+                default:
+                    return false;
+            }
+        }
+
+        /// <summary>
         /// Checks whether the given type is Json.NET related <see cref="JObject"/>, <see cref="JToken"/> or not.
         /// </summary>
         /// <param name="type"><see cref="Type"/> instance.</param>
         /// <returns>Returns <c>True</c>, if the type is identified as either <see cref="JObject"/> or <see cref="JToken"/>; otherwise returns <c>False</c>.</returns>
-        public static bool IsJObject(this Type type)
+        public static bool IsJObjectType(this Type type)
         {
             if (type.IsNullOrDefault())
             {
@@ -33,6 +89,84 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
             }
 
             return false;
+        }
+
+        /// <summary>
+        /// Checks whether the given type is enum without flags or not.
+        /// </summary>
+        /// <param name="type"><see cref="Type"/> instance.</param>
+        /// <returns>Returns <c>True</c>, if the type is identified as enum without flags; otherwise returns <c>False</c>.</returns>
+        public static bool IsUnflaggedEnumType(this Type type)
+        {
+            var isEnum = typeof(Enum).IsAssignableFrom(type);
+            if (!isEnum)
+            {
+                return false;
+            }
+
+            var isFlagged = type.IsDefined(typeof(FlagsAttribute), false);
+            if (isFlagged)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Converts the given <see cref="Type"/> instance to the list of underlying enum name.
+        /// </summary>
+        /// <param name="type"><see cref="Type"/> instance.</param>
+        /// <param name="namingStrategy"><see cref="NamingStrategy"/> instance.</param>
+        /// <returns>Returns the list of underlying enum name.</returns>
+        public static List<IOpenApiAny> ToOpenApiStringCollection(this Type type, NamingStrategy namingStrategy)
+        {
+            if (!type.IsUnflaggedEnumType())
+            {
+                return null;
+            }
+
+            var names = Enum.GetNames(type);
+
+            return names.Select(p => (IOpenApiAny)new OpenApiString(namingStrategy.GetPropertyName(p, false)))
+                        .ToList();
+        }
+
+        /// <summary>
+        /// Converts the given <see cref="Type"/> instance to the list of underlying enum value.
+        /// </summary>
+        /// <param name="type"><see cref="Type"/> instance.</param>
+        /// <returns>Returns the list of underlying enum value.</returns>
+        public static List<IOpenApiAny> ToOpenApiIntegerCollection(this Type type)
+        {
+            if (!type.IsUnflaggedEnumType())
+            {
+                return null;
+            }
+
+            var values = Enum.GetValues(type);
+            if (type.GetEnumUnderlyingType() == typeof(short))
+            {
+                return values.Cast<short>()
+                             .Select(p => (IOpenApiAny)new OpenApiInteger(p))
+                             .ToList();
+            }
+
+            if (type.GetEnumUnderlyingType() == typeof(int))
+            {
+                return values.Cast<int>()
+                             .Select(p => (IOpenApiAny)new OpenApiInteger(p))
+                             .ToList();
+            }
+
+            if (type.GetEnumUnderlyingType() == typeof(long))
+            {
+                return values.Cast<long>()
+                             .Select(p => (IOpenApiAny)new OpenApiLong(p))
+                             .ToList();
+            }
+
+            return null;
         }
 
         /// <summary>
@@ -66,56 +200,12 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
         }
 
         /// <summary>
-        /// Checks whether the given type is simple type or not.
-        /// </summary>
-        /// <param name="type"></param>
-        /// <returns></returns>
-        public static bool IsSimpleType(this Type type)
-        {
-            var @enum = Type.GetTypeCode(type);
-            switch (@enum)
-            {
-                case TypeCode.Int16:
-                case TypeCode.Int32:
-                case TypeCode.Int64:
-                case TypeCode.Single:
-                case TypeCode.Double:
-                case TypeCode.Decimal:
-                case TypeCode.Boolean:
-                case TypeCode.DateTime:
-                case TypeCode.String:
-                    return true;
-
-                case TypeCode.Object:
-                    if (type == typeof(Guid))
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
-                    }
-
-                case TypeCode.Empty:
-                case TypeCode.DBNull:
-                case TypeCode.Char:
-                case TypeCode.SByte:
-                case TypeCode.Byte:
-                case TypeCode.UInt16:
-                case TypeCode.UInt32:
-                case TypeCode.UInt64:
-                default:
-                    return false;
-            }
-        }
-
-        /// <summary>
-        /// Gets the Open API Reference ID.
+        /// Gets the Open API reference ID.
         /// </summary>
         /// <param name="type"><see cref="Type"/> instance.</param>
         /// <param name="isDictionary">Value indicating whether the type is <see cref="Dictionary{TKey, TValue}"/> or not.</param>
         /// <param name="isList">Value indicating whether the type is <see cref="List{T}"/> or not.</param>
-        /// <returns>Returns the Open API Reference ID.</returns>
+        /// <returns>Returns the Open API reference ID.</returns>
         public static string GetOpenApiReferenceId(this Type type, bool isDictionary, bool isList)
         {
             if (isDictionary || isList)
@@ -124,6 +214,21 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
             }
 
             return type.Name;
+        }
+
+        /// <summary>
+        /// Gets the Open API root reference ID.
+        /// </summary>
+        /// <param name="type"><see cref="Type"/> instance.</param>
+        /// <returns>Returns the Open API root reference ID.</returns>
+        public static string GetOpenApiRootReferenceId(this Type type)
+        {
+            if (!type.IsGenericType)
+            {
+                return type.Name;
+            }
+
+            return type.GetOpenApiGenericRootName();
         }
 
         /// <summary>
@@ -154,8 +259,31 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
                 return $"Array of {type.GetOpenApiSubTypeName()}";
             }
 
+            if (type.IsGenericType)
+            {
+                return $"{type.GetOpenApiGenericRootName()} containing {type.GetOpenApiSubTypeNames()}";
+            }
+
             return type.Name;
         }
+
+        /// <summary>
+        /// Gets the root name of the given generic type.
+        /// </summary>
+        /// <param name="type"><see cref="Type"/> instance.</param>
+        /// <returns>Returns the root name of the given generic type.</returns>
+        public static string GetOpenApiGenericRootName(this Type type)
+        {
+            if (!type.IsGenericType)
+            {
+                return type.Name;
+            }
+
+            var name = type.Name.Split(new[] { "`" }, StringSplitOptions.RemoveEmptyEntries).First();
+
+            return name;
+        }
+
 
         /// <summary>
         /// Gets the sub type of the given <see cref="Type"/>.
@@ -207,6 +335,34 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
             return null;
         }
 
+        /// <summary>
+        /// Gets the list of names of the sub type of the given <see cref="Type"/>.
+        /// </summary>
+        /// <param name="type"><see cref="Type"/> instance.</param>
+        /// <returns>Returns the list of names of the sub type of the given <see cref="Type"/>.</returns>
+        public static string GetOpenApiSubTypeNames(this Type type)
+        {
+            if (!type.IsGenericType)
+            {
+                return null;
+            }
+
+            var types = type.GetGenericArguments().ToList();
+            if (types.Count == 1)
+            {
+                return types[0].GetOpenApiGenericRootName();
+            }
+
+            var names = (string)null;
+            for (var i = 0; i < types.Count - 1; i++)
+            {
+                names += $"{types[i].GetOpenApiGenericRootName()}, ";
+            }
+            names += $"and {types[types.Count - 1].GetOpenApiGenericRootName()}";
+
+            return names;
+        }
+
         private static bool IsArrayType(this Type type)
         {
             if (type.BaseType == typeof(Array))
@@ -220,6 +376,11 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
             }
 
             if (type.IsGenericTypeOf(typeof(IList<>)))
+            {
+                return true;
+            }
+
+            if (type.IsGenericTypeOf(typeof(IEnumerable<>)))
             {
                 return true;
             }

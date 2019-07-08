@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 
 #if NET461
 using System.Net.Http;
@@ -17,6 +16,8 @@ using Microsoft.AspNetCore.Http;
 
 using Microsoft.OpenApi;
 using Microsoft.OpenApi.Models;
+
+using Newtonsoft.Json.Serialization;
 
 namespace Aliencube.AzureFunctions.Extensions.OpenApi
 {
@@ -79,8 +80,13 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi
         }
 #endif
         /// <inheritdoc />
-        public IDocument Build(Assembly assembly)
+        public IDocument Build(Assembly assembly, NamingStrategy namingStrategy = null)
         {
+            if (namingStrategy.IsNullOrDefault())
+            {
+                namingStrategy = new DefaultNamingStrategy();
+            }
+
             var paths = new OpenApiPaths();
 
             var methods = this._helper.GetHttpTriggerMethods(assembly);
@@ -126,7 +132,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi
             }
 
             this._document.Paths = paths;
-            this._document.Components.Schemas = this._helper.GetOpenApiSchemas(methods);
+            this._document.Components.Schemas = this._helper.GetOpenApiSchemas(methods, namingStrategy);
             this._document.Components.SecuritySchemes = this._helper.GetOpenApiSecuritySchemes();
 
             return this;

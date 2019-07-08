@@ -35,6 +35,9 @@ namespace Aliencube.AzureFunctions.FunctionAppV2.Tests
 
             SampleHttpTrigger.Factory = factory.Object;
 
+            var id = 1;
+            var category = "heros";
+
             var query = new FakeQueryCollection();
             query["name"] = "ipsum";
 
@@ -42,7 +45,7 @@ namespace Aliencube.AzureFunctions.FunctionAppV2.Tests
             req.SetupGet(p => p.Query).Returns(query);
 
             var log = new Mock<ILogger>();
-            var response = await SampleHttpTrigger.GetSample(req.Object, log.Object).ConfigureAwait(false);
+            var response = await SampleHttpTrigger.GetSample(req.Object, id, category, log.Object).ConfigureAwait(false);
 
             response.Should().BeOfType<OkObjectResult>();
             (response as OkObjectResult).Value.Should().Be(message);
