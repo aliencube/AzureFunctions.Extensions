@@ -200,12 +200,12 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
         }
 
         /// <summary>
-        /// Gets the Open API Reference ID.
+        /// Gets the Open API reference ID.
         /// </summary>
         /// <param name="type"><see cref="Type"/> instance.</param>
         /// <param name="isDictionary">Value indicating whether the type is <see cref="Dictionary{TKey, TValue}"/> or not.</param>
         /// <param name="isList">Value indicating whether the type is <see cref="List{T}"/> or not.</param>
-        /// <returns>Returns the Open API Reference ID.</returns>
+        /// <returns>Returns the Open API reference ID.</returns>
         public static string GetOpenApiReferenceId(this Type type, bool isDictionary, bool isList)
         {
             if (isDictionary || isList)
@@ -214,6 +214,21 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
             }
 
             return type.Name;
+        }
+
+        /// <summary>
+        /// Gets the Open API root reference ID.
+        /// </summary>
+        /// <param name="type"><see cref="Type"/> instance.</param>
+        /// <returns>Returns the Open API root reference ID.</returns>
+        public static string GetOpenApiRootReferenceId(this Type type)
+        {
+            if (!type.IsGenericType)
+            {
+                return type.Name;
+            }
+
+            return type.GetOpenApiGenericRootName();
         }
 
         /// <summary>
@@ -244,8 +259,31 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
                 return $"Array of {type.GetOpenApiSubTypeName()}";
             }
 
+            if (type.IsGenericType)
+            {
+                return $"{type.GetOpenApiGenericRootName()} containing {type.GetOpenApiSubTypeNames()}";
+            }
+
             return type.Name;
         }
+
+        /// <summary>
+        /// Gets the root name of the given generic type.
+        /// </summary>
+        /// <param name="type"><see cref="Type"/> instance.</param>
+        /// <returns>Returns the root name of the given generic type.</returns>
+        public static string GetOpenApiGenericRootName(this Type type)
+        {
+            if (!type.IsGenericType)
+            {
+                return type.Name;
+            }
+
+            var name = type.Name.Split(new[] { "`" }, StringSplitOptions.RemoveEmptyEntries).First();
+
+            return name;
+        }
+
 
         /// <summary>
         /// Gets the sub type of the given <see cref="Type"/>.
@@ -297,6 +335,34 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
             return null;
         }
 
+        /// <summary>
+        /// Gets the list of names of the sub type of the given <see cref="Type"/>.
+        /// </summary>
+        /// <param name="type"><see cref="Type"/> instance.</param>
+        /// <returns>Returns the list of names of the sub type of the given <see cref="Type"/>.</returns>
+        public static string GetOpenApiSubTypeNames(this Type type)
+        {
+            if (!type.IsGenericType)
+            {
+                return null;
+            }
+
+            var types = type.GetGenericArguments().ToList();
+            if (types.Count == 1)
+            {
+                return types[0].GetOpenApiGenericRootName();
+            }
+
+            var names = (string)null;
+            for (var i = 0; i < types.Count - 1; i++)
+            {
+                names += $"{types[i].GetOpenApiGenericRootName()}, ";
+            }
+            names += $"and {types[types.Count - 1].GetOpenApiGenericRootName()}";
+
+            return names;
+        }
+
         private static bool IsArrayType(this Type type)
         {
             if (type.BaseType == typeof(Array))
@@ -310,6 +376,11 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
             }
 
             if (type.IsGenericTypeOf(typeof(IList<>)))
+            {
+                return true;
+            }
+
+            if (type.IsGenericTypeOf(typeof(IEnumerable<>)))
             {
                 return true;
             }

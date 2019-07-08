@@ -165,15 +165,15 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi
             var responses = elements.SelectMany(p => p.GetCustomAttributes<OpenApiResponseBodyAttribute>(inherit: false))
                                     .Select(p => p.BodyType);
             var types = requests.Union(responses)
-                                .Select(p => p.IsOpenApiArray() ? p.GetOpenApiSubType() : p )
+                                .Select(p => p.IsOpenApiArray() || p.IsOpenApiDictionary() ? p.GetOpenApiSubType() : p )
                                 .Distinct()
                                 .Where(p => !p.IsSimpleType())
                                 .Where(p => p != typeof(JObject))
                                 .Where(p => p != typeof(JToken))
                                 .Where(p => !typeof(Array).IsAssignableFrom(p))
-                                .Where(p => !p.IsGenericType)
                                 ;
-            var schemas = types.ToDictionary(p => p.Name, p => p.ToOpenApiSchema(namingStrategy)); // schemaGenerator.Generate(p)
+            var schemas = types.ToDictionary(p => p.IsGenericType ? p.GetOpenApiGenericRootName() : p.Name,
+                                             p => p.ToOpenApiSchema(namingStrategy)); // schemaGenerator.Generate(p)
 
             return schemas;
         }

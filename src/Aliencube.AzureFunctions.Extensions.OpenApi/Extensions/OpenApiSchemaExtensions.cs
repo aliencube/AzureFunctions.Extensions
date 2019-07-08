@@ -109,7 +109,55 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
                 var visiblity = property.GetCustomAttribute<OpenApiSchemaVisibilityAttribute>(inherit: false);
                 var propertyName = property.GetJsonPropertyName();
 
-                schema.Properties[namingStrategy.GetPropertyName(property.Name, false)] = property.PropertyType.ToOpenApiSchema(namingStrategy, visiblity);
+                var ts = property.DeclaringType.GetGenericArguments();
+                if (!ts.Any())
+                {
+                    schema.Properties[namingStrategy.GetPropertyName(property.Name, false)] = property.PropertyType.ToOpenApiSchema(namingStrategy, visiblity);
+
+                    continue;
+                }
+
+                var reference = new OpenApiReference()
+                                    {
+                                        Type = ReferenceType.Schema,
+                                        Id = property.PropertyType.GetOpenApiRootReferenceId()
+                                    };
+                var referenceSchema = new OpenApiSchema() { Reference = reference };
+
+                if (!ts.Contains(property.PropertyType))
+                {
+                    if (property.PropertyType.IsOpenApiDictionary())
+                    {
+                        reference.Id = property.PropertyType.GetOpenApiReferenceId(true, false);
+                        var dictionarySchema = new OpenApiSchema()
+                                                   {
+                                                       Type = "object",
+                                                       AdditionalProperties = referenceSchema
+                                                   };
+                        schema.Properties[namingStrategy.GetPropertyName(property.Name, false)] = dictionarySchema;
+
+                        continue;
+                    }
+
+                    if (property.PropertyType.IsOpenApiArray())
+                    {
+                        reference.Id = property.PropertyType.GetOpenApiReferenceId(false, true);
+                        var arraySchema = new OpenApiSchema()
+                                              {
+                                                  Type = "array",
+                                                  Items = referenceSchema
+                                              };
+                        schema.Properties[namingStrategy.GetPropertyName(property.Name, false)] = arraySchema;
+
+                        continue;
+                    }
+
+                    schema.Properties[namingStrategy.GetPropertyName(property.Name, false)] = property.PropertyType.ToOpenApiSchema(namingStrategy, visiblity);
+
+                    continue;
+                }
+
+                schema.Properties[namingStrategy.GetPropertyName(property.Name, false)] = referenceSchema;
             }
 
             return schema;

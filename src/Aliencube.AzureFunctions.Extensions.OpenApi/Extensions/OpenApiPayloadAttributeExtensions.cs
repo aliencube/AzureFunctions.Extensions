@@ -25,6 +25,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
             bool isJObject = attribute.BodyType.IsJObjectType();
             bool isDictionary = attribute.BodyType.IsOpenApiDictionary();
             bool isList = attribute.BodyType.IsOpenApiArray();
+            bool isGeneric = attribute.BodyType.IsGenericType;
             bool isSimpleType = (isDictionary || isList)
                                 ? attribute.BodyType.GetOpenApiSubType().IsSimpleType()
                                 : attribute.BodyType.IsSimpleType();
@@ -63,6 +64,16 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
                                          ? attribute.BodyType.GetOpenApiSubType().ToOpenApiSchema(namingStrategy)
                                          : schema
                              };
+            }
+            else if (isGeneric)
+            {
+                reference = new OpenApiReference()
+                                {
+                                    Type = ReferenceType.Schema,
+                                    Id = attribute.BodyType.GetOpenApiRootReferenceId()
+                                };
+
+                schema = new OpenApiSchema() { Reference = reference };
             }
             else if (isSimpleType)
             {
