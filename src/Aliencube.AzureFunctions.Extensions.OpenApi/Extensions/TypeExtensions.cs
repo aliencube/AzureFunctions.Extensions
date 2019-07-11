@@ -222,7 +222,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
         /// <param name="type"><see cref="Type"/> instance.</param>
         /// <returns>Returns the Open API root reference ID.</returns>
         public static string GetOpenApiRootReferenceId(this Type type)
-        {
+        { 
             if (!type.IsGenericType)
             {
                 return type.Name;
@@ -231,13 +231,13 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
             return type.GetOpenApiGenericRootName();
         }
 
-        /// <summary>
-        /// Checks whether the given type is generic type of
-        /// </summary>
-        /// <param name="t1"><see cref="Type"/> instance.</param>
-        /// <param name="t2"><see cref="Type"/> instance to compare.</param>
-        /// <returns>Returns <c>True</c>, if the given type is generic; otherwise returns <c>False</c>.</returns>
-        public static bool IsGenericTypeOf(this Type t1, Type t2)
+/// <summary>
+/// Checks whether the given type is generic type of
+/// </summary>
+/// <param name="t1"><see cref="Type"/> instance.</param>
+/// <param name="t2"><see cref="Type"/> instance to compare.</param>
+/// <returns>Returns <c>True</c>, if the given type is generic; otherwise returns <c>False</c>.</returns>
+public static bool IsGenericTypeOf(this Type t1, Type t2)
         {
             return t1.IsGenericType && t1.GetGenericTypeDefinition() == t2;
         }
@@ -246,33 +246,70 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
         /// Gets the Open API description from the given <see cref="Type"/>.
         /// </summary>
         /// <param name="type"><see cref="Type"/> instance.</param>
-        /// <returns>Returns the Open API description from the given <see cref="Type"/>.</returns>
+        /// <returns>Returns the recursively generated Open API description from the given <see cref="Type"/>.</returns>
         public static string GetOpenApiDescription(this Type type)
         {
             if (type.IsOpenApiDictionary())
             {
-                return $"Dictionary of {type.GetOpenApiSubTypeName()}";
+                return $"Dictionary of {type.GetOpenApiSubType().GetOpenApiDescription()}";
             }
 
             if (type.IsOpenApiArray())
             {
-                return $"Array of {type.GetOpenApiSubTypeName()}";
+                return $"Array of {type.GetOpenApiSubType().GetOpenApiDescription()}";
             }
 
             if (type.IsGenericType)
             {
-                return $"{type.GetOpenApiGenericRootName()} containing {type.GetOpenApiSubTypeNames()}";
+                string description = type.GetOpenApiGenericRootName() + "containing";
+                var subtypes = type.GetGenericArguments();
+                for (int i = 0; i < subtypes.Count() - 1; i++){
+                    description += subtypes[i].GetOpenApiDescription();
+                    description += ", ";
+                }
+                description += subtypes[subtypes.Count() - 1].GetOpenApiDescription();
+
+                return description;
             }
 
             return type.Name;
         }
 
         /// <summary>
+        /// Returns recursively the full name including all subtypes of the given type
+        /// </summary>
+        /// <param name="type"><see cref="Type"/> instance.</param>
+        /// <returns>Returns the full name of the given type</returns>
+        public static string GetOpenApiFullName(this Type type)
+        {
+            if (type.IsOpenApiDictionary() || type.IsOpenApiArray())
+            {
+                return type.GetOpenApiGenericRootName() + "<" + type.GetOpenApiSubType().GetOpenApiFullName() + ">";
+            }
+
+            if (type.IsGenericType)
+            {
+                string name = type.GetOpenApiGenericRootName() + "<";
+                var subtypes = type.GetGenericArguments();
+                for (int i = 0; i < subtypes.Count() - 1; i++)
+                {
+                    name += subtypes[i].GetOpenApiFullName();
+                    name += ", ";
+                }
+                name += subtypes[subtypes.Count() - 1].GetOpenApiFullName();
+
+                return name += ">";
+            }
+
+            return type.Name;
+        }
+            
+        /// <summary>
         /// Gets the root name of the given generic type.
         /// </summary>
         /// <param name="type"><see cref="Type"/> instance.</param>
         /// <returns>Returns the root name of the given generic type.</returns>
-        public static string GetOpenApiGenericRootName(this Type type)
+        private static string GetOpenApiGenericRootName(this Type type)
         {
             if (!type.IsGenericType)
             {
@@ -333,34 +370,6 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
             }
 
             return null;
-        }
-
-        /// <summary>
-        /// Gets the list of names of the sub type of the given <see cref="Type"/>.
-        /// </summary>
-        /// <param name="type"><see cref="Type"/> instance.</param>
-        /// <returns>Returns the list of names of the sub type of the given <see cref="Type"/>.</returns>
-        public static string GetOpenApiSubTypeNames(this Type type)
-        {
-            if (!type.IsGenericType)
-            {
-                return null;
-            }
-
-            var types = type.GetGenericArguments().ToList();
-            if (types.Count == 1)
-            {
-                return types[0].GetOpenApiGenericRootName();
-            }
-
-            var names = (string)null;
-            for (var i = 0; i < types.Count - 1; i++)
-            {
-                names += $"{types[i].GetOpenApiGenericRootName()}, ";
-            }
-            names += $"and {types[types.Count - 1].GetOpenApiGenericRootName()}";
-
-            return names;
         }
 
         private static bool IsArrayType(this Type type)
