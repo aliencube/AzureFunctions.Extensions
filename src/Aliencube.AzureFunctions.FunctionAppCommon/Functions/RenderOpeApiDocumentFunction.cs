@@ -66,7 +66,7 @@ namespace Aliencube.AzureFunctions.FunctionAppCommon.Functions
                                    .InitialiseDocument()
                                    .AddMetadata(this._settings.OpenApiInfo)
                                    .AddServer(req, this._settings.HttpSettings.RoutePrefix)
-                                   .Build(opt.Assembly)
+                                   .Build(opt.Assembly, null, opt.ExcludedTags)
                                    .RenderAsync(opt.Version, opt.Format)
                                    .ConfigureAwait(false);
 

@@ -51,6 +51,24 @@ namespace Aliencube.AzureFunctions.FunctionAppV1
         }
 
         /// <summary>
+        /// Invokes the HTTP trigger endpoint to get sample but exclude from tags.
+        /// </summary>
+        /// <param name="req"><see cref="HttpRequest"/> instance.</param>
+        /// <param name="log"><see cref="ILogger"/> instance.</param>
+        [FunctionName(nameof(GetSampleExclude))]
+        [OpenApiOperation(operationId: "exclude", tags: new[] { "exclude" }, Summary = "Used for tag exclusion", Description = "Used for tag exclusion.", Visibility = OpenApiVisibilityType.Important)]
+        public static async Task<HttpResponseMessage> GetSampleExclude(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "samples/exclude")] HttpRequestMessage req,
+            ILogger log)
+        {
+            var result = await Factory.Create<ISampleHttpFunction, ILogger>(log)
+                                      .InvokeAsync<HttpRequestMessage, HttpResponseMessage>(req)
+                                      .ConfigureAwait(false);
+
+            return result;
+        }
+
+        /// <summary>
         /// Invokes the HTTP trigger endpoint to create sample.
         /// </summary>
         /// <param name="req"><see cref="HttpRequestMessage"/> instance.</param>

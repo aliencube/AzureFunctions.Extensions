@@ -18,11 +18,12 @@ namespace Aliencube.AzureFunctions.FunctionAppCommon.Functions.FunctionOptions
         /// <param name="version">Open API version. This MUST be either "v2" or "v3".</param>
         /// <param name="format">Open API document format. This MUST be either "json" or "yaml".</param>
         /// <param name="assembly">Function app assembly.</param>
-        public RenderOpeApiDocumentFunctionOptions(string version, string format, Assembly assembly)
+        public RenderOpeApiDocumentFunctionOptions(string version, string format, Assembly assembly, string[] excludedTags)
         {
             this.Version = this.GetVersion(version);
             this.Format = this.GetFormat(format);
             this.Assembly = assembly ?? throw new ArgumentNullException(nameof(assembly));
+            this.ExcludedTags = excludedTags;
         }
 
         /// <summary>
@@ -39,6 +40,8 @@ namespace Aliencube.AzureFunctions.FunctionAppCommon.Functions.FunctionOptions
         /// Gets or sets the <see cref="System.Reflection.Assembly"/> instance.
         /// </summary>
         public Assembly Assembly { get; set; }
+
+        public string[] ExcludedTags { get; set; }
 
         private OpenApiSpecVersion GetVersion(string version)
         {

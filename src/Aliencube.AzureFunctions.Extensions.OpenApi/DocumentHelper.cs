@@ -36,12 +36,13 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi
         }
 
         /// <inheritdoc />
-        public List<MethodInfo> GetHttpTriggerMethods(Assembly assembly)
+        public List<MethodInfo> GetHttpTriggerMethods(Assembly assembly, string[] excludedTags)
         {
             var methods = assembly.GetTypes()
                                   .SelectMany(p => p.GetMethods())
                                   .Where(p => p.ExistsCustomAttribute<FunctionNameAttribute>())
                                   .Where(p => p.ExistsCustomAttribute<OpenApiOperationAttribute>())
+                                  .Where(p => !p.HasOpenApiOperationTagsAttribute(excludedTags))
                                   .Where(p => !p.ExistsCustomAttribute<OpenApiIgnoreAttribute>())
                                   .Where(p => p.GetParameters().FirstOrDefault(q => q.ExistsCustomAttribute<HttpTriggerAttribute>()) != null)
                                   .ToList();
