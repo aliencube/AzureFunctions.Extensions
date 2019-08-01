@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Aliencube.AzureFunctions.Extensions.OpenApi.Attributes;
+using System;
 using System.Reflection;
+using System.Linq;
 
 namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
 {
@@ -22,6 +24,24 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
             var exists = element.GetCustomAttribute<T>(inherit) != null;
 
             return exists;
+        }
+
+        /// <summary>
+        /// Checks if <see cref="OpenApiOperationAttribute"/> has particular tags.
+        /// </summary>
+        /// <param name="element"><see cref="MemberInfo"/> instance.</param>
+        /// <param name="tags">Tags to search for.</param>
+        /// <param name="inherit">Value indicating whether to inspect ancestors or not. Default is <c>false</c>.</param>
+        /// <returns><c>true</c>, if tags are found; otherwise returns <c>false</c>.</returns>
+        public static bool HasOpenApiOperationTagsAttribute(this MemberInfo element, string[] tags, bool inherit = false)
+        {
+            element.ThrowIfNullOrDefault();
+
+            var attr = element.GetCustomAttribute<OpenApiOperationAttribute>(inherit);
+
+            bool result = attr.Tags.Any(el => tags != null && tags.Contains(el));
+
+            return result;
         }
     }
 }

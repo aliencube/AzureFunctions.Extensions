@@ -1,6 +1,7 @@
 ﻿using System.Net.Http;
 using System.Reflection;
 using System.Threading.Tasks;
+using System.Linq;
 
 using Aliencube.AzureFunctions.Extensions.DependencyInjection;
 using Aliencube.AzureFunctions.Extensions.DependencyInjection.Abstractions;
@@ -11,6 +12,7 @@ using Aliencube.AzureFunctions.FunctionAppCommon.Functions.FunctionOptions;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
+using System.Collections.Generic;
 
 namespace Aliencube.AzureFunctions.FunctionAppV1
 {
@@ -36,7 +38,7 @@ namespace Aliencube.AzureFunctions.FunctionAppV1
             [HttpTrigger(AuthorizationLevel.Function, "get", Route = "swagger.json")] HttpRequestMessage req,
             ILogger log)
         {
-            var options = new RenderOpeApiDocumentFunctionOptions("v2", "json", Assembly.GetExecutingAssembly());
+            var options = new RenderOpeApiDocumentFunctionOptions("v2", "json", Assembly.GetExecutingAssembly(), null);
             var result = await Factory.Create<IRenderOpeApiDocumentFunction, ILogger>(log)
                                       .InvokeAsync<HttpRequestMessage, HttpResponseMessage>(req, options)
                                       .ConfigureAwait(false);
@@ -56,7 +58,9 @@ namespace Aliencube.AzureFunctions.FunctionAppV1
             [HttpTrigger(AuthorizationLevel.Function, "get", Route = "swagger.yaml")] HttpRequestMessage req,
             ILogger log)
         {
-            var options = new RenderOpeApiDocumentFunctionOptions("v2", "yaml", Assembly.GetExecutingAssembly());
+            string[] excludedTags = GetExcludedTagsFromQueryString(req);
+
+            var options = new RenderOpeApiDocumentFunctionOptions("v2", "yaml", Assembly.GetExecutingAssembly(), excludedTags);
             var result = await Factory.Create<IRenderOpeApiDocumentFunction, ILogger>(log)
                                       .InvokeAsync<HttpRequestMessage, HttpResponseMessage>(req, options)
                                       .ConfigureAwait(false);
@@ -76,7 +80,8 @@ namespace Aliencube.AzureFunctions.FunctionAppV1
             [HttpTrigger(AuthorizationLevel.Function, "get", Route = "openapi/v2.json")] HttpRequestMessage req,
             ILogger log)
         {
-            var options = new RenderOpeApiDocumentFunctionOptions("v2", "json", Assembly.GetExecutingAssembly());
+            string[] excludedTags = GetExcludedTagsFromQueryString(req);
+            var options = new RenderOpeApiDocumentFunctionOptions("v2", "json", Assembly.GetExecutingAssembly(), excludedTags);
             var result = await Factory.Create<IRenderOpeApiDocumentFunction, ILogger>(log)
                                       .InvokeAsync<HttpRequestMessage, HttpResponseMessage>(req, options)
                                       .ConfigureAwait(false);
@@ -96,7 +101,8 @@ namespace Aliencube.AzureFunctions.FunctionAppV1
             [HttpTrigger(AuthorizationLevel.Function, "get", Route = "openapi/v2.yaml")] HttpRequestMessage req,
             ILogger log)
         {
-            var options = new RenderOpeApiDocumentFunctionOptions("v2", "yaml", Assembly.GetExecutingAssembly());
+            string[] excludedTags = GetExcludedTagsFromQueryString(req);
+            var options = new RenderOpeApiDocumentFunctionOptions("v2", "yaml", Assembly.GetExecutingAssembly(), excludedTags);
             var result = await Factory.Create<IRenderOpeApiDocumentFunction, ILogger>(log)
                                       .InvokeAsync<HttpRequestMessage, HttpResponseMessage>(req, options)
                                       .ConfigureAwait(false);
@@ -116,7 +122,8 @@ namespace Aliencube.AzureFunctions.FunctionAppV1
             [HttpTrigger(AuthorizationLevel.Function, "get", Route = "openapi/v3.json")] HttpRequestMessage req,
             ILogger log)
         {
-            var options = new RenderOpeApiDocumentFunctionOptions("v3", "json", Assembly.GetExecutingAssembly());
+            string[] excludedTags = GetExcludedTagsFromQueryString(req);
+            var options = new RenderOpeApiDocumentFunctionOptions("v3", "json", Assembly.GetExecutingAssembly(), excludedTags);
             var result = await Factory.Create<IRenderOpeApiDocumentFunction, ILogger>(log)
                                       .InvokeAsync<HttpRequestMessage, HttpResponseMessage>(req, options)
                                       .ConfigureAwait(false);
@@ -136,7 +143,8 @@ namespace Aliencube.AzureFunctions.FunctionAppV1
             [HttpTrigger(AuthorizationLevel.Function, "get", Route = "openapi/v3.yaml")] HttpRequestMessage req,
             ILogger log)
         {
-            var options = new RenderOpeApiDocumentFunctionOptions("v3", "yaml", Assembly.GetExecutingAssembly());
+            string[] excludedTags = GetExcludedTagsFromQueryString(req);
+            var options = new RenderOpeApiDocumentFunctionOptions("v3", "yaml", Assembly.GetExecutingAssembly(), excludedTags);
             var result = await Factory.Create<IRenderOpeApiDocumentFunction, ILogger>(log)
                                       .InvokeAsync<HttpRequestMessage, HttpResponseMessage>(req, options)
                                       .ConfigureAwait(false);
@@ -162,6 +170,19 @@ namespace Aliencube.AzureFunctions.FunctionAppV1
                                       .ConfigureAwait(false);
 
             return result;
+        }
+
+        private static string[] GetExcludedTagsFromQueryString(HttpRequestMessage req)
+        {
+            string[] excludedTags = null;
+
+            var value = req.GetQueryNameValuePairs().FirstOrDefault(p => p.Key.Equals("excludedTags", System.StringComparison.InvariantCultureIgnoreCase)).Value;
+            if (!string.IsNullOrWhiteSpace(value))
+            {
+                excludedTags = value.Split(',');
+            }
+
+            return excludedTags;
         }
     }
 }

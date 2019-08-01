@@ -17,8 +17,9 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Abstractions
         /// Gets the list of HTTP triggers.
         /// </summary>
         /// <param name="assembly">Assembly of Azure Function instance.</param>
+        /// <param name="excludedTags">List of tags to exclude from document.</param>
         /// <returns>List of <see cref="MethodInfo"/> instances representing HTTP triggers.</returns>
-        List<MethodInfo> GetHttpTriggerMethods(Assembly assembly);
+        List<MethodInfo> GetHttpTriggerMethods(Assembly assembly, string[] excludedTags);
 
         /// <summary>
         /// Gets the <see cref="FunctionNameAttribute"/> from the method.

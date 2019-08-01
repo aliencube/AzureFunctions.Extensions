@@ -80,7 +80,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi
         }
 #endif
         /// <inheritdoc />
-        public IDocument Build(Assembly assembly, NamingStrategy namingStrategy = null)
+        public IDocument Build(Assembly assembly, NamingStrategy namingStrategy = null, string[] excludedTags = null)
         {
             if (namingStrategy.IsNullOrDefault())
             {
@@ -89,7 +89,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi
 
             var paths = new OpenApiPaths();
 
-            var methods = this._helper.GetHttpTriggerMethods(assembly);
+            var methods = this._helper.GetHttpTriggerMethods(assembly, excludedTags);
             foreach (var method in methods)
             {
                 var trigger = this._helper.GetHttpTriggerAttribute(method);

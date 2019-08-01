@@ -39,7 +39,8 @@ namespace Aliencube.AzureFunctions.FunctionAppV2
             string extension,
             ILogger log)
         {
-            var options = new RenderOpeApiDocumentFunctionOptions("v2", extension, Assembly.GetExecutingAssembly());
+            string[] excludedTags = GetExcludedTagsFromQueryString(req);
+            var options = new RenderOpeApiDocumentFunctionOptions("v2", extension, Assembly.GetExecutingAssembly(), excludedTags);
             var result = await Factory.Create<IRenderOpeApiDocumentFunction, ILogger>(log)
                                       .InvokeAsync<HttpRequest, IActionResult>(req, options)
                                       .ConfigureAwait(false);
@@ -63,7 +64,8 @@ namespace Aliencube.AzureFunctions.FunctionAppV2
             string extension,
             ILogger log)
         {
-            var options = new RenderOpeApiDocumentFunctionOptions(version, extension, Assembly.GetExecutingAssembly());
+            string[] excludedTags = GetExcludedTagsFromQueryString(req);
+            var options = new RenderOpeApiDocumentFunctionOptions(version, extension, Assembly.GetExecutingAssembly(), excludedTags);
             var result = await Factory.Create<IRenderOpeApiDocumentFunction, ILogger>(log)
                                       .InvokeAsync<HttpRequest, IActionResult>(req, options)
                                       .ConfigureAwait(false);
@@ -89,6 +91,18 @@ namespace Aliencube.AzureFunctions.FunctionAppV2
                                       .ConfigureAwait(false);
 
             return result;
+        }
+
+        private static string[] GetExcludedTagsFromQueryString(HttpRequest req)
+        {
+            string[] excludedTags = null;
+            string excludedTagsQueryString = req.Query["excludedTags"];
+            if (!string.IsNullOrWhiteSpace(excludedTagsQueryString))
+            {
+                excludedTags = excludedTagsQueryString.Split(',');
+            }
+
+            return excludedTags;
         }
     }
 }
