@@ -22,7 +22,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Tests.Extensions
         [TestMethod]
         public void Given_Type_Null_It_Should_Throw_Exception()
         {
-            Action action = () => OpenApiSchemaExtensions.ToOpenApiSchema(null, null, null);
+            Action action = () => OpenApiSchemaExtensions.ToOpenApiSchema(null, null, attribute:null);
 
             action.Should().Throw<ArgumentNullException>();
         }
@@ -82,7 +82,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Tests.Extensions
             var visibilityType = OpenApiVisibilityType.Important;
             var visibility = new OpenApiSchemaVisibilityAttribute(visibilityType);
 
-            var schema = OpenApiSchemaExtensions.ToOpenApiSchema(type, strategy, visibility);
+            var schema = OpenApiSchemaExtensions.ToOpenApiSchema(type, strategy, attribute: visibility);
 
             schema.Extensions.ContainsKey("x-ms-visibility").Should().BeTrue();
             schema.Extensions["x-ms-visibility"].Should().BeEquivalentTo(new OpenApiString(visibilityType.ToDisplayName()));
