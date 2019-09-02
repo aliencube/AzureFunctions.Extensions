@@ -28,15 +28,24 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
         /// <remarks>
         /// It runs recursively to build the entire object type. It only takes properties without <see cref="JsonIgnoreAttribute"/>.
         /// </remarks>
-        public static OpenApiSchema ToOpenApiSchema(this Type type, NamingStrategy namingStrategy, OpenApiSchemaVisibilityAttribute attribute = null)
+        public static OpenApiSchema ToOpenApiSchema(this Type type, NamingStrategy namingStrategy, int depth = 0, OpenApiSchemaVisibilityAttribute attribute = null)
         {
+            if (depth == 8)
+            {
+                return new OpenApiSchema
+                {
+                    Type = type.ToDataType(),
+                    Format = type.ToDataFormat()
+                };
+            }
+
             type.ThrowIfNullOrDefault();
 
             var schema = (OpenApiSchema)null;
 
             if (type.IsJObjectType())
             {
-                schema = typeof(object).ToOpenApiSchema(namingStrategy);
+                schema = typeof(object).ToOpenApiSchema(namingStrategy, depth + 1);
 
                 return schema;
             }
@@ -44,17 +53,17 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
             var unwrappedValueType = Nullable.GetUnderlyingType(type);
             if (!unwrappedValueType.IsNullOrDefault())
             {
-                schema = unwrappedValueType.ToOpenApiSchema(namingStrategy);
+                schema = unwrappedValueType.ToOpenApiSchema(namingStrategy, depth + 1);
                 schema.Nullable = true;
 
                 return schema;
             }
 
             schema = new OpenApiSchema()
-                         {
-                             Type = type.ToDataType(),
-                             Format = type.ToDataFormat()
-                         };
+            {
+                Type = type.ToDataType(),
+                Format = type.ToDataFormat()
+            };
 
             if (!attribute.IsNullOrDefault())
             {
@@ -86,7 +95,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
 
             if (type.IsOpenApiDictionary())
             {
-                schema.AdditionalProperties = type.GetGenericArguments()[1].ToOpenApiSchema(namingStrategy);
+                schema.AdditionalProperties = type.GetGenericArguments()[1].ToOpenApiSchema(namingStrategy, depth + 1);
 
                 return schema;
             }
@@ -94,7 +103,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
             if (type.IsOpenApiArray())
             {
                 schema.Type = "array";
-                schema.Items = (type.GetElementType() ?? type.GetGenericArguments()[0]).ToOpenApiSchema(namingStrategy);
+                schema.Items = (type.GetElementType() ?? type.GetGenericArguments()[0]).ToOpenApiSchema(namingStrategy, depth + 1);
 
                 return schema;
             }
@@ -112,16 +121,16 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
                 var ts = property.DeclaringType.GetGenericArguments();
                 if (!ts.Any())
                 {
-                    schema.Properties[namingStrategy.GetPropertyName(property.Name, false)] = property.PropertyType.ToOpenApiSchema(namingStrategy, visiblity);
+                    schema.Properties[namingStrategy.GetPropertyName(property.Name, false)] = property.PropertyType.ToOpenApiSchema(namingStrategy, depth + 1, visiblity);
 
                     continue;
                 }
 
                 var reference = new OpenApiReference()
-                                    {
-                                        Type = ReferenceType.Schema,
-                                        Id = property.PropertyType.GetOpenApiRootReferenceId()
-                                    };
+                {
+                    Type = ReferenceType.Schema,
+                    Id = property.PropertyType.GetOpenApiRootReferenceId()
+                };
                 var referenceSchema = new OpenApiSchema() { Reference = reference };
 
                 if (!ts.Contains(property.PropertyType))
@@ -130,10 +139,10 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
                     {
                         reference.Id = property.PropertyType.GetOpenApiReferenceId(true, false);
                         var dictionarySchema = new OpenApiSchema()
-                                                   {
-                                                       Type = "object",
-                                                       AdditionalProperties = referenceSchema
-                                                   };
+                        {
+                            Type = "object",
+                            AdditionalProperties = referenceSchema
+                        };
                         schema.Properties[namingStrategy.GetPropertyName(property.Name, false)] = dictionarySchema;
 
                         continue;
@@ -143,16 +152,16 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
                     {
                         reference.Id = property.PropertyType.GetOpenApiReferenceId(false, true);
                         var arraySchema = new OpenApiSchema()
-                                              {
-                                                  Type = "array",
-                                                  Items = referenceSchema
-                                              };
+                        {
+                            Type = "array",
+                            Items = referenceSchema
+                        };
                         schema.Properties[namingStrategy.GetPropertyName(property.Name, false)] = arraySchema;
 
                         continue;
                     }
 
-                    schema.Properties[namingStrategy.GetPropertyName(property.Name, false)] = property.PropertyType.ToOpenApiSchema(namingStrategy, visiblity);
+                    schema.Properties[namingStrategy.GetPropertyName(property.Name, false)] = property.PropertyType.ToOpenApiSchema(namingStrategy, depth + 1, visiblity);
 
                     continue;
                 }

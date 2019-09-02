@@ -70,5 +70,7 @@ namespace Aliencube.AzureFunctions.FunctionAppV1
 
             return result;
         }
+
+
     }
 }

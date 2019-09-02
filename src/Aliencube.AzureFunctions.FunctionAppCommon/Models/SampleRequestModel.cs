@@ -1,4 +1,6 @@
-﻿namespace Aliencube.AzureFunctions.FunctionAppCommon.Models
+﻿using System.Collections.Generic;
+
+namespace Aliencube.AzureFunctions.FunctionAppCommon.Models
 {
     /// <summary>
     /// This represents the model entity for sample request.
@@ -9,5 +11,7 @@
         /// Gets or sets the Id.
         /// </summary>
         public string Id { get; set; }
+
+        public List<SampleRequestModel> Children { get; set; }
     }
 }

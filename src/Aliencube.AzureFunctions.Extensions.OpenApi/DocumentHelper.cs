@@ -173,7 +173,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi
                                 .Where(p => !typeof(Array).IsAssignableFrom(p))
                                 ;
             var schemas = types.ToDictionary(p => p.IsGenericType ? p.GetOpenApiGenericRootName() : p.Name,
-                                             p => p.ToOpenApiSchema(namingStrategy)); // schemaGenerator.Generate(p)
+                                             p => p.ToOpenApiSchema(namingStrategy,0)); // schemaGenerator.Generate(p)
 
             return schemas;
         }
