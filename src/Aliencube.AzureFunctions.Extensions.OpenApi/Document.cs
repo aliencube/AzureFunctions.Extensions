@@ -123,7 +123,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi
 
                 operation.Parameters = this._helper.GetOpenApiParameters(method, trigger);
                 operation.RequestBody = this._helper.GetOpenApiRequestBody(method);
-                operation.Responses = this._helper.GetOpenApiResponseBody(method);
+                operation.Responses = this._helper.GetOpenApiResponses(method);
 
                 operations[verb] = operation;
                 item.Operations = operations;

@@ -148,13 +148,15 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi
         }
 
         /// <inheritdoc />
-        public OpenApiResponses GetOpenApiResponseBody(MethodInfo element, NamingStrategy namingStrategy = null)
+        public OpenApiResponses GetOpenApiResponses(MethodInfo element, NamingStrategy namingStrategy = null)
         {
-            var responses = element.GetCustomAttributes<OpenApiResponseBodyAttribute>(inherit: false)
-                                   .ToDictionary(p => ((int)p.StatusCode).ToString(), p => p.ToOpenApiResponse(namingStrategy))
-                                   .ToOpenApiResponses();
+            var responsesWithBody = element.GetCustomAttributes<OpenApiResponseBodyAttribute>(inherit: false)
+                                   .Select(p => (StatusCode: p.StatusCode, Response: p.ToOpenApiResponse(namingStrategy)));
 
-            return responses;
+            var responses = element.GetCustomAttributes<OpenApiResponseAttribute>(inherit: false)
+                                   .Select(p => (StatusCode: p.StatusCode, Response: p.ToOpenApiResponse(namingStrategy)));
+
+            return responses.Concat(responsesWithBody).ToDictionary(x => ((int)x.StatusCode).ToString(), x => x.Response).ToOpenApiResponses();
         }
 
         /// <inheritdoc />
