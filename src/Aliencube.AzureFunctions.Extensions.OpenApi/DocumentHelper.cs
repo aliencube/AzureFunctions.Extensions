@@ -171,10 +171,10 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi
                                 .Where(p => p != typeof(JObject))
                                 .Where(p => p != typeof(JToken))
                                 .Where(p => !typeof(Array).IsAssignableFrom(p))
-                                ;
-            var schemas = types.ToDictionary(p => p.IsGenericType ? p.GetOpenApiGenericRootName() : p.Name,
-                                             p => p.ToOpenApiSchema(namingStrategy)); // schemaGenerator.Generate(p)
+                                .ToList();
 
+            var schemas = new Dictionary<string, OpenApiSchema>();
+            types.ForEach(p => schemas.AddRange(p.ToOpenApiSchemas(namingStrategy)));
             return schemas;
         }
 
