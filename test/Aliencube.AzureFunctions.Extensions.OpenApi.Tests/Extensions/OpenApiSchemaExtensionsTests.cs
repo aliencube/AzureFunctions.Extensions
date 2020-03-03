@@ -206,16 +206,24 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Tests.Extensions
             var strategy = new CamelCaseNamingStrategy();
 
             var schemas = OpenApiSchemaExtensions.ToOpenApiSchemas(type, strategy);
-            schemas.Count.Should().Be(2);
+            schemas.Count.Should().Be(3);
             var fmSchema = schemas[type.Name];
             var fsmType = typeof(FakeSubModel);
             var fsmSchema = schemas[fsmType.Name];
+            var feType = typeof(FakeEnum);
+            var feSchema = schemas[feType.Name];
             fmSchema.Type.Should().Be("object");
             fmSchema.Properties["fakeProperty"].Type.Should().BeEquivalentTo("string");
+            fmSchema.Properties["nullableInt"].Type.Should().BeEquivalentTo("integer");
+            fmSchema.Properties["nullableInt"].Nullable.Should().BeTrue();
             fmSchema.Properties["subProperty"].Reference.Id.Should().BeEquivalentTo(fsmType.Name);
+            fmSchema.Properties["enumProperty"].Reference.Id.Should().BeEquivalentTo(feType.Name);
 
             fsmSchema.Type.Should().Be("object");
             fsmSchema.Properties["fakeSubModelProperty"].Type.Should().BeEquivalentTo("integer");
+
+            feSchema.Type.Should().Be("integer");
+            feSchema.Enum.Count.Should().Be(2);
 
 
         }

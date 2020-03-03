@@ -9,6 +9,9 @@
         /// Gets or sets the value.
         /// </summary>
         public string FakeProperty { get; set; }
+        public int? NullableInt { get; set; }
         public FakeSubModel SubProperty { get; set; }
+        public FakeEnum EnumProperty { get; set; }
+
     }
 }
