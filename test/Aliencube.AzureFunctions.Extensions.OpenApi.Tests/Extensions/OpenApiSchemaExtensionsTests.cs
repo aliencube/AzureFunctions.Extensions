@@ -241,5 +241,24 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Tests.Extensions
 
 
         }
+        [TestMethod]
+        public void Given_FakeModelWithCircularRef_It_Should_Return_Result()
+        {
+            var type = typeof(FakeModelWithCircularRef);
+            var strategy = new CamelCaseNamingStrategy();
+
+            var schemas = OpenApiSchemaExtensions.ToOpenApiSchemas(type, strategy);
+            schemas.Count.Should().Be(2);
+            var fmSchema = schemas[type.Name];
+            var fsmType = typeof(FakeModelWithCircularRefSub);
+            var fsmSchema = schemas[fsmType.Name];
+            fmSchema.Type.Should().Be("object");
+            fmSchema.Properties["subProperty"].Reference.Id.Should().BeEquivalentTo(fsmType.Name);
+
+            fsmSchema.Type.Should().Be("object");
+            fsmSchema.Properties["circle"].Reference.Id.Should().BeEquivalentTo(type.Name);
+
+
+        }
     }
 }
