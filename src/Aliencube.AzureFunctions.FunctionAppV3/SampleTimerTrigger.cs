@@ -8,7 +8,7 @@ using Aliencube.AzureFunctions.FunctionAppCommon.Functions.FunctionOptions;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Extensions.Logging;
 
-namespace Aliencube.AzureFunctions.FunctionAppV2
+namespace Aliencube.AzureFunctions.FunctionAppV3
 {
     /// <summary>
     /// This represents the timer trigger.
