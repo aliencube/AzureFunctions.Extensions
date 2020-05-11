@@ -8,8 +8,8 @@ using Aliencube.AzureFunctions.FunctionAppCommon.Functions;
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
 
-[assembly: FunctionsStartup(typeof(Aliencube.AzureFunctions.FunctionAppV2.StartUp))]
-namespace Aliencube.AzureFunctions.FunctionAppV2
+[assembly: FunctionsStartup(typeof(Aliencube.AzureFunctions.FunctionAppV3.StartUp))]
+namespace Aliencube.AzureFunctions.FunctionAppV3
 {
     /// <summary>
     /// This represents the entity to be invoked during the runtime startup.

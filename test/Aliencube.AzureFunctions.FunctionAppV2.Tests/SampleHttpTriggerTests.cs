@@ -30,10 +30,7 @@ namespace Aliencube.AzureFunctions.FunctionAppV2.Tests
             var function = new Mock<ISampleHttpFunction>();
             function.Setup(p => p.InvokeAsync<HttpRequest, IActionResult>(It.IsAny<HttpRequest>(), It.IsAny<FunctionOptionsBase>())).ReturnsAsync(result);
 
-            var factory = new Mock<IFunctionFactory>();
-            factory.Setup(p => p.Create<ISampleHttpFunction, ILogger>(It.IsAny<ILogger>())).Returns(function.Object);
-
-            SampleHttpTrigger.Factory = factory.Object;
+            var trigger = new SampleHttpTrigger(function.Object);
 
             var id = 1;
             var category = "heros";
@@ -45,7 +42,7 @@ namespace Aliencube.AzureFunctions.FunctionAppV2.Tests
             req.SetupGet(p => p.Query).Returns(query);
 
             var log = new Mock<ILogger>();
-            var response = await SampleHttpTrigger.GetSample(req.Object, id, category, log.Object).ConfigureAwait(false);
+            var response = await trigger.GetSample(req.Object, id, category, log.Object).ConfigureAwait(false);
 
             response.Should().BeOfType<OkObjectResult>();
             (response as OkObjectResult).Value.Should().Be(message);

@@ -1,9 +1,9 @@
+using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
 
-using Aliencube.AzureFunctions.Extensions.DependencyInjection;
-using Aliencube.AzureFunctions.Extensions.DependencyInjection.Abstractions;
+using Aliencube.AzureFunctions.Extensions.DependencyInjection.Extensions;
 using Aliencube.AzureFunctions.Extensions.OpenApi.Attributes;
 using Aliencube.AzureFunctions.Extensions.OpenApi.Enums;
 using Aliencube.AzureFunctions.FunctionAppCommon.Functions;
@@ -23,12 +23,18 @@ namespace Aliencube.AzureFunctions.FunctionAppV2
     /// <summary>
     /// This represents the HTTP trigger.
     /// </summary>
-    public static class SampleHttpTrigger
+    public class SampleHttpTrigger
     {
+        private readonly ISampleHttpFunction _function;
+
         /// <summary>
-        /// Gets the <see cref="IFunctionFactory"/> instance as an IoC container.
+        /// Initializes a new instance of the <see cref="SampleHttpTrigger"/> class.
         /// </summary>
-        public static IFunctionFactory Factory { get; set; } = new FunctionFactory<StartUp>();
+        /// <param name="function"><see cref="ISampleHttpFunction"/> instance.</param>
+        public SampleHttpTrigger(ISampleHttpFunction function)
+        {
+            this._function = function ?? throw new ArgumentNullException(nameof(function));
+        }
 
         /// <summary>
         /// Invokes the HTTP trigger endpoint to get sample.
@@ -53,15 +59,15 @@ namespace Aliencube.AzureFunctions.FunctionAppV2
         [OpenApiResponseBody(statusCode: HttpStatusCode.InternalServerError, contentType: "application/json", bodyType: typeof(List<string>), Summary = "Sample response of a List")]
         [OpenApiResponseBody(statusCode: HttpStatusCode.NotImplemented, contentType: "application/json", bodyType: typeof(Dictionary<string, int>), Summary = "Sample response of a Dictionary")]
         [OpenApiResponseBody(statusCode: HttpStatusCode.BadGateway, contentType: "application/json", bodyType: typeof(SampleGenericResponseModel<SampleResponseModel>), Summary = "Sample response of a Generic")]
-        public static async Task<IActionResult> GetSample(
+        public async Task<IActionResult> GetSample(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "samples/{id:int}/categories/{category:regex(^[a-z]{{3,}}$)}")] HttpRequest req,
             int id,
             string category,
             ILogger log)
         {
-            var result = await Factory.Create<ISampleHttpFunction, ILogger>(log)
-                                      .InvokeAsync<HttpRequest, IActionResult>(req)
-                                      .ConfigureAwait(false);
+            var result = await this._function.AddLogger(log)
+                                             .InvokeAsync<HttpRequest, IActionResult>(req)
+                                             .ConfigureAwait(false);
 
             return result;
         }
@@ -76,13 +82,13 @@ namespace Aliencube.AzureFunctions.FunctionAppV2
         [OpenApiOperation(operationId: "add", tags: new[] { "sample" })]
         [OpenApiRequestBody(contentType: "application/json", bodyType: typeof(SampleRequestModel))]
         [OpenApiResponseBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(SampleResponseModel), Summary = "Sample response")]
-        public static async Task<IActionResult> PostSample(
+        public async Task<IActionResult> PostSample(
             [HttpTrigger(AuthorizationLevel.Function, "post", Route = "samples")] HttpRequest req,
             ILogger log)
         {
-            var result = await Factory.Create<ISampleHttpFunction, ILogger>(log)
-                                      .InvokeAsync<HttpRequest, IActionResult>(req)
-                                      .ConfigureAwait(false);
+            var result = await this._function.AddLogger(log)
+                                             .InvokeAsync<HttpRequest, IActionResult>(req)
+                                             .ConfigureAwait(false);
 
             return result;
         }
