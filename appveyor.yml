@@ -14,7 +14,7 @@
       - .editorconfig
       - .gitattributes
       - .gitignore
-      - appveyor.yml
+      # - appveyor.yml
       - LICENSE
       - README.md
       - Settings.StyleCop
