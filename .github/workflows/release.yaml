@@ -16,17 +16,12 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     steps:
-    # - name: Check event payload
-    #   shell: pwsh
-    #   run: |
-    #     echo ${{ toJSON(github.event) }}
-
-    - name: Check event payload 2
+    - name: Check event payload
       shell: pwsh
       run: |
-        echo ${{ github.event.ref }}
+        echo ${{ github.event }}
 
-    - name: Check event payload 3
+    - name: Set release module and version
       id: release
       shell: pwsh
       run: |
@@ -35,17 +30,17 @@ jobs:
         $module = $segments[0]
         $version = $segments[1]
 
-        echo "::set-env name=RELEASE_MODULE::$module"
-        echo "::set-env name=RELEASE_VERSION::$version"
+        # echo "::set-env name=RELEASE_MODULE::$module"
+        # echo "::set-env name=RELEASE_VERSION::$version"
 
         echo "::set-output name=module::$module"
         echo "::set-output name=version::$version"
 
-    - name: Check event payload 4
+    - name: Check release module and version
       shell: pwsh
       run: |
-        echo "env: $env:RELEASE_MODULE"
-        echo "env: $env:RELEASE_VERSION"
+        # echo "env: $env:RELEASE_MODULE"
+        # echo "env: $env:RELEASE_VERSION"
 
         echo "output: ${{ steps.release.outputs.module }}"
         echo "output: ${{ steps.release.outputs.version }}"
