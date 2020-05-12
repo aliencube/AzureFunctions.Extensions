@@ -35,12 +35,18 @@ jobs:
         $module = $segments[0]
         $version = $segments[1]
 
-        echo ::set-output name=module::$module
-        echo ::set-output name=version::$version
+        echo "::set-env name=RELEASE_MODULE::$module"
+        echo "::set-env name=RELEASE_VERSION::$version"
+
+        echo "::set-output name=module::$module"
+        echo "::set-output name=version::$version"
 
     - name: Check event payload 4
       shell: pwsh
       run: |
+        echo $RELEASE_MODULE
+        echo $RELEASE_VERSION
+
         echo ${{ steps.release.outputs.module }}
         echo ${{ steps.release.outputs.version }}
 
