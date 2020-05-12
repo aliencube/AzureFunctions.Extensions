@@ -19,7 +19,7 @@ jobs:
     - name: Check event payload
       shell: pwsh
       run: |
-        echo ${{ github.event }}
+        echo "${{ toJSON(github.event) }}"
 
     - name: Set release module and version
       id: release
