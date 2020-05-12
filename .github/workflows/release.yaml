@@ -30,8 +30,8 @@ jobs:
       id: release
       shell: pwsh
       run: |
-        $branch = "${{ github.event.ref }}".Substring("refs/heads/release/", "")
-        $segments = $branch.Split('-')
+        $branch = "${{ github.event.ref }} -replace "refs/heads/release/", ""
+        $segments = $branch -split "-"
         $module = $segments[0]
         $version = $segments[1]
 
