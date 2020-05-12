@@ -35,13 +35,13 @@ jobs:
         dir
         dotnet restore .
 
-    - name: Build libraries
+    - name: Build solution
       shell: pwsh
       run: |
         dir
         msbuild . /p:Configuration=Debug
 
-    - name: Test libraries
+    - name: Test solution
       shell: pwsh
       run: |
         dir
