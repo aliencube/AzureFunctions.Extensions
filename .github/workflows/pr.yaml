@@ -37,7 +37,7 @@ jobs:
       shell: pwsh
       run: |
         dir
-        msbuild . /p:Configuration=Release
+        msbuild . /p:Configuration=Release /p:Verbosity=minimal
 
     - name: Test solution
       shell: pwsh
