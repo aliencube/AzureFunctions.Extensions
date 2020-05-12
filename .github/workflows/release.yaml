@@ -16,15 +16,15 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     steps:
-    - name: Check event payload
-      shell: pwsh
-      run: |
-        ${{ toJSON(github.event) }}
+    # - name: Check event payload
+    #   shell: pwsh
+    #   run: |
+    #     echo ${{ toJSON(github.event) }}
 
     - name: Check event payload 2
       shell: pwsh
       run: |
-        ${{ github.event.ref }}
+        echo ${{ github.event.ref }}
 
     - name: Check event payload 3
       id: release
@@ -35,7 +35,7 @@ jobs:
     - name: Check event payload 4
       shell: pwsh
       run: |
-        ${{ steps.release.outputs.version }}
+        echo ${{ steps.release.outputs.version }}
 
     # - name: Checkout the repository
     #   uses: actions/checkout@v2
