@@ -30,12 +30,18 @@ jobs:
       id: release
       shell: pwsh
       run: |
-        $version = ${{ github.event.ref }}.Substring("refs/heads/release/swagger-", "")
+        $branch = "${{ github.event.ref }}".Substring("refs/heads/release/", "")
+        $segments = $branch.Split('-')
+        $module = $segments[0]
+        $version = $segments[1]
+
+        echo ::set-output name=module::$module
         echo ::set-output name=version::$version
 
     - name: Check event payload 4
       shell: pwsh
       run: |
+        echo ${{ steps.release.outputs.module }}
         echo ${{ steps.release.outputs.version }}
 
     # - name: Checkout the repository
