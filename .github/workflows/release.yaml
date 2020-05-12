@@ -30,7 +30,8 @@ jobs:
       id: release
       shell: pwsh
       run: |
-        echo ::set-output name=version::$(${{ github.event.ref }}).Substring("refs/heads/release/swagger-", "")
+        $version = ${{ github.event.ref }}.Substring("refs/heads/release/swagger-", "")
+        echo ::set-output name=version::$version
 
     - name: Check event payload 4
       shell: pwsh
