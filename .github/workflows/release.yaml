@@ -16,10 +16,10 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     steps:
-    - name: Check event payload
-      shell: pwsh
-      run: |
-        echo "${{ toJSON(github.event) }}"
+    # - name: Check event payload
+    #   shell: pwsh
+    #   run: |
+    #     echo ${{ toJSON(github.event) }}
 
     - name: Set release module and version
       id: release
@@ -36,40 +36,82 @@ jobs:
         echo "::set-output name=module::$module"
         echo "::set-output name=version::$version"
 
+    # - name: Check release module and version
+    #   shell: pwsh
+    #   run: |
+    #     # echo "env: $env:RELEASE_MODULE"
+    #     # echo "env: $env:RELEASE_VERSION"
+
+    #     echo "output: ${{ steps.release.outputs.module }}"
+    #     echo "output: ${{ steps.release.outputs.version }}"
+
+    - name: Checkout the repository
+      uses: actions/checkout@v2
+
+    - name: Setup .NET SDK
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: ${{ matrix.dotnet }}
+
+    - name: Add MSBuild to PATH
+      uses: microsoft/setup-msbuild@v1.0.0
+
+    - name: Restore NuGet packages
+      shell: pwsh
+      run: |
+        dir
+        dotnet restore .
+
+    - name: Build solution
+      shell: pwsh
+      run: |
+        dir
+        msbuild . /p:Configuration=Release /p:Version=${{ steps.release.outputs.version }}
+
+    - name: Test solution
+      shell: pwsh
+      run: |
+        dir
+        dotnet test . -c Release
+
+    - name: List Package for AppSettings
+      if: steps.release.outputs.module == 'appsettings'
+      shell: pwsh
+      run: |
+        $package = Get-ChildItem -Path ./src/*.AppSettings -Include *.nupkg -Recurse
+
+        echo "::set-env name=PACKAGE_PATH::$package.FullName"
+
+    - name: List Package for Configuration.Json
+      if: steps.release.outputs.module == 'configjson'
+      shell: pwsh
+      run: |
+        $package = Get-ChildItem -Path ./src/*.Json -Include *.nupkg -Recurse
+
+        echo "::set-env name=PACKAGE_PATH::$package.FullName"
+
+    - name: List Package for DependencyInjection
+      if: steps.release.outputs.module == 'di'
+      shell: pwsh
+      run: |
+        $package = Get-ChildItem -Path ./src/*.DependencyInjection -Include *.nupkg -Recurse
+
+        echo "::set-env name=PACKAGE_PATH::$package.FullName"
+
+    - name: List Package for OpenApi
+      if: steps.release.outputs.module == 'swagger'
+      shell: pwsh
+      run: |
+        $package = Get-ChildItem -Path ./src/*.OpenApi -Include *.nupkg -Recurse
+
+        echo "::set-env name=PACKAGE_PATH::$package.FullName"
+
     - name: Check release module and version
       shell: pwsh
       run: |
-        # echo "env: $env:RELEASE_MODULE"
-        # echo "env: $env:RELEASE_VERSION"
+        echo "env: $env:PACKAGE_PATH"
 
-        echo "output: ${{ steps.release.outputs.module }}"
-        echo "output: ${{ steps.release.outputs.version }}"
-
-    # - name: Checkout the repository
-    #   uses: actions/checkout@v2
-
-    # - name: Setup .NET SDK
-    #   uses: actions/setup-dotnet@v1
-    #   with:
-    #     dotnet-version: ${{ matrix.dotnet }}
-
-    # - name: Add MSBuild to PATH
-    #   uses: microsoft/setup-msbuild@v1.0.0
-
-    # - name: Restore NuGet packages
+    # - name: Release to NuGet
     #   shell: pwsh
     #   run: |
-    #     dir
-    #     dotnet restore .
-
-    # - name: Build solution
-    #   shell: pwsh
-    #   run: |
-    #     dir
-    #     msbuild . /p:Configuration=Release /p:Version=
-
-    # - name: Test solution
-    #   shell: pwsh
-    #   run: |
-    #     dir
-    #     dotnet test . -c Release
+    #     dotnet nuget push $env:PACKAGE_PATH --source https://api.nuget.org/v3/index.json --apk-key ${{ secrets.NUGET_API_KEY }}
