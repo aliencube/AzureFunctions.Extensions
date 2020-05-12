@@ -35,7 +35,7 @@ jobs:
     - name: Check event payload 4
       shell: pwsh
       run: |
-        echo ${{ stepts.release.outputs.version }}
+        echo ${{ steps.release.outputs.version }}
 
     # - name: Checkout the repository
     #   uses: actions/checkout@v2
