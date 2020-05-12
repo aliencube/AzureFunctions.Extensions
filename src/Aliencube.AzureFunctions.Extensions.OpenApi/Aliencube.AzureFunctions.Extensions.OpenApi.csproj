@@ -23,17 +23,13 @@
     <RepositoryType>git</RepositoryType>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+  <PropertyGroup Condition="'$(Configuration)'=='Debug'">
     <DocumentationFile>bin\Debug\net461\Aliencube.AzureFunctions.Extensions.OpenApi.xml</DocumentationFile>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DocumentationFile>bin\Debug\netstandard2.0\Aliencube.AzureFunctions.Extensions.OpenApi.xml</DocumentationFile>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+  <PropertyGroup Condition="'$(Configuration)'=='Release'">
     <DocumentationFile>bin\Release\net461\Aliencube.AzureFunctions.Extensions.OpenApi.xml</DocumentationFile>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <DocumentationFile>bin\Release\netstandard2.0\Aliencube.AzureFunctions.Extensions.OpenApi.xml</DocumentationFile>
   </PropertyGroup>
 
@@ -48,9 +44,9 @@
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
   </ItemGroup>
 
-  <ItemGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+  <!-- <ItemGroup Condition="'$(Configuration)'=='Release'">
     <PackageReference Include="Aliencube.AzureFunctions.Extensions.Configuration.AppSettings" Version="1.1.0" />
-  </ItemGroup>
+  </ItemGroup> -->
 
   <ItemGroup>
     <Compile Remove="Lists\**" />
@@ -62,7 +58,11 @@
     <PackageReference Include="Microsoft.OpenApi" Version="1.1.2" />
   </ItemGroup>
 
-  <ItemGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+  <!-- <ItemGroup Condition="'$(Configuration)'=='Debug'">
+    <ProjectReference Include="..\Aliencube.AzureFunctions.Extensions.Configuration.AppSettings\Aliencube.AzureFunctions.Extensions.Configuration.AppSettings.csproj" />
+  </ItemGroup> -->
+
+  <ItemGroup>
     <ProjectReference Include="..\Aliencube.AzureFunctions.Extensions.Configuration.AppSettings\Aliencube.AzureFunctions.Extensions.Configuration.AppSettings.csproj" />
   </ItemGroup>
 
