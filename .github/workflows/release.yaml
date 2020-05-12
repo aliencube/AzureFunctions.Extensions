@@ -19,12 +19,12 @@ jobs:
     - name: Check event payload
       shell: pwsh
       run: |
-        $(${{ toJSON(github.event) }})
+        ${{ toJSON(github.event) }}
 
     - name: Check event payload 2
       shell: pwsh
       run: |
-        $(${{ github.event.ref }})
+        ${{ github.event.ref }}
 
     - name: Check event payload 3
       id: release
@@ -35,7 +35,7 @@ jobs:
     - name: Check event payload 4
       shell: pwsh
       run: |
-        echo ${{ steps.release.outputs.version }}
+        ${{ steps.release.outputs.version }}
 
     # - name: Checkout the repository
     #   uses: actions/checkout@v2
