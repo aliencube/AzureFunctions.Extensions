@@ -1,0 +1,51 @@
+name: Build, Test and Release
+
+on:
+  push:
+    branches:
+    - release/*
+
+jobs:
+  build_test_release:
+    name: Build, test and release
+    strategy:
+      matrix:
+        os: [ 'windows-latest' ]
+        dotnet: [ '3.1.100' ]
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+    - name: Check event payload
+      shell: pwsh
+      run: |
+        echo ${{ toJSON(github.event) }}
+
+    # - name: Checkout the repository
+    #   uses: actions/checkout@v2
+
+    # - name: Setup .NET SDK
+    #   uses: actions/setup-dotnet@v1
+    #   with:
+    #     dotnet-version: ${{ matrix.dotnet }}
+
+    # - name: Add MSBuild to PATH
+    #   uses: microsoft/setup-msbuild@v1.0.0
+
+    # - name: Restore NuGet packages
+    #   shell: pwsh
+    #   run: |
+    #     dir
+    #     dotnet restore .
+
+    # - name: Build solution
+    #   shell: pwsh
+    #   run: |
+    #     dir
+    #     msbuild . /p:Configuration=Release /p:Version=
+
+    # - name: Test solution
+    #   shell: pwsh
+    #   run: |
+    #     dir
+    #     dotnet test . -c Release

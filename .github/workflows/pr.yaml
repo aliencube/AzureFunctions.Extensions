@@ -1,11 +1,9 @@
-name: Build and Test
+name: Build and Test from Pull Request
 
 on:
-  push:
+  pull_request:
     branches:
-    - master
     - dev
-    - feature/*
 
 jobs:
   build_and_test:
@@ -39,10 +37,10 @@ jobs:
       shell: pwsh
       run: |
         dir
-        msbuild . /p:Configuration=Debug
+        msbuild . /p:Configuration=Release
 
     - name: Test solution
       shell: pwsh
       run: |
         dir
-        dotnet test . -c Debug
+        dotnet test . -c Release
