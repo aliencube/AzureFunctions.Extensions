@@ -19,8 +19,6 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     steps:
-
-    - continue-on-error: false
     - name: Checkout the repository
       uses: actions/checkout@v2
 
