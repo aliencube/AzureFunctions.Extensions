@@ -8,7 +8,7 @@ using Aliencube.AzureFunctions.Extensions.OpenApi.Abstractions;
 
 using FluentAssertions;
 
-#if NETCOREAPP2_0
+#if !NET461
 using Microsoft.AspNetCore.Http;
 #endif
 using Microsoft.OpenApi;
@@ -77,7 +77,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Tests
 #if NET461
             var uri = new Uri(url);
             var req = new HttpRequestMessage() { RequestUri = uri };
-#elif NETCOREAPP2_0
+#else
             var req = new Mock<HttpRequest>();
             req.SetupGet(p => p.Scheme).Returns(scheme);
             req.SetupGet(p => p.Host).Returns(new HostString(host));
@@ -87,7 +87,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Tests
             var result = await doc.InitialiseDocument()
 #if NET461
                                   .AddServer(req, routePrefix)
-#elif NETCOREAPP2_0
+#else
                                   .AddServer(req.Object, routePrefix)
 #endif
                                   .RenderAsync(OpenApiSpecVersion.OpenApi2_0, OpenApiFormat.Json);
@@ -111,7 +111,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Tests
 #if NET461
             var uri = new Uri(url);
             var req = new HttpRequestMessage() { RequestUri = uri };
-#elif NETCOREAPP2_0
+#else
             var req = new Mock<HttpRequest>();
             req.SetupGet(p => p.Scheme).Returns(scheme);
             req.SetupGet(p => p.Host).Returns(new HostString(host));
@@ -121,7 +121,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Tests
             var result = await doc.InitialiseDocument()
 #if NET461
                                   .AddServer(req, routePrefix)
-#elif NETCOREAPP2_0
+#else
                                   .AddServer(req.Object, routePrefix)
 #endif
                                   .RenderAsync(OpenApiSpecVersion.OpenApi2_0, OpenApiFormat.Json);
@@ -145,7 +145,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Tests
 #if NET461
             var uri = new Uri(url);
             var req = new HttpRequestMessage() { RequestUri = uri };
-#elif NETCOREAPP2_0
+#else
             var req = new Mock<HttpRequest>();
             req.SetupGet(p => p.Scheme).Returns(scheme);
             req.SetupGet(p => p.Host).Returns(new HostString(host));
@@ -155,7 +155,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Tests
             var result = await doc.InitialiseDocument()
 #if NET461
                                   .AddServer(req, routePrefix)
-#elif NETCOREAPP2_0
+#else
                                   .AddServer(req.Object, routePrefix)
 #endif
                                   .RenderAsync(OpenApiSpecVersion.OpenApi2_0, OpenApiFormat.Json);
