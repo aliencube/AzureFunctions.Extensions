@@ -15,7 +15,7 @@ namespace Aliencube.AzureFunctions.Tests.Fakes
         /// <summary>
         /// Gets or sets the value 2.
         /// </summary>
-        [JsonProperty("fakeProperty2")]
+        [JsonProperty("anotherFakeProperty")]
         public string FakeProperty2 { get; set; }
     }
 }

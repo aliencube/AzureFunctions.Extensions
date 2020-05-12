@@ -29,7 +29,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Tests.Extensions
         public void Given_Property_When_GetJsonPropertyName_Invoked_Then_It_Should_Return_JsonPropertyName()
         {
             var name = "FakeProperty2";
-            var jsonPropertyName = "fakeProperty2";
+            var jsonPropertyName = "anotherFakeProperty";
             var property = typeof(FakeModel).GetProperty(name, BindingFlags.Public | BindingFlags.Instance);
 
             var result = PropertyInfoExtensions.GetJsonPropertyName(property);
