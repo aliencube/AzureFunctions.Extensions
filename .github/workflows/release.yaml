@@ -1,4 +1,4 @@
-name: Build, Test and Release
+name: Release
 
 on:
   push:
@@ -44,8 +44,8 @@ jobs:
     - name: Check event payload 4
       shell: pwsh
       run: |
-        echo "env: $RELEASE_MODULE"
-        echo "env: $RELEASE_VERSION"
+        echo "env: $env:RELEASE_MODULE"
+        echo "env: $env:RELEASE_VERSION"
 
         echo "output: ${{ steps.release.outputs.module }}"
         echo "output: ${{ steps.release.outputs.version }}"
