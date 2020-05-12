@@ -66,7 +66,7 @@ jobs:
       shell: pwsh
       run: |
         dir
-        msbuild . /p:Configuration=Release /p:Version=${{ steps.release.outputs.version }}
+        msbuild . /p:Configuration=Release /p:Version=${{ steps.release.outputs.version }} /p:Verbosity:minimal
 
     - name: Test solution
       shell: pwsh
@@ -78,33 +78,37 @@ jobs:
       if: steps.release.outputs.module == 'appsettings'
       shell: pwsh
       run: |
-        $package = Get-ChildItem -Path ./src/*.AppSettings -Include *.nupkg -Recurse
+        $package = Get-ChildItem -Path ./src/*.AppSettings -Include *.nupkg -Recurse | Where-Object { $_.FullName -like "*${{ steps.release.outputs.version }}*" }
+        $path = $package[0].FullName
 
-        echo "::set-env name=PACKAGE_PATH::$package.FullName"
+        echo "::set-env name=PACKAGE_PATH::$path"
 
     - name: List Package for Configuration.Json
       if: steps.release.outputs.module == 'configjson'
       shell: pwsh
       run: |
-        $package = Get-ChildItem -Path ./src/*.Json -Include *.nupkg -Recurse
+        $package = Get-ChildItem -Path ./src/*.Json -Include *.nupkg -Recurse | Where-Object { $_.FullName -like "*${{ steps.release.outputs.version }}*" }
+        $path = $package[0].FullName
 
-        echo "::set-env name=PACKAGE_PATH::$package.FullName"
+        echo "::set-env name=PACKAGE_PATH::$path"
 
     - name: List Package for DependencyInjection
       if: steps.release.outputs.module == 'di'
       shell: pwsh
       run: |
-        $package = Get-ChildItem -Path ./src/*.DependencyInjection -Include *.nupkg -Recurse
+        $package = Get-ChildItem -Path ./src/*.DependencyInjection -Include *.nupkg -Recurse | Where-Object { $_.FullName -like "*${{ steps.release.outputs.version }}*" }
+        $path = $package[0].FullName
 
-        echo "::set-env name=PACKAGE_PATH::$package.FullName"
+        echo "::set-env name=PACKAGE_PATH::$path"
 
     - name: List Package for OpenApi
       if: steps.release.outputs.module == 'swagger'
       shell: pwsh
       run: |
-        $package = Get-ChildItem -Path ./src/*.OpenApi -Include *.nupkg -Recurse
+        $package = Get-ChildItem -Path ./src/*.OpenApi -Include *.nupkg -Recurse | Where-Object { $_.FullName -like "*${{ steps.release.outputs.version }}*" }
+        $path = $package[0].FullName
 
-        echo "::set-env name=PACKAGE_PATH::$package.FullName"
+        echo "::set-env name=PACKAGE_PATH::$path"
 
     - name: Check release module and version
       shell: pwsh
