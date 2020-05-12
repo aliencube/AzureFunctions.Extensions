@@ -112,7 +112,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
                 var ts = property.DeclaringType.GetGenericArguments();
                 if (!ts.Any())
                 {
-                    schema.Properties[namingStrategy.GetPropertyName(property.Name, false)] = property.PropertyType.ToOpenApiSchema(namingStrategy, visiblity);
+                    schema.Properties[namingStrategy.GetPropertyName(propertyName, false)] = property.PropertyType.ToOpenApiSchema(namingStrategy, visiblity);
 
                     continue;
                 }
@@ -134,7 +134,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
                                                        Type = "object",
                                                        AdditionalProperties = referenceSchema
                                                    };
-                        schema.Properties[namingStrategy.GetPropertyName(property.Name, false)] = dictionarySchema;
+                        schema.Properties[namingStrategy.GetPropertyName(propertyName, false)] = dictionarySchema;
 
                         continue;
                     }
@@ -147,17 +147,17 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
                                                   Type = "array",
                                                   Items = referenceSchema
                                               };
-                        schema.Properties[namingStrategy.GetPropertyName(property.Name, false)] = arraySchema;
+                        schema.Properties[namingStrategy.GetPropertyName(propertyName, false)] = arraySchema;
 
                         continue;
                     }
 
-                    schema.Properties[namingStrategy.GetPropertyName(property.Name, false)] = property.PropertyType.ToOpenApiSchema(namingStrategy, visiblity);
+                    schema.Properties[namingStrategy.GetPropertyName(propertyName, false)] = property.PropertyType.ToOpenApiSchema(namingStrategy, visiblity);
 
                     continue;
                 }
 
-                schema.Properties[namingStrategy.GetPropertyName(property.Name, false)] = referenceSchema;
+                schema.Properties[namingStrategy.GetPropertyName(propertyName, false)] = referenceSchema;
             }
 
             return schema;
