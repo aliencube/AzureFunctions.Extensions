@@ -11,5 +11,12 @@
         /// <param name="input">Input value.</param>
         /// <returns>Output value.</returns>
         bool DoSomething(bool input);
+
+        /// <summary>
+        /// Does other thing.
+        /// </summary>
+        /// <param name="input">Input value.</param>
+        /// <returns>Output value.</returns>
+        bool DoOtherThing(bool input);
     }
 }
