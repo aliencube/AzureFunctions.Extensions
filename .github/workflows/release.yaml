@@ -66,7 +66,7 @@ jobs:
       shell: pwsh
       run: |
         dir
-        msbuild . /p:Configuration=Release /p:Version=${{ steps.release.outputs.version }} /p:Verbosity:minimal
+        msbuild . /p:Configuration=Release /p:Version=${{ steps.release.outputs.version }} /p:Verbosity=minimal
 
     - name: Test solution
       shell: pwsh
