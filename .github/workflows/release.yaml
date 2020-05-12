@@ -44,11 +44,11 @@ jobs:
     - name: Check event payload 4
       shell: pwsh
       run: |
-        echo $RELEASE_MODULE
-        echo $RELEASE_VERSION
+        echo "env: $RELEASE_MODULE"
+        echo "env: $RELEASE_VERSION"
 
-        echo ${{ steps.release.outputs.module }}
-        echo ${{ steps.release.outputs.version }}
+        echo "output: ${{ steps.release.outputs.module }}"
+        echo "output: ${{ steps.release.outputs.version }}"
 
     # - name: Checkout the repository
     #   uses: actions/checkout@v2
