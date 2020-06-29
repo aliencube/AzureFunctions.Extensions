@@ -73,7 +73,10 @@ namespace Aliencube.AzureFunctions.FunctionAppV2.Tests
 
             enumPropToken.Should().NotBeNull();
 
-            var enumValues = enumPropToken["enum"];
+            var enumRef = enumPropToken["$ref"];
+            enumRef.Should().NotBeNull();
+            var enumValues = result.SelectToken(
+                $"$..{typeof(StringEnum).Name}")["enum"];
             enumValues.Should().NotBeNull();
 
             enumValues.Children().Select(t => t.Value<string>()).Should()
@@ -97,9 +100,11 @@ namespace Aliencube.AzureFunctions.FunctionAppV2.Tests
 
             enumPropToken.Should().NotBeNull();
 
-            var enumValues = enumPropToken["enum"];
+            var enumRef = enumPropToken["$ref"];
+            enumRef.Should().NotBeNull();
+            var enumValues = result.SelectToken(
+                $"$..{typeof(NumericEnum).Name}")["enum"];
             enumValues.Should().NotBeNull();
-
             enumValues.Children().Select(t => t.Value<string>()).Should()
                 .BeEquivalentTo(Enum.GetValues(typeof(NumericEnum)));
         }
