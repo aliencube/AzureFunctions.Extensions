@@ -198,5 +198,75 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Tests.Extensions
 
             result.Properties.Count.Should().Be(4);
         }
+
+        [TestMethod]
+        public void Given_FakeModel_It_Should_Return_Result()
+        {
+            var type = typeof(FakeModel);
+            var strategy = new CamelCaseNamingStrategy();
+
+            var schemas = OpenApiSchemaExtensions.ToOpenApiSchemas(type, strategy);
+            schemas.Count.Should().Be(3);
+            var fmSchema = schemas[type.Name];
+            var fsmType = typeof(FakeSubModel);
+            var fsmSchema = schemas[fsmType.Name];
+            var feType = typeof(FakeEnum);
+            var feSchema = schemas[feType.Name];
+            fmSchema.Type.Should().Be("object");
+            fmSchema.Properties["fakeProperty"].Type.Should().BeEquivalentTo("string");
+            fmSchema.Properties["nullableInt"].Type.Should().BeEquivalentTo("integer");
+            fmSchema.Properties["nullableInt"].Nullable.Should().BeTrue();
+            fmSchema.Properties["subProperty"].Reference.Id.Should().BeEquivalentTo(fsmType.Name);
+            fmSchema.Properties["enumProperty"].Reference.Id.Should().BeEquivalentTo(feType.Name);
+
+            fsmSchema.Type.Should().Be("object");
+            fsmSchema.Properties["fakeSubModelProperty"].Type.Should().BeEquivalentTo("integer");
+
+            feSchema.Type.Should().Be("integer");
+            feSchema.Enum.Count.Should().Be(2);
+
+
+        }
+
+        [TestMethod]
+        public void Given_FakeModelWithList_It_Should_Return_Result()
+        {
+            var type = typeof(FakeModelWithList);
+            var strategy = new CamelCaseNamingStrategy();
+
+            var schemas = OpenApiSchemaExtensions.ToOpenApiSchemas(type, strategy);
+            schemas.Count.Should().Be(2);
+            var fmSchema = schemas[type.Name];
+            var fsmType = typeof(FakeSubModel);
+            var fsmSchema = schemas[fsmType.Name];
+            fmSchema.Type.Should().Be("object");
+            fmSchema.Properties["parent"].Reference.Id.Should().BeEquivalentTo(fsmType.Name);
+            fmSchema.Properties["items"].Type.Should().BeEquivalentTo("array");
+            fmSchema.Properties["items"].Items.Reference.Id.Should().BeEquivalentTo(fsmType.Name);
+
+            fsmSchema.Type.Should().Be("object");
+            fsmSchema.Properties["fakeSubModelProperty"].Type.Should().BeEquivalentTo("integer");
+
+
+        }
+        [TestMethod]
+        public void Given_FakeModelWithCircularRef_It_Should_Return_Result()
+        {
+            var type = typeof(FakeModelWithCircularRef);
+            var strategy = new CamelCaseNamingStrategy();
+
+            var schemas = OpenApiSchemaExtensions.ToOpenApiSchemas(type, strategy);
+            schemas.Count.Should().Be(2);
+            var fmSchema = schemas[type.Name];
+            var fsmType = typeof(FakeModelWithCircularRefSub);
+            var fsmSchema = schemas[fsmType.Name];
+            fmSchema.Type.Should().Be("object");
+            fmSchema.Properties["subProperty"].Reference.Id.Should().BeEquivalentTo(fsmType.Name);
+
+            fsmSchema.Type.Should().Be("object");
+            fsmSchema.Properties["circle"].Reference.Id.Should().BeEquivalentTo(type.Name);
+
+
+        }
     }
 }
