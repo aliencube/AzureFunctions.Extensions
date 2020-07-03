@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFrameworks>net461;netcoreapp2.1;netcoreapp3.1</TargetFrameworks>
+    <AssemblyName>azfuncopenapi</AssemblyName>
+    <!--<TargetFramework>netcoreapp3.1</TargetFramework>-->
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)'=='net461'">
+    <PackageReference Include="Microsoft.Azure.WebJobs" Version="2.2.0" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)'!='net461'">
+    <PackageReference Include="Microsoft.Azure.WebJobs" Version="3.0.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Cocona.Lite" Version="1.4.0" />
+    <PackageReference Include="Moq" Version="4.10.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Aliencube.AzureFunctions.Extensions.OpenApi\Aliencube.AzureFunctions.Extensions.OpenApi.csproj" />
+  </ItemGroup>
+
+</Project>

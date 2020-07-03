@@ -3,6 +3,7 @@ using System.Linq;
 using System.Reflection;
 
 using Aliencube.AzureFunctions.Extensions.OpenApi.Attributes;
+using Aliencube.AzureFunctions.Extensions.OpenApi.Enums;
 
 using Microsoft.OpenApi;
 
@@ -165,6 +166,30 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
                 default:
                     throw new InvalidOperationException("Invalid Open API format");
             }
+        }
+
+        /// <summary>
+        /// Converts the <see cref="OpenApiVersionType"/> to <see cref="OpenApiSpecVersion"/>.
+        /// </summary>
+        /// <param name="version"><see cref="OpenApiVersionType"/> value.</param>
+        /// <returns>Returns <see cref="OpenApiSpecVersion"/> value.</returns>
+        public static OpenApiSpecVersion ToOpenApiSpecVersion(this OpenApiVersionType version)
+        {
+            var casted = (OpenApiSpecVersion)(int)version;
+
+            return casted;
+        }
+
+        /// <summary>
+        /// Converts the <see cref="OpenApiFormatType"/> to <see cref="OpenApiFormat"/>.
+        /// </summary>
+        /// <param name="version"><see cref="OpenApiFormatType"/> value.</param>
+        /// <returns>Returns <see cref="OpenApiFormat"/> value.</returns>
+        public static OpenApiFormat ToOpenApiFormat(this OpenApiFormatType format)
+        {
+            var casted = (OpenApiFormat)(int)format;
+
+            return casted;
         }
     }
 }
