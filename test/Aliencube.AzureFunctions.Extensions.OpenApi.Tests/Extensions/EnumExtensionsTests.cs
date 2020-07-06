@@ -1,5 +1,6 @@
 ﻿using System;
 
+using Aliencube.AzureFunctions.Extensions.OpenApi.Enums;
 using Aliencube.AzureFunctions.Extensions.OpenApi.Extensions;
 using Aliencube.AzureFunctions.Tests.Fakes;
 
@@ -108,6 +109,26 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Tests.Extensions
         public void Given_OpenApiFormat_When_GetContentType_Invoked_Then_It_Should_Return_Result(OpenApiFormat format, string expected)
         {
             var result = EnumExtensions.GetContentType(format);
+
+            result.Should().Be(expected);
+        }
+
+        [DataTestMethod]
+        [DataRow(OpenApiVersionType.V2, OpenApiSpecVersion.OpenApi2_0)]
+        [DataRow(OpenApiVersionType.V3, OpenApiSpecVersion.OpenApi3_0)]
+        public void Given_OpenApiVersionType_When_ToOpenApiSpecVersion_Invoked_Then_It_Should_Return_Result(OpenApiVersionType version, OpenApiSpecVersion expected)
+        {
+            var result = EnumExtensions.ToOpenApiSpecVersion(version);
+
+            result.Should().Be(expected);
+        }
+
+        [DataTestMethod]
+        [DataRow(OpenApiFormatType.Json, OpenApiFormat.Json)]
+        [DataRow(OpenApiFormatType.Yaml, OpenApiFormat.Yaml)]
+        public void Given_OpenApiFormatType_When_ToOpenApiFormat_Invoked_Then_It_Should_Return_Result(OpenApiFormatType format, OpenApiFormat expected)
+        {
+            var result = EnumExtensions.ToOpenApiFormat(format);
 
             result.Should().Be(expected);
         }
