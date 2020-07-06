@@ -141,7 +141,7 @@ jobs:
         echo "::set-env name=PACKAGE_NAME::$name"
 
     - name: List Package for OpenApi.CLI
-      if: steps.release.outputs.module == 'cli' && ((matrix.targetFramework == 'net461' && matrix.runtime = 'win-x64') || matrix.targetFramework == 'netcoreapp3.1')
+      if: steps.release.outputs.module == 'cli' && ((matrix.targetFramework == 'net461' && matrix.runtime == 'win-x64') || matrix.targetFramework == 'netcoreapp3.1')
       shell: pwsh
       run: |
         $sourcepath = "./src/*.OpenApi.CLI/bin/Release/${{ matrix.targetFramework }}/${{ matrix.runtime }}/publish"
