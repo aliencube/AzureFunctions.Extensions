@@ -155,4 +155,4 @@ jobs:
     - name: Release to NuGet
       shell: pwsh
       run: |
-        dotnet nuget push ${{ steps.package.outputs.path }} --source https://api.nuget.org/v3/index.json --apk-key ${{ secrets.NUGET_API_KEY }}
+        dotnet nuget push ${{ steps.package.outputs.path }} --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_API_KEY }}
