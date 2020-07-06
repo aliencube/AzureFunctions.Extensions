@@ -121,11 +121,15 @@ jobs:
         echo "::set-env name=PACKAGE_PATH::$path"
         echo "::set-env name=PACKAGE_NAME::$name"
 
-    - name: Check release module and version
+    - name: Check package path and name
+      id: package
       shell: pwsh
       run: |
         echo "package-path: $env:PACKAGE_PATH"
         echo "package-name: $env:PACKAGE_NAME"
+
+        echo "::set-output name=path::$env:PACKAGE_PATH"
+        echo "::set-output name=name::$env:PACKAGE_NAME"
 
     - name: Create Release to GitHub
       id: release
@@ -144,11 +148,11 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.release.outputs.upload_url }}
-        asset_path: ${{ $PACKAGE_PATH }}
-        asset_name: ${{ $PACKAGE_NAME }}
+        asset_path: ${{ steps.package.outputs.path }}
+        asset_name: ${{ steps.package.outputs.name }}
         asset_content_type: application/octet-stream
 
     - name: Release to NuGet
       shell: pwsh
       run: |
-        dotnet nuget push $env:PACKAGE_PATH --source https://api.nuget.org/v3/index.json --apk-key ${{ secrets.NUGET_API_KEY }}
+        dotnet nuget push ${{ steps.package.outputs.path }} --source https://api.nuget.org/v3/index.json --apk-key ${{ secrets.NUGET_API_KEY }}
