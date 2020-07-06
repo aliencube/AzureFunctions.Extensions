@@ -18,6 +18,9 @@
   <ItemGroup>
     <PackageReference Include="Cocona.Lite" Version="1.4.0" />
     <PackageReference Include="Moq" Version="4.14.5" />
+    <PackageReference Include="System.IO.FileSystem.Primitives" Version="4.3.0" />
+    <PackageReference Include="System.Runtime.Handles" Version="4.3.0" />
+    <PackageReference Include="System.Runtime.InteropServices" Version="4.3.0" />
   </ItemGroup>
 
   <ItemGroup>
