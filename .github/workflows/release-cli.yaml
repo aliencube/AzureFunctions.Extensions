@@ -1,12 +1,12 @@
-name: Release
+name: Release CLI
 
 on:
   push:
     branches:
-    - release/*
+    - release/cli-*
 
 jobs:
-  build_test_package:
+  build_test_package_release:
     name: Build, test, package and release
     strategy:
       matrix:
@@ -39,14 +39,14 @@ jobs:
         echo "::set-output name=module::$module"
         echo "::set-output name=version::$version"
 
-    # - name: Check release module and version
-    #   shell: pwsh
-    #   run: |
-    #     # echo "env: $env:RELEASE_MODULE"
-    #     # echo "env: $env:RELEASE_VERSION"
+    - name: Check release module and version
+      shell: pwsh
+      run: |
+        # echo "env: $env:RELEASE_MODULE"
+        # echo "env: $env:RELEASE_VERSION"
 
-    #     echo "output: ${{ steps.release.outputs.module }}"
-    #     echo "output: ${{ steps.release.outputs.version }}"
+        echo "output: ${{ steps.release.outputs.module }}"
+        echo "output: ${{ steps.release.outputs.version }}"
 
     - name: Checkout the repository
       uses: actions/checkout@v2
@@ -57,26 +57,31 @@ jobs:
     #     node-version: ${{ matrix.node }}
 
     - name: Setup .NET SDK
+      if: steps.release.outputs.module == 'cli' && ((matrix.targetFramework == 'net461' && matrix.runtime == 'win-x64') || matrix.targetFramework == 'netcoreapp3.1')
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: ${{ matrix.dotnet }}
 
     - name: Add MSBuild to PATH
+      if: steps.release.outputs.module == 'cli' && ((matrix.targetFramework == 'net461' && matrix.runtime == 'win-x64') || matrix.targetFramework == 'netcoreapp3.1')
       uses: microsoft/setup-msbuild@v1.0.0
 
     - name: Restore NuGet packages
+      if: steps.release.outputs.module == 'cli' && ((matrix.targetFramework == 'net461' && matrix.runtime == 'win-x64') || matrix.targetFramework == 'netcoreapp3.1')
       shell: pwsh
       run: |
         dir
         dotnet restore .
 
     - name: Build solution
+      if: steps.release.outputs.module == 'cli' && ((matrix.targetFramework == 'net461' && matrix.runtime == 'win-x64') || matrix.targetFramework == 'netcoreapp3.1')
       shell: pwsh
       run: |
         dir
         msbuild . /p:Configuration=Release /p:Version=${{ steps.release.outputs.version }} /p:Verbosity=minimal
 
     - name: Test solution
+      if: steps.release.outputs.module == 'cli' && ((matrix.targetFramework == 'net461' && matrix.runtime == 'win-x64') || matrix.targetFramework == 'netcoreapp3.1')
       shell: pwsh
       run: |
         dir
@@ -96,50 +101,6 @@ jobs:
         dir
         dotnet publish ./src/Aliencube.AzureFunctions.Extensions.OpenApi.CLI -c Release -f ${{ matrix.targetFramework }} -p:PublishSingleFile=true --self-contained true -r ${{ matrix.runtime }}
 
-    - name: List Package for AppSettings
-      if: steps.release.outputs.module == 'appsettings'
-      shell: pwsh
-      run: |
-        $package = Get-ChildItem -Path ./src/*.AppSettings -Include *.nupkg -Recurse | Where-Object { $_.FullName -like "*${{ steps.release.outputs.version }}*" }
-        $path = $package[0].FullName
-        $name = $package[0].Name
-
-        echo "::set-env name=PACKAGE_PATH::$path"
-        echo "::set-env name=PACKAGE_NAME::$name"
-
-    - name: List Package for Configuration.Json
-      if: steps.release.outputs.module == 'configjson'
-      shell: pwsh
-      run: |
-        $package = Get-ChildItem -Path ./src/*.Json -Include *.nupkg -Recurse | Where-Object { $_.FullName -like "*${{ steps.release.outputs.version }}*" }
-        $path = $package[0].FullName
-        $name = $package[0].Name
-
-        echo "::set-env name=PACKAGE_PATH::$path"
-        echo "::set-env name=PACKAGE_NAME::$name"
-
-    - name: List Package for DependencyInjection
-      if: steps.release.outputs.module == 'di'
-      shell: pwsh
-      run: |
-        $package = Get-ChildItem -Path ./src/*.DependencyInjection -Include *.nupkg -Recurse | Where-Object { $_.FullName -like "*${{ steps.release.outputs.version }}*" }
-        $path = $package[0].FullName
-        $name = $package[0].Name
-
-        echo "::set-env name=PACKAGE_PATH::$path"
-        echo "::set-env name=PACKAGE_NAME::$name"
-
-    - name: List Package for OpenApi
-      if: steps.release.outputs.module == 'swagger'
-      shell: pwsh
-      run: |
-        $package = Get-ChildItem -Path ./src/*.OpenApi -Include *.nupkg -Recurse | Where-Object { $_.FullName -like "*${{ steps.release.outputs.version }}*" }
-        $path = $package[0].FullName
-        $name = $package[0].Name
-
-        echo "::set-env name=PACKAGE_PATH::$path"
-        echo "::set-env name=PACKAGE_NAME::$name"
-
     - name: List Package for OpenApi.CLI
       if: steps.release.outputs.module == 'cli' && ((matrix.targetFramework == 'net461' && matrix.runtime == 'win-x64') || matrix.targetFramework == 'netcoreapp3.1')
       shell: pwsh
@@ -154,12 +115,14 @@ jobs:
         echo "::set-env name=PACKAGE_NAME::$name"
 
     - name: Check release module and version
+      if: steps.release.outputs.module == 'cli' && ((matrix.targetFramework == 'net461' && matrix.runtime == 'win-x64') || matrix.targetFramework == 'netcoreapp3.1')
       shell: pwsh
       run: |
         echo "package-path: $env:PACKAGE_PATH"
         echo "package-name: $env:PACKAGE_NAME"
 
     # - name: Create Release to GitHub
+    #   if: steps.release.outputs.module == 'cli' && ((matrix.targetFramework == 'net461' && matrix.runtime == 'win-x64') || matrix.targetFramework == 'netcoreapp3.1')
     #   id: release
     #   uses: actions/create-release@v1
     #   env:
@@ -170,19 +133,8 @@ jobs:
     #     draft: false
     #     prerelease: false
 
-    # - name: Upload NuGet package to GitHub
-    #   if: steps.release.outputs.module != 'cli'
-    #   uses: actions/upload-release-asset@v1
-    #   env:
-    #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    #   with:
-    #     upload_url: ${{ steps.release.outputs.upload_url }}
-    #     asset_path: ${{ $PACKAGE_PATH }}
-    #     asset_name: ${{ $PACKAGE_NAME }}
-    #     asset_content_type: application/octet-stream
-
     # - name: Upload CLI to GitHub
-    #   if: steps.release.outputs.module == 'cli'
+    #   if: steps.release.outputs.module == 'cli' && ((matrix.targetFramework == 'net461' && matrix.runtime == 'win-x64') || matrix.targetFramework == 'netcoreapp3.1')
     #   uses: actions/upload-release-asset@v1
     #   env:
     #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -192,14 +144,8 @@ jobs:
     #     asset_name: ${{ $PACKAGE_NAME }}
     #     asset_content_type: application/zip
 
-    # - name: Release to NuGet
-    #   if: steps.release.outputs.module != 'cli'
-    #   shell: pwsh
-    #   run: |
-    #     dotnet nuget push $env:PACKAGE_PATH --source https://api.nuget.org/v3/index.json --apk-key ${{ secrets.NUGET_API_KEY }}
-
     # - name: Release to npm
-    #   if: steps.release.outputs.module == 'cli'
+    #   if: steps.release.outputs.module == 'cli' && ((matrix.targetFramework == 'net461' && matrix.runtime == 'win-x64') || matrix.targetFramework == 'netcoreapp3.1')
     #   uses: JS-DevTools/npm-publish@v1
     #   with:
     #     token: ${{ secrets.NPM_TOKEN }}
