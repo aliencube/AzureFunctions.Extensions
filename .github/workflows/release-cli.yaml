@@ -160,7 +160,9 @@ jobs:
       id: package
       shell: pwsh
       run: |
-        $packages = Get-ChildItem -Path ./artifacts -Include *.zip
+        dir $GITHUB_WORKSPACE/artifacts
+
+        $packages = Get-ChildItem -Path $GITHUB_WORKSPACE/artifacts -Include *.*
 
         $package0 = $packages[0].FullName
         $package1 = $packages[1].FullName
