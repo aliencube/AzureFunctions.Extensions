@@ -127,28 +127,28 @@ jobs:
         echo "package-path: $env:PACKAGE_PATH"
         echo "package-name: $env:PACKAGE_NAME"
 
-    # - name: Create Release to GitHub
-    #   id: release
-    #   uses: actions/create-release@v1
-    #   env:
-    #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    #   with:
-    #     tag_name: ${{ github.event.ref }}
-    #     release_name: Release ${{ github.event.ref }}
-    #     draft: false
-    #     prerelease: false
+    - name: Create Release to GitHub
+      id: release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.event.ref }}
+        release_name: Release ${{ github.event.ref }}
+        draft: false
+        prerelease: false
 
-    # - name: Upload NuGet package to GitHub
-    #   uses: actions/upload-release-asset@v1
-    #   env:
-    #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    #   with:
-    #     upload_url: ${{ steps.release.outputs.upload_url }}
-    #     asset_path: ${{ $PACKAGE_PATH }}
-    #     asset_name: ${{ $PACKAGE_NAME }}
-    #     asset_content_type: application/octet-stream
+    - name: Upload NuGet package to GitHub
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.release.outputs.upload_url }}
+        asset_path: ${{ $PACKAGE_PATH }}
+        asset_name: ${{ $PACKAGE_NAME }}
+        asset_content_type: application/octet-stream
 
-    # - name: Release to NuGet
-    #   shell: pwsh
-    #   run: |
-    #     dotnet nuget push $env:PACKAGE_PATH --source https://api.nuget.org/v3/index.json --apk-key ${{ secrets.NUGET_API_KEY }}
+    - name: Release to NuGet
+      shell: pwsh
+      run: |
+        dotnet nuget push $env:PACKAGE_PATH --source https://api.nuget.org/v3/index.json --apk-key ${{ secrets.NUGET_API_KEY }}
