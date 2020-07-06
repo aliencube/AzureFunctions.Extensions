@@ -60,8 +60,8 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.CLI
 
             var assembly = Assembly.LoadFrom(pi.CompiledDllPath);
 #if NET461
-            var req = new Mock<HttpRequestMessage>();
-            req.SetupGet(p => p.RequestUri).Returns(new Uri("http://localhost:7071"));
+            var req = new HttpRequestMessage();
+            req.RequestUri = new Uri("http://localhost:7071");
 #else
             var req = new Mock<HttpRequest>();
             req.SetupGet(p => p.Scheme).Returns("http");
@@ -74,11 +74,17 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.CLI
 
             var swagger = document.InitialiseDocument()
                                   .AddMetadata(pi.OpenApiInfo)
+#if NET461
+                                  .AddServer(req, pi.HostJsonHttpSettings.RoutePrefix)
+#else
                                   .AddServer(req.Object, pi.HostJsonHttpSettings.RoutePrefix)
+#endif
                                   .Build(assembly)
                                   .RenderAsync(version.ToOpenApiSpecVersion(), format.ToOpenApiFormat())
                                   .Result;
-
+#if NET461
+            req.Dispose();
+#endif
             if (console)
             {
                 Console.WriteLine(swagger);
