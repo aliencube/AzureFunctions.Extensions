@@ -129,6 +129,13 @@ jobs:
         echo "::set-output name=path::$env:PACKAGE_PATH"
         echo "::set-output name=name::$env:PACKAGE_NAME"
 
+    - name: Upload artifacts
+      if: steps.release.outputs.module == 'cli' && ((matrix.targetFramework == 'net461' && matrix.runtime == 'win-x64') || matrix.targetFramework == 'netcoreapp3.1')
+      uses: actions/upload-artifact@v2
+      with:
+        name: artifacts
+        path: "${{ steps.package.outputs.path }}"
+
     # - name: Create Release to GitHub
     #   if: steps.release.outputs.module == 'cli' && ((matrix.targetFramework == 'net461' && matrix.runtime == 'win-x64') || matrix.targetFramework == 'netcoreapp3.1')
     #   id: ghrelease
