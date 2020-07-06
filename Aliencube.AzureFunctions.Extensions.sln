@@ -45,6 +45,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Aliencube.AzureFunctions.Fu
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Aliencube.AzureFunctions.Extensions.OpenApi.CLI", "src\Aliencube.AzureFunctions.Extensions.OpenApi.CLI\Aliencube.AzureFunctions.Extensions.OpenApi.CLI.csproj", "{5C35651B-97D0-4115-81FC-ED8D7ACD71A7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aliencube.AzureFunctions.Extensions.OpenApi.CLI.Tests", "test\Aliencube.AzureFunctions.Extensions.OpenApi.CLI.Tests\Aliencube.AzureFunctions.Extensions.OpenApi.CLI.Tests.csproj", "{65AED6F0-D27E-4D6E-BA42-AD6EE1338082}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -107,6 +109,10 @@ Global
 		{5C35651B-97D0-4115-81FC-ED8D7ACD71A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5C35651B-97D0-4115-81FC-ED8D7ACD71A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5C35651B-97D0-4115-81FC-ED8D7ACD71A7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{65AED6F0-D27E-4D6E-BA42-AD6EE1338082}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{65AED6F0-D27E-4D6E-BA42-AD6EE1338082}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{65AED6F0-D27E-4D6E-BA42-AD6EE1338082}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{65AED6F0-D27E-4D6E-BA42-AD6EE1338082}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -126,6 +132,7 @@ Global
 		{AEF35BD6-EA9A-4159-86F4-49AF7D17A9A8} = {8B62E3FB-9062-4716-803A-1FA51FCE68BC}
 		{C9A65D52-A167-4673-823C-D2FEA080FA7A} = {810145E0-41CF-4E24-BD9C-E7517498BA29}
 		{5C35651B-97D0-4115-81FC-ED8D7ACD71A7} = {810145E0-41CF-4E24-BD9C-E7517498BA29}
+		{65AED6F0-D27E-4D6E-BA42-AD6EE1338082} = {8B62E3FB-9062-4716-803A-1FA51FCE68BC}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {70FEC644-BB3C-4441-AF91-DC694803C8F2}
