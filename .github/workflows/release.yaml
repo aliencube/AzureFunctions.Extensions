@@ -7,7 +7,7 @@ on:
 
 jobs:
   build_test_package:
-    name: Build, test and package
+    name: Build, test, package and release
     strategy:
       matrix:
         os: [ 'windows-latest' ]
