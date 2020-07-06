@@ -26,7 +26,6 @@ jobs:
     #     echo ${{ toJSON(github.event) }}
 
     - name: Set release module and version
-      if: steps.release.outputs.module == 'cli' && ((matrix.targetFramework == 'net461' && matrix.runtime == 'win-x64') || matrix.targetFramework == 'netcoreapp3.1')
       id: release
       shell: pwsh
       run: |
@@ -119,12 +118,16 @@ jobs:
         echo "::set-env name=PACKAGE_PATH::$path"
         echo "::set-env name=PACKAGE_NAME::$name"
 
-    - name: Check release module and version
+    - name: Check package path and name
       if: steps.release.outputs.module == 'cli' && ((matrix.targetFramework == 'net461' && matrix.runtime == 'win-x64') || matrix.targetFramework == 'netcoreapp3.1')
+      id: package
       shell: pwsh
       run: |
         echo "package-path: $env:PACKAGE_PATH"
         echo "package-name: $env:PACKAGE_NAME"
+
+        echo "::set-output name=path::$env:PACKAGE_PATH"
+        echo "::set-output name=name::$env:PACKAGE_NAME"
 
     # - name: Create Release to GitHub
     #   if: steps.release.outputs.module == 'cli' && ((matrix.targetFramework == 'net461' && matrix.runtime == 'win-x64') || matrix.targetFramework == 'netcoreapp3.1')
@@ -133,8 +136,8 @@ jobs:
     #   env:
     #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     #   with:
-    #     tag_name: ${{ github.event.ref }}
-    #     release_name: Release ${{ github.event.ref }}
+    #     tag_name: "${{ steps.release.outputs.module }}-${{ steps.release.outputs.version }}"
+    #     release_name: Release "${{ steps.release.outputs.module }}-v${{ steps.release.outputs.version }}"
     #     draft: false
     #     prerelease: false
 
@@ -144,9 +147,9 @@ jobs:
     #   env:
     #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     #   with:
-    #     upload_url: ${{ steps.release.outputs.upload_url }}
-    #     asset_path: ${{ $PACKAGE_PATH }}
-    #     asset_name: ${{ $PACKAGE_NAME }}
+    #     upload_url: ${{ steps.ghrelease.outputs.upload_url }}
+    #     asset_path: ${{ steps.package.outputs.path }}
+    #     asset_name: ${{ steps.package.outputs.name }}
     #     asset_content_type: application/zip
 
     # - name: Release to npm
