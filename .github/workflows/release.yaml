@@ -87,14 +87,14 @@ jobs:
       shell: pwsh
       run: |
         dir
-        dotnet publish ./src/Aliencube.AzureFunctions.Extensions.OpenApi.CLI -c Release -f ${{ matrix.targetFramework }} -r ${{ maxtrix.runtime }}
+        dotnet publish ./src/Aliencube.AzureFunctions.Extensions.OpenApi.CLI -c Release -f ${{ matrix.targetFramework }} -r ${{ matrix.runtime }}
 
     - name: Publish CLI for .NET Core
       if: matrix.targetFramework == 'netcoreapp3.1'
       shell: pwsh
       run: |
         dir
-        dotnet publish ./src/Aliencube.AzureFunctions.Extensions.OpenApi.CLI -c Release -f ${{ matrix.targetFramework }} -p:PublishSingleFile=true --self-contained true -r ${{ maxtrix.runtime }}
+        dotnet publish ./src/Aliencube.AzureFunctions.Extensions.OpenApi.CLI -c Release -f ${{ matrix.targetFramework }} -p:PublishSingleFile=true --self-contained true -r ${{ matrix.runtime }}
 
     - name: List Package for AppSettings
       if: steps.release.outputs.module == 'appsettings'
