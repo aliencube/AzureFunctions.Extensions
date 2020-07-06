@@ -83,14 +83,14 @@ jobs:
         dotnet test . -c Release
 
     - name: Publish CLI for .NET Framework
-      if: matrix.targetFramework == 'net461' && matrix.runtime == 'win-x64'
+      if: steps.release.outputs.module == 'cli' && matrix.targetFramework == 'net461' && matrix.runtime == 'win-x64'
       shell: pwsh
       run: |
         dir
         dotnet publish ./src/Aliencube.AzureFunctions.Extensions.OpenApi.CLI -c Release -f ${{ matrix.targetFramework }} -r ${{ matrix.runtime }}
 
     - name: Publish CLI for .NET Core
-      if: matrix.targetFramework == 'netcoreapp3.1'
+      if: steps.release.outputs.module == 'cli' && matrix.targetFramework == 'netcoreapp3.1'
       shell: pwsh
       run: |
         dir
