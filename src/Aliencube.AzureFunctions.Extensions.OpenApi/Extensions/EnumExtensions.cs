@@ -183,7 +183,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
         /// <summary>
         /// Converts the <see cref="OpenApiFormatType"/> to <see cref="OpenApiFormat"/>.
         /// </summary>
-        /// <param name="version"><see cref="OpenApiFormatType"/> value.</param>
+        /// <param name="format"><see cref="OpenApiFormatType"/> value.</param>
         /// <returns>Returns <see cref="OpenApiFormat"/> value.</returns>
         public static OpenApiFormat ToOpenApiFormat(this OpenApiFormatType format)
         {

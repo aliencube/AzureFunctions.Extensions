@@ -27,15 +27,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.CLI
     /// </summary>
     public class Program
     {
-#if NET461
-        private const string Target = "net461";
-#elif NETCOREAPP2_1
-        private const string Target = "netcoreapp2.1";
-#elif NETCOREAPP3_1
-        private const string Target = "netcoreapp3.1";
-#endif
-
-        private static readonly char directorySeparator = System.IO.Path.DirectorySeparatorChar;
+        private static readonly char directorySeparator = Path.DirectorySeparatorChar;
 
         /// <summary>
         /// Invokes the console app.
@@ -56,27 +48,15 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.CLI
         /// <param name="output">Output path.</param>
         /// <param name="console">Value indicating whether to render the document on console or not.</param>
         public void Generate(
-            [Option('p')] string project = ".",
-            [Option('c')] string configuration = "Debug",
-            [Option('v')] OpenApiVersionType version = OpenApiVersionType.V2,
-            [Option('f')] OpenApiFormatType format = OpenApiFormatType.Json,
-            [Option('o')] string output = "output",
+            [Option('p', Description = "Project path. Default is current directory")] string project = ".",
+            [Option('c', Description = "Configuration. Default is 'Debug'")] string configuration = "Debug",
+            [Option('t', Description = "Target framework. Default is 'netcoreapp2.1'")] string target = "netcoreapp2.1",
+            [Option('v', Description = "Open API spec version. Value can be either 'v2' or 'v3'. Default is 'v2'")] OpenApiVersionType version = OpenApiVersionType.V2,
+            [Option('f', Description = "Open API output format. Value can be either 'json' or 'yaml'. Default is 'yaml'")] OpenApiFormatType format = OpenApiFormatType.Json,
+            [Option('o', Description = "Generated Open API output location. Default is 'output'")] string output = "output",
             bool console = false)
         {
-            //var projectPath = @"C:\dev\ac\AzureFunctions.Extensions\src\Aliencube.AzureFunctions.FunctionAppV3\";
-            //var projectName = @"Aliencube.AzureFunctions.FunctionAppV3.csproj";
-            //var projectFile = $"{projectPath}{projectName}";
-            //var projectCompiledPath = @"bin\Debug\netcoreapp3.1\";
-            //var projectDll = @"bin\Aliencube.AzureFunctions.FunctionAppV3.dll";
-            //var dllPath = $"{projectPath}{projectCompiledPath}{projectDll}";
-            //var hostJsonPath = $"{projectPath}{projectCompiledPath}host.json";
-            //var appSettingsPath = $"{projectPath}{projectCompiledPath}local.settings.json";
-
-
-            //var xml = XDocument.Load(projectFile)
-            //                   .Root;
-
-            var pi = new ProjectInfo(project, configuration, Target);
+            var pi = new ProjectInfo(project, configuration, target);
 
             var assembly = Assembly.LoadFrom(pi.CompiledDllPath);
 #if NET461

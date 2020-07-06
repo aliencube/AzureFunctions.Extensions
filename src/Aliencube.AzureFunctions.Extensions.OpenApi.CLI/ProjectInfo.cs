@@ -112,7 +112,11 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.CLI
         {
             get
             {
-                return $"{this._projectPath.TrimEnd(directorySeparator)}{directorySeparator}bin{directorySeparator}{this._configuration}{directorySeparator}{this._targetFramework}";
+                this.Path.ThrowIfNullOrWhiteSpace();
+                this.Configuration.ThrowIfNullOrWhiteSpace();
+                this.TargetFramework.ThrowIfNullOrWhiteSpace();
+
+                return $"{this.Path.TrimEnd(directorySeparator)}{directorySeparator}bin{directorySeparator}{this.Configuration}{directorySeparator}{this.TargetFramework}";
             }
         }
 
@@ -123,6 +127,9 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.CLI
         {
             get
             {
+                this.CompiledPath.ThrowIfNullOrWhiteSpace();
+                this.Filename.ThrowIfNullOrWhiteSpace();
+
                 return $"{this.CompiledPath}{directorySeparator}bin{directorySeparator}{this.Filename}".Replace(".csproj", ".dll");
             }
         }
@@ -134,6 +141,8 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.CLI
         {
             get
             {
+                this.CompiledPath.ThrowIfNullOrWhiteSpace();
+
                 return $"{this.CompiledPath}{directorySeparator}host.json";
             }
         }
@@ -155,6 +164,8 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.CLI
         {
             get
             {
+                this.CompiledPath.ThrowIfNullOrWhiteSpace();
+
                 return $"{this.CompiledPath}{directorySeparator}local.settings.json";
             }
         }
@@ -166,6 +177,8 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.CLI
         {
             get
             {
+                this.CompiledPath.ThrowIfNullOrWhiteSpace();
+
                 return $"{this.CompiledPath}{directorySeparator}openapisettings.json";
             }
         }
@@ -177,7 +190,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.CLI
 
         private void SetProjectPath(string path)
         {
-            if (path == ".")
+            if (path.IsNullOrWhiteSpace() || path == ".")
             {
                 this._projectPath = Environment.CurrentDirectory.TrimEnd(directorySeparator);
 
@@ -191,15 +204,24 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.CLI
                 this._filename = csproj.Name;
             }
 
-            if (path.EndsWith(".csproj"))
+            var fqpath =
+#if NET461
+                System.IO.Path.IsPathRooted(path)
+#else
+                System.IO.Path.IsPathFullyQualified(path)
+#endif
+                ? path
+                : $"{Environment.CurrentDirectory.TrimEnd(directorySeparator)}{directorySeparator}{path}";
+
+            if (fqpath.EndsWith(".csproj"))
             {
-                var csproj = new FileInfo(path);
+                var csproj = new FileInfo(fqpath);
 
                 this._projectPath = csproj.DirectoryName.TrimEnd(directorySeparator);
                 this._filename = csproj.Name;
             }
 
-            var di = new DirectoryInfo(path);
+            var di = new DirectoryInfo(fqpath);
             this._projectPath = di.FullName.TrimEnd(directorySeparator);
 
             var segments = di.FullName.Split(new[] { directorySeparator }, StringSplitOptions.RemoveEmptyEntries);
@@ -208,6 +230,8 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.CLI
 
         private void SetHostSettings()
         {
+            this.HostJsonPath.ThrowIfNullOrWhiteSpace();
+
             var host = new ConfigurationBuilder()
                        .SetBasePath(this.HostJsonPath.Replace("host.json", ""))
                        .AddJsonFile("host.json")
@@ -225,6 +249,10 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.CLI
 
         private void SetOpenApiInfo()
         {
+            this.HostSettings.ThrowIfNullOrDefault();
+            this.OpenApiSettingsJsonPath.ThrowIfNullOrWhiteSpace();
+            this.LocalSettingsJsonPath.ThrowIfNullOrWhiteSpace();
+
             var openApiInfo = this.HostSettings.Get<OpenApiInfo>("openApi");
             if (this.IsValidOpenApiInfo(openApiInfo))
             {
@@ -274,6 +302,8 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.CLI
 
         private bool IsValidOpenApiInfo(OpenApiInfo openApiInfo)
         {
+            openApiInfo.ThrowIfNullOrDefault();
+
             return !openApiInfo.IsNullOrDefault() && !openApiInfo.Version.IsNullOrDefault() && !openApiInfo.Title.IsNullOrWhiteSpace();
         }
     }
