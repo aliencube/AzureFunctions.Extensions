@@ -132,7 +132,7 @@ jobs:
         echo "::set-output name=name::$env:PACKAGE_NAME"
 
     - name: Create Release to GitHub
-      id: release
+      id: ghrelease
       uses: actions/create-release@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -147,7 +147,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        upload_url: ${{ steps.release.outputs.upload_url }}
+        upload_url: ${{ steps.ghrelease.outputs.upload_url }}
         asset_path: ${{ steps.package.outputs.path }}
         asset_name: ${{ steps.package.outputs.name }}
         asset_content_type: application/octet-stream
