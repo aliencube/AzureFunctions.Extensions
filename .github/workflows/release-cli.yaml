@@ -20,11 +20,13 @@ jobs:
 
     steps:
     # - name: Check event payload
+    #   if: steps.release.outputs.module == 'cli' && ((matrix.targetFramework == 'net461' && matrix.runtime == 'win-x64') || matrix.targetFramework == 'netcoreapp3.1')
     #   shell: pwsh
     #   run: |
     #     echo ${{ toJSON(github.event) }}
 
     - name: Set release module and version
+      if: steps.release.outputs.module == 'cli' && ((matrix.targetFramework == 'net461' && matrix.runtime == 'win-x64') || matrix.targetFramework == 'netcoreapp3.1')
       id: release
       shell: pwsh
       run: |
@@ -40,6 +42,7 @@ jobs:
         echo "::set-output name=version::$version"
 
     - name: Check release module and version
+      if: steps.release.outputs.module == 'cli' && ((matrix.targetFramework == 'net461' && matrix.runtime == 'win-x64') || matrix.targetFramework == 'netcoreapp3.1')
       shell: pwsh
       run: |
         # echo "env: $env:RELEASE_MODULE"
@@ -49,9 +52,11 @@ jobs:
         echo "output: ${{ steps.release.outputs.version }}"
 
     - name: Checkout the repository
+      if: steps.release.outputs.module == 'cli' && ((matrix.targetFramework == 'net461' && matrix.runtime == 'win-x64') || matrix.targetFramework == 'netcoreapp3.1')
       uses: actions/checkout@v2
 
     # - name: Setup node.js
+    #   if: steps.release.outputs.module == 'cli' && ((matrix.targetFramework == 'net461' && matrix.runtime == 'win-x64') || matrix.targetFramework == 'netcoreapp3.1')
     #   uses: actions/setup-node@v1
     #   with:
     #     node-version: ${{ matrix.node }}
@@ -123,7 +128,7 @@ jobs:
 
     # - name: Create Release to GitHub
     #   if: steps.release.outputs.module == 'cli' && ((matrix.targetFramework == 'net461' && matrix.runtime == 'win-x64') || matrix.targetFramework == 'netcoreapp3.1')
-    #   id: release
+    #   id: ghrelease
     #   uses: actions/create-release@v1
     #   env:
     #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
