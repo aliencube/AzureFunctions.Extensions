@@ -1,0 +1,46 @@
+name: Pull Request
+
+on:
+  pull_request:
+    branches:
+    - dev
+
+jobs:
+  build_and_test:
+    name: Build and test
+    strategy:
+      matrix:
+        os: [ 'windows-latest' ]
+        dotnet: [ '3.1.301' ]
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+    - name: Checkout the repository
+      uses: actions/checkout@v2
+
+    - name: Setup .NET SDK
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: ${{ matrix.dotnet }}
+
+    - name: Add MSBuild to PATH
+      uses: microsoft/setup-msbuild@v1.0.0
+
+    - name: Restore NuGet packages
+      shell: pwsh
+      run: |
+        dir
+        dotnet restore .
+
+    - name: Build solution
+      shell: pwsh
+      run: |
+        dir
+        msbuild . /p:Configuration=Release /p:Verbosity=minimal
+
+    - name: Test solution
+      shell: pwsh
+      run: |
+        dir
+        dotnet test . -c Release

@@ -6,7 +6,14 @@
     public class FakeClass : IFakeInterface
     {
         /// <inheritdoc />
+        [FakeMethod]
         public bool DoSomething(bool input)
+        {
+            return input;
+        }
+
+        /// <inheritdoc />
+        public bool DoOtherThing(bool input)
         {
             return input;
         }

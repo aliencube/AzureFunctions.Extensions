@@ -1,7 +1,7 @@
+using System;
 using System.Threading.Tasks;
 
-using Aliencube.AzureFunctions.Extensions.DependencyInjection;
-using Aliencube.AzureFunctions.Extensions.DependencyInjection.Abstractions;
+using Aliencube.AzureFunctions.Extensions.DependencyInjection.Extensions;
 using Aliencube.AzureFunctions.FunctionAppCommon.Functions;
 using Aliencube.AzureFunctions.FunctionAppCommon.Functions.FunctionOptions;
 
@@ -13,12 +13,18 @@ namespace Aliencube.AzureFunctions.FunctionAppV2
     /// <summary>
     /// This represents the timer trigger.
     /// </summary>
-    public static class SampleTimerTrigger
+    public class SampleTimerTrigger
     {
+        private readonly ISampleTimerFunction _function;
+
         /// <summary>
-        /// Gets the <see cref="IFunctionFactory"/> instance as an IoC container.
+        /// Initializes a new instance of the <see cref="SampleTimerTrigger"/> class.
         /// </summary>
-        public static IFunctionFactory Factory { get; set; } = new FunctionFactory<StartUp>();
+        /// <param name="function"><see cref="ISampleTimerFunction"/> instance.</param>
+        public SampleTimerTrigger(ISampleTimerFunction function)
+        {
+            this._function = function ?? throw new ArgumentNullException(nameof(function));
+        }
 
         /// <summary>
         /// Invokes the timer trigger.
@@ -28,18 +34,16 @@ namespace Aliencube.AzureFunctions.FunctionAppV2
         /// <param name="log"><see cref="ILogger"/> instance.</param>
         /// <returns><see cref="Task"/> instance.</returns>
         [FunctionName(nameof(Run))]
-        public static async Task Run(
+        public async Task Run(
             [TimerTrigger("0/5 * * * * *")] TimerInfo myTimer,
             [Queue("output")] IAsyncCollector<string> collector,
             ILogger log)
         {
             var options = new SampleTimerFunctionOptions() { Collector = collector };
 
-            var result = await Factory.Create<ISampleTimerFunction, ILogger>(log)
-                                      .InvokeAsync<TimerInfo, bool>(myTimer, options)
-                                      .ConfigureAwait(false);
-
-            Factory.ResultInvoked = true;
+            var result = await this._function.AddLogger(log)
+                                             .InvokeAsync<TimerInfo, bool>(myTimer, options)
+                                             .ConfigureAwait(false);
         }
     }
 }

@@ -101,12 +101,12 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi
             }
 
             var operation = new OpenApiOperation()
-                                {
-                                    OperationId = string.IsNullOrWhiteSpace(op.OperationId) ? $"{function.Name}_{verb}" : op.OperationId,
-                                    Tags = op.Tags.Select(p => new OpenApiTag() { Name = p }).ToList(),
-                                    Summary = op.Summary,
-                                    Description = op.Description
-                                };
+            {
+                OperationId = string.IsNullOrWhiteSpace(op.OperationId) ? $"{function.Name}_{verb}" : op.OperationId,
+                Tags = op.Tags.Select(p => new OpenApiTag() { Name = p }).ToList(),
+                Summary = op.Summary,
+                Description = op.Description
+            };
 
             if (op.Visibility != OpenApiVisibilityType.Undefined)
             {
@@ -165,15 +165,16 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi
             var responses = elements.SelectMany(p => p.GetCustomAttributes<OpenApiResponseBodyAttribute>(inherit: false))
                                     .Select(p => p.BodyType);
             var types = requests.Union(responses)
-                                .Select(p => p.IsOpenApiArray() || p.IsOpenApiDictionary() ? p.GetOpenApiSubType() : p )
+                                .Select(p => p.IsOpenApiArray() || p.IsOpenApiDictionary() ? p.GetOpenApiSubType() : p)
                                 .Distinct()
                                 .Where(p => !p.IsSimpleType())
                                 .Where(p => p != typeof(JObject))
                                 .Where(p => p != typeof(JToken))
                                 .Where(p => !typeof(Array).IsAssignableFrom(p))
-                                ;
-            var schemas = types.ToDictionary(p => p.IsGenericType ? p.GetOpenApiGenericRootName() : p.Name,
-                                             p => p.ToOpenApiSchema(namingStrategy)); // schemaGenerator.Generate(p)
+                                .ToList();
+
+            var schemas = new Dictionary<string, OpenApiSchema>();
+            types.ForEach(p => schemas.AddRange(p.ToOpenApiSchemas(namingStrategy)));
 
             return schemas;
         }
@@ -182,11 +183,11 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi
         public Dictionary<string, OpenApiSecurityScheme> GetOpenApiSecuritySchemes()
         {
             var scheme = new OpenApiSecurityScheme()
-                             {
-                                 Name = "x-functions-key",
-                                 Type = SecuritySchemeType.ApiKey,
-                                 In = ParameterLocation.Header
-                             };
+            {
+                Name = "x-functions-key",
+                Type = SecuritySchemeType.ApiKey,
+                In = ParameterLocation.Header
+            };
             var schemes = new Dictionary<string, OpenApiSecurityScheme>()
                               {
                                   { "authKey", scheme }

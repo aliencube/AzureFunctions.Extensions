@@ -289,3 +289,4 @@ __pycache__/
 
 *.bak
 *.org
+outputs/

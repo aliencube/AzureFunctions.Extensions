@@ -49,5 +49,32 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
 
             return !items.Any();
         }
+
+        /// <summary>
+        /// Adds range of collection to source.
+        /// </summary>
+        /// <typeparam name="TKey">Type of the key.</typeparam>
+        /// <typeparam name="TValue">Type of the value.</typeparam>
+        /// <param name="source"><see cref="Dictionary{TKey, TValue}"/> instance to be added as a source.</param>
+        /// <param name="collection"><see cref="Dictionary{TKey, TValue}"/> instance to add.</param>
+        public static void AddRange<TKey, TValue>(this Dictionary<TKey, TValue> source, Dictionary<TKey, TValue> collection)
+        {
+            source.ThrowIfNullOrDefault();
+
+            if (collection.IsNullOrDefault())
+            {
+                return;
+            }
+
+            foreach (var item in collection)
+            {
+                if (source.ContainsKey(item.Key))
+                {
+                    continue;
+                }
+
+                source.Add(item.Key, item.Value);
+            }
+        }
     }
 }

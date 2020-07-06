@@ -33,6 +33,7 @@ namespace Aliencube.AzureFunctions.FunctionAppCommon.Models
         /// <summary>
         /// Gets or sets the <see cref="SubSampleResponseModel"/> instance.
         /// </summary>
+        [JsonProperty("subModel")]
         public SubSampleResponseModel Sub { get; set; }
 
         /// <summary>
