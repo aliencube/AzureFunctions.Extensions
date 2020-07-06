@@ -160,7 +160,7 @@ jobs:
       id: package
       shell: pwsh
       run: |
-        dir $GITHUB_WORKSPACE/artifacts
+        dir $GITHUB_WORKSPACE
 
         $packages = Get-ChildItem -Path $GITHUB_WORKSPACE/artifacts -Include *.*
 
