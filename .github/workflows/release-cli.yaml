@@ -188,11 +188,11 @@ jobs:
       run: |
         Expand-Archive -Path "./artifacts/${{ steps.package.outputs.package1 }}" -DestinationPath "./artifacts/linux"
         chmod +x ./artifacts/linux/azfuncopenapi
-        Compress-Archive -Path "./artifacts/linux" -DestinationPath "./artifacts/${{ steps.package.outputs.package1 }}"
+        Compress-Archive -Path "./artifacts/linux" -DestinationPath "./artifacts/${{ steps.package.outputs.package1 }}" -Force
 
         Expand-Archive -Path "./artifacts/${{ steps.package.outputs.package2 }}" -DestinationPath "./artifacts/osx"
         chmod +x ./artifacts/osx/azfuncopenapi
-        Compress-Archive -Path "./artifacts/osx" -DestinationPath "./artifacts/${{ steps.package.outputs.package2 }}"
+        Compress-Archive -Path "./artifacts/osx" -DestinationPath "./artifacts/${{ steps.package.outputs.package2 }}" -Force
 
     - name: Create Release to GitHub
       id: ghrelease
