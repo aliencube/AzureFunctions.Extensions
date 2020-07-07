@@ -194,44 +194,44 @@ jobs:
         draft: false
         prerelease: false
 
-    - name: Upload CLI to GitHub #1
+    - name: Upload CLI to GitHub net461 win-x64
       uses: actions/upload-release-asset@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.ghrelease.outputs.upload_url }}
-        asset_path: artifacts
-        asset_name: "${{ steps.package.outputs.package0 }}"
+        asset_path: "artifacts/${{ steps.package.outputs.package0 }}"
+        asset_name: ${{ steps.package.outputs.package0 }}
         asset_content_type: application/zip
 
-    - name: Upload CLI to GitHub #2
+    - name: Upload CLI to GitHub - netcoreapp3.1 linux-x64
       uses: actions/upload-release-asset@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.ghrelease.outputs.upload_url }}
-        asset_path: artifacts
-        asset_name: "${{ steps.package.outputs.package1 }}"
+        asset_path: "artifacts/${{ steps.package.outputs.package1 }}"
+        asset_name: ${{ steps.package.outputs.package1 }}
         asset_content_type: application/zip
 
-    - name: Upload CLI to GitHub #3
+    - name: Upload CLI to GitHub - netcoreapp3.1 osx-x64
       uses: actions/upload-release-asset@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.ghrelease.outputs.upload_url }}
-        asset_path: artifacts
-        asset_name: "${{ steps.package.outputs.package2 }}"
+        asset_path: "artifacts/${{ steps.package.outputs.package2 }}"
+        asset_name: ${{ steps.package.outputs.package2 }}
         asset_content_type: application/zip
 
-    - name: Upload CLI to GitHub #4
+    - name: Upload CLI to GitHub - netcoreapp3.1 win-x64
       uses: actions/upload-release-asset@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.ghrelease.outputs.upload_url }}
-        asset_path: artifacts
-        asset_name: "${{ steps.package.outputs.package4 }}"
+        asset_path: "artifacts/${{ steps.package.outputs.package3 }}"
+        asset_name: ${{ steps.package.outputs.package3 }}
         asset_content_type: application/zip
 
     # - name: Release to npm
