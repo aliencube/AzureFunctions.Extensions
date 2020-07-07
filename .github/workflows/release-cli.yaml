@@ -190,13 +190,13 @@ jobs:
         chmod +x ./artifacts/linux/azfuncopenapi
         ls -al ./artifacts/linux
         rm "./artifacts/${{ steps.package.outputs.package1 }}"
-        zip -r "./artifacts/${{ steps.package.outputs.package1 }}" "./artifacts/linux"
+        zip -r -j "./artifacts/${{ steps.package.outputs.package1 }}" "./artifacts/linux"
 
         unzip "./artifacts/${{ steps.package.outputs.package2 }}" -d "./artifacts/osx"
         chmod +x ./artifacts/osx/azfuncopenapi
         ls -al ./artifacts/osx
         rm "./artifacts/${{ steps.package.outputs.package2 }}"
-        zip -r "./artifacts/${{ steps.package.outputs.package2 }}" "./artifacts/osx"
+        zip -r -j "./artifacts/${{ steps.package.outputs.package2 }}" "./artifacts/osx"
 
         ls -al ./artifacts
 
