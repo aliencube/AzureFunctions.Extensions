@@ -183,22 +183,22 @@ jobs:
         echo "::set-output name=package2::$package2"
         echo "::set-output name=package3::$package3"
 
-    - name: Repackage CLI for MacOS and Linux
-      shell: pwsh
+    - name: Repackage CLI for Linux and MacOS
+      shell: bash
       run: |
-        Expand-Archive -Path "./artifacts/${{ steps.package.outputs.package1 }}" -DestinationPath "./artifacts/linux"
+        unzip "./artifacts/${{ steps.package.outputs.package1 }}" -d "./artifacts/linux"
         chmod +x ./artifacts/linux/azfuncopenapi
-
         ls -al ./artifacts/linux
+        rm "./artifacts/${{ steps.package.outputs.package1 }}"
+        zip -r "./artifacts/${{ steps.package.outputs.package1 }}" "./artifacts/linux"
 
-        Compress-Archive -Path "./artifacts/linux" -DestinationPath "./artifacts/${{ steps.package.outputs.package1 }}" -Force
-
-        Expand-Archive -Path "./artifacts/${{ steps.package.outputs.package2 }}" -DestinationPath "./artifacts/osx"
+        unzip "./artifacts/${{ steps.package.outputs.package2 }}" -d "./artifacts/osx"
         chmod +x ./artifacts/osx/azfuncopenapi
-
         ls -al ./artifacts/osx
+        rm "./artifacts/${{ steps.package.outputs.package2 }}"
+        zip -r "./artifacts/${{ steps.package.outputs.package2 }}" "./artifacts/osx"
 
-        Compress-Archive -Path "./artifacts/osx" -DestinationPath "./artifacts/${{ steps.package.outputs.package2 }}" -Force
+        ls -al ./artifacts
 
     - name: Create Release to GitHub
       id: ghrelease
