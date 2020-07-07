@@ -183,6 +183,17 @@ jobs:
         echo "::set-output name=package2::$package2"
         echo "::set-output name=package3::$package3"
 
+    - name: Repackage CLI for MacOS and Linux
+      shell: pwsh
+      run: |
+        Expand-Archive -Path "./artifacts/${{ steps.package.outputs.package1 }}" -DestinationPath "./artifacts/linux"
+        chmod +x ./artifacts/linux/azfuncopenapi
+        Compress-Archive -Path "./artifacts/linux" -DestinationPath "./artifacts/${{ steps.package.outputs.package1 }}"
+
+        Expand-Archive -Path "./artifacts/${{ steps.package.outputs.package2 }}" -DestinationPath "./artifacts/osx"
+        chmod +x ./artifacts/osx/azfuncopenapi
+        Compress-Archive -Path "./artifacts/osx" -DestinationPath "./artifacts/${{ steps.package.outputs.package2 }}"
+
     - name: Create Release to GitHub
       id: ghrelease
       uses: actions/create-release@v1
