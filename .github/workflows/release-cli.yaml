@@ -201,7 +201,7 @@ jobs:
       with:
         upload_url: ${{ steps.ghrelease.outputs.upload_url }}
         asset_path: artifacts
-        asset_name: ${{ steps.package.outputs.package0 }}
+        asset_name: "${{ steps.package.outputs.package0 }}"
         asset_content_type: application/zip
 
     - name: Upload CLI to GitHub #2
@@ -211,7 +211,7 @@ jobs:
       with:
         upload_url: ${{ steps.ghrelease.outputs.upload_url }}
         asset_path: artifacts
-        asset_name: ${{ steps.package.outputs.package1 }}
+        asset_name: "${{ steps.package.outputs.package1 }}"
         asset_content_type: application/zip
 
     - name: Upload CLI to GitHub #3
@@ -221,7 +221,7 @@ jobs:
       with:
         upload_url: ${{ steps.ghrelease.outputs.upload_url }}
         asset_path: artifacts
-        asset_name: ${{ steps.package.outputs.package2 }}
+        asset_name: "${{ steps.package.outputs.package2 }}"
         asset_content_type: application/zip
 
     - name: Upload CLI to GitHub #4
@@ -231,7 +231,7 @@ jobs:
       with:
         upload_url: ${{ steps.ghrelease.outputs.upload_url }}
         asset_path: artifacts
-        asset_name: ${{ steps.package.outputs.package4 }}
+        asset_name: "${{ steps.package.outputs.package4 }}"
         asset_content_type: application/zip
 
     # - name: Release to npm
