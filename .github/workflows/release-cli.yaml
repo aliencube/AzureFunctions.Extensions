@@ -169,66 +169,70 @@ jobs:
         $package2 = $packages[2].Name
         $package3 = $packages[3].Name
 
+        $version = $packages[0].Name.Split('-')[1].Replace("v", "")
+
+        echo "version: $version"
         echo "package0: $package0"
         echo "package1: $package1"
         echo "package2: $package2"
         echo "package3: $package3"
 
+        echo "::set-output name=version::$version"
         echo "::set-output name=package0::$package0"
         echo "::set-output name=package1::$package1"
         echo "::set-output name=package2::$package2"
         echo "::set-output name=package3::$package3"
 
-    # - name: Create Release to GitHub
-    #   id: ghrelease
-    #   uses: actions/create-release@v1
-    #   env:
-    #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    #   with:
-    #     tag_name: "${{ steps.release.outputs.module }}-${{ steps.release.outputs.version }}"
-    #     release_name: Release "${{ steps.release.outputs.module }}-v${{ steps.release.outputs.version }}"
-    #     draft: false
-    #     prerelease: false
+    - name: Create Release to GitHub
+      id: ghrelease
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: "cli-${{ steps.package.outputs.version }}"
+        release_name: Release "cli-v${{ steps.package.outputs.version }}"
+        draft: false
+        prerelease: false
 
-    # - name: Upload CLI to GitHub #1
-    #   uses: actions/upload-release-asset@v1
-    #   env:
-    #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    #   with:
-    #     upload_url: ${{ steps.ghrelease.outputs.upload_url }}
-    #     asset_path: artifacts
-    #     asset_name: ${{ steps.package.outputs.package0 }}
-    #     asset_content_type: application/zip
+    - name: Upload CLI to GitHub #1
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.ghrelease.outputs.upload_url }}
+        asset_path: artifacts
+        asset_name: ${{ steps.package.outputs.package0 }}
+        asset_content_type: application/zip
 
-    # - name: Upload CLI to GitHub #2
-    #   uses: actions/upload-release-asset@v1
-    #   env:
-    #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    #   with:
-    #     upload_url: ${{ steps.ghrelease.outputs.upload_url }}
-    #     asset_path: artifacts
-    #     asset_name: ${{ steps.package.outputs.package1 }}
-    #     asset_content_type: application/zip
+    - name: Upload CLI to GitHub #2
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.ghrelease.outputs.upload_url }}
+        asset_path: artifacts
+        asset_name: ${{ steps.package.outputs.package1 }}
+        asset_content_type: application/zip
 
-    # - name: Upload CLI to GitHub #3
-    #   uses: actions/upload-release-asset@v1
-    #   env:
-    #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    #   with:
-    #     upload_url: ${{ steps.ghrelease.outputs.upload_url }}
-    #     asset_path: artifacts
-    #     asset_name: ${{ steps.package.outputs.package2 }}
-    #     asset_content_type: application/zip
+    - name: Upload CLI to GitHub #3
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.ghrelease.outputs.upload_url }}
+        asset_path: artifacts
+        asset_name: ${{ steps.package.outputs.package2 }}
+        asset_content_type: application/zip
 
-    # - name: Upload CLI to GitHub #4
-    #   uses: actions/upload-release-asset@v1
-    #   env:
-    #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    #   with:
-    #     upload_url: ${{ steps.ghrelease.outputs.upload_url }}
-    #     asset_path: artifacts
-    #     asset_name: ${{ steps.package.outputs.package4 }}
-    #     asset_content_type: application/zip
+    - name: Upload CLI to GitHub #4
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.ghrelease.outputs.upload_url }}
+        asset_path: artifacts
+        asset_name: ${{ steps.package.outputs.package4 }}
+        asset_content_type: application/zip
 
     # - name: Release to npm
     #   uses: JS-DevTools/npm-publish@v1
