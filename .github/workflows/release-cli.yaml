@@ -103,7 +103,7 @@ jobs:
       shell: pwsh
       run: |
         dir
-        dotnet publish ./src/Aliencube.AzureFunctions.Extensions.OpenApi.CLI -c Release -f ${{ matrix.targetFramework }} -p:PublishSingleFile=true --self-contained true -r ${{ matrix.runtime }}
+        dotnet publish ./src/Aliencube.AzureFunctions.Extensions.OpenApi.CLI -c Release -f ${{ matrix.targetFramework }} -r ${{ matrix.runtime }} -p:PublishSingleFile=true --self-contained true
 
     - name: List Package for OpenApi.CLI
       if: steps.release.outputs.module == 'cli' && ((matrix.targetFramework == 'net461' && matrix.runtime == 'win-x64') || matrix.targetFramework == 'netcoreapp3.1')
@@ -111,7 +111,7 @@ jobs:
       run: |
         $sourcepath = "./src/*.OpenApi.CLI/bin/Release/${{ matrix.targetFramework }}/${{ matrix.runtime }}/publish"
         $targetpath = "./src/*.OpenApi.CLI/bin/Release/${{ matrix.targetFramework }}/azfuncopenapi-v${{ steps.release.outputs.version }}-${{ matrix.targetFramework }}-${{ matrix.runtime }}.zip"
-        $package = Get-ChildItem -Path $sourcepath -Include *.* -Recurse | Compress-Archive -DestinationPath $targetpath
+        $package = Get-ChildItem -Path $sourcepath -Recurse | Compress-Archive -DestinationPath $targetpath
         $path = (Get-Item $targetpath).FullName
         $name = (Get-Item $targetpath).Name
 
@@ -194,7 +194,7 @@ jobs:
         draft: false
         prerelease: false
 
-    - name: Upload CLI to GitHub net461 win-x64
+    - name: Upload CLI to GitHub - net461 win-x64
       uses: actions/upload-release-asset@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
