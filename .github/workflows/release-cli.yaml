@@ -162,15 +162,12 @@ jobs:
       run: |
         dir ./artifacts
 
-        $packages = Get-ChildItem -Path ./artifacts -Include *.zip
-        $packages
+        $packages = Get-ChildItem -Path ./artifacts
 
-        echo "files: " + $packages.Count
-
-        $package0 = $packages[0].FullName
-        $package1 = $packages[1].FullName
-        $package2 = $packages[2].FullName
-        $package3 = $packages[3].FullName
+        $package0 = $packages[0].Name
+        $package1 = $packages[1].Name
+        $package2 = $packages[2].Name
+        $package3 = $packages[3].Name
 
         echo "package0: $package0"
         echo "package1: $package1"
