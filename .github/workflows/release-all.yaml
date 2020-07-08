@@ -69,7 +69,7 @@ jobs:
       shell: pwsh
       run: |
         dir
-        msbuild . /p:Configuration=Release /p:Version=${{ steps.release.outputs.version }} /p:Verbosity=minimal
+        dotnet build . -c Release -p:Version=${{ steps.release.outputs.version }} -v minimal
 
     - name: Test solution
       shell: pwsh

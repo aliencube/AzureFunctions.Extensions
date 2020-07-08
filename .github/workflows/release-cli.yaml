@@ -82,7 +82,7 @@ jobs:
       shell: pwsh
       run: |
         dir
-        msbuild . /p:Configuration=Release /p:Version=${{ steps.release.outputs.version }} /p:Verbosity=minimal
+        dotnet build . -c Release -p:Version=${{ steps.release.outputs.version }} -v minimal
 
     - name: Test solution
       if: steps.release.outputs.module == 'cli' && ((matrix.targetFramework == 'net461' && matrix.runtime == 'win-x64') || matrix.targetFramework == 'netcoreapp3.1')
