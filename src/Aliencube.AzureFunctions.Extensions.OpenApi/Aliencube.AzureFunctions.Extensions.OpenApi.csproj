@@ -44,9 +44,9 @@
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
   </ItemGroup>
 
-  <!-- <ItemGroup Condition="'$(Configuration)'=='Release'">
+  <ItemGroup Condition="'$(Configuration)'=='Release'">
     <PackageReference Include="Aliencube.AzureFunctions.Extensions.Configuration.AppSettings" Version="1.1.0" />
-  </ItemGroup> -->
+  </ItemGroup>
 
   <ItemGroup>
     <Compile Remove="Lists\**" />
@@ -61,11 +61,7 @@
     <PackageReference Include="System.Runtime.InteropServices" Version="4.3.0" />
   </ItemGroup>
 
-  <!-- <ItemGroup Condition="'$(Configuration)'=='Debug'">
-    <ProjectReference Include="..\Aliencube.AzureFunctions.Extensions.Configuration.AppSettings\Aliencube.AzureFunctions.Extensions.Configuration.AppSettings.csproj" />
-  </ItemGroup> -->
-
-  <ItemGroup>
+  <ItemGroup Condition="'$(Configuration)'=='Debug'">
     <ProjectReference Include="..\Aliencube.AzureFunctions.Extensions.Configuration.AppSettings\Aliencube.AzureFunctions.Extensions.Configuration.AppSettings.csproj" />
   </ItemGroup>
 
