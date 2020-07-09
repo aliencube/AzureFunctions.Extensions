@@ -1,6 +1,7 @@
 ﻿using System;
 
 using Aliencube.AzureFunctions.Extensions.Configuration.AppSettings.Extensions;
+using Aliencube.AzureFunctions.Extensions.Configuration.AppSettings.Resolvers;
 using Aliencube.AzureFunctions.Extensions.OpenApi.Extensions;
 
 using Microsoft.Extensions.Configuration;
@@ -20,18 +21,33 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Resolvers
         /// <param name="openapi"><see cref="IConfiguration"/> instance representing openapisettings.json.</param>
         /// <param name="appsettings"><see cref="IConfiguration"/> instance representing environment variables.</param>
         /// <returns>Returns <see cref="OpenApiInfo"/> instance resolved.</returns>
-        public static OpenApiInfo Resolve(IConfiguration host, IConfiguration openapi, IConfiguration appsettings)
+        public static OpenApiInfo Resolve(IConfiguration host = null, IConfiguration openapi = null, IConfiguration appsettings = null)
         {
+            if (host.IsNullOrDefault())
+            {
+                host = HostJsonResolver.Resolve();
+            }
+
             var info = host.Get<OpenApiInfo>("openApi:info");
             if (info.IsValid())
             {
                 return info;
             }
 
+            if (openapi.IsNullOrDefault())
+            {
+                openapi = OpenApiSettingsJsonResolver.Resolve();
+            }
+
             info = openapi.Get<OpenApiInfo>("info");
             if (info.IsValid())
             {
                 return info;
+            }
+
+            if (appsettings.IsNullOrDefault())
+            {
+                appsettings = ConfigurationResolver.Resolve();
             }
 
             info = appsettings.Get<OpenApiInfo>("OpenApi:Info");
