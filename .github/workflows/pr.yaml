@@ -37,7 +37,7 @@ jobs:
       shell: pwsh
       run: |
         dir
-        msbuild . /p:Configuration=Release /p:Verbosity=minimal
+        dotnet build . -c Debug -v minimal
 
     - name: Test solution
       shell: pwsh
