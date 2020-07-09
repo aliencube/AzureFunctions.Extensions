@@ -12,15 +12,23 @@ This is only applicable to Azure Functions V2, as V2 runtime now take out the `s
 
 ### `StartUp` ###
 
-In order to use dependency injections, all dependencies should be registered through the `StartUp` class implementing the `IWebJobsStartup` interface.
+In order to use dependency injections, all dependencies should be registered through the `StartUp` class inheriting the `FunctionsStartup` class.
 
 ```csharp
-[assembly: WebJobsStartup(typeof(StartUp))]
+[assembly: FunctionsStartup(typeof(Aliencube.AzureFunctions.FunctionAppV2.StartUp))]
 namespace Aliencube.AzureFunctions.FunctionAppV2
 {
-    public class StartUp : IWebJobsStartup
+    public class AppSettings : AppSettingsBase
     {
-        public void Configure(IWebJobsBuilder builder)
+        public AppSettings()
+            : base()
+        {
+        }
+    }
+
+    public class StartUp : FunctionsStartup
+    {
+        public override void Configure(IFunctionsHostBuilder builder)
         {
             builder.Services.AddSingleton<AppSettings>();
 
@@ -73,6 +81,14 @@ For Azure Function V1, the most efficient way for dependency injection would be 
 In order to use dependency injection, all dependencies should be registered beforehand. The `Module` class needs to be inherited then all dependencies are registered within the `Load(IServiceCollection services)` method.
 
 ```csharp
+public class AppSettings : AppSettingsBase
+{
+    public AppSettings()
+        : base()
+    {
+    }
+}
+
 public class StartUp : Module
 {
     public override void Load(IServiceCollection services)

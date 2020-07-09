@@ -1,4 +1,6 @@
-﻿namespace Aliencube.AzureFunctions.Extensions.OpenApi.Configurations
+﻿using Microsoft.OpenApi.Models;
+
+namespace Aliencube.AzureFunctions.Extensions.OpenApi.Configurations
 {
     /// <summary>
     /// This represents the settings entity for "host.json".
@@ -19,5 +21,10 @@
         /// Gets or sets the <see cref="ExtensionsSettings"/> instance.
         /// </summary>
         public virtual ExtensionsSettings Extensions { get; set; }
+
+        /// <summary>
+        /// Gets or sets the <see cref="OpenApiInfo"/> instance.
+        /// </summary>
+        public virtual OpenApiSettings OpenApi { get; set; }
     }
 }

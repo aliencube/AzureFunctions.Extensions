@@ -4,6 +4,7 @@
     <TargetFramework>net461</TargetFramework>
     <IsPackable>true</IsPackable>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <PackageId>Aliencube.AzureFunctions.Extensions.Configuration.Json</PackageId>
     <Owners>Aliencube</Owners>
