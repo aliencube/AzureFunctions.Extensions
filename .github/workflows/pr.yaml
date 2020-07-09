@@ -43,4 +43,4 @@ jobs:
       shell: pwsh
       run: |
         dir
-        dotnet test . -c Release
+        dotnet test . -c Debug
