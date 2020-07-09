@@ -13,7 +13,7 @@ namespace Aliencube.AzureFunctions.Extensions.Configuration.AppSettings.Resolver
     /// <summary>
     /// This represents the resolver entity for configuration.
     /// </summary>
-    public class ConfigurationResolver
+    public static class ConfigurationResolver
     {
         /// <summary>
         /// Gets the <see cref="IConfiguration"/> instance from the environment variables - either local.settings.json or App Settings blade.

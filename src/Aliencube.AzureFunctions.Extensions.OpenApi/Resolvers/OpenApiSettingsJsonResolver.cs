@@ -10,7 +10,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Resolvers
     /// <summary>
     /// This represents the resolver entity for openapisettings.json.
     /// </summary>
-    public class OpenApiSettingsJsonResolver
+    public static class OpenApiSettingsJsonResolver
     {
         /// <summary>
         /// Gets the <see cref="IConfiguration"/> instance from openapisettings.json

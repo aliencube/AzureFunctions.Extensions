@@ -26,5 +26,15 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Tests.Resolvers
             result.Should().NotBeNull()
                            .And.BeAssignableTo<IConfiguration>();
         }
+
+        [TestMethod]
+        public void Given_HostJson_When_GetHttpSettings_Invoked_Then_It_Should_Return_Result()
+        {
+            var host = HostJsonResolver.Resolve();
+
+            var result = host.GetHttpSettings();
+
+            result.RoutePrefix.Should().BeEquivalentTo("api");
+        }
     }
 }
