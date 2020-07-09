@@ -2,6 +2,8 @@
 
 using Aliencube.AzureFunctions.Extensions.Configuration.AppSettings;
 using Aliencube.AzureFunctions.Extensions.Configuration.AppSettings.Extensions;
+using Aliencube.AzureFunctions.Extensions.Configuration.AppSettings.Resolvers;
+using Aliencube.AzureFunctions.Extensions.OpenApi.Resolvers;
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.OpenApi.Models;
@@ -20,13 +22,11 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Configurations
             : base()
         {
             var basePath = this.GetBasePath();
-            var host = new ConfigurationBuilder()
-                           .SetBasePath(basePath)
-                           .AddJsonFile("host.json")
-                           .Build();
+            var host = HostJsonResolver.Resolve(this.Config, basePath);
+            var openapi = OpenApiSettingsJsonResolver.Resolve(this.Config, basePath);
 
-            this.OpenApiInfo = this.Config.Get<OpenApiInfo>("OpenApi:Info");
-            this.SwaggerAuthKey = this.Config.GetValue<string>("OpenApi:ApiKey");
+            this.OpenApiInfo = OpenApiInfoResolver.Resolve(host, openapi, this.Config);
+            this.SwaggerAuthKey = ConfigurationResolver.GetValue<string>("OpenApi:ApiKey", this.Config);
 
             var version = host.GetSection("version").Value;
             this.HttpSettings = string.IsNullOrWhiteSpace(version)
