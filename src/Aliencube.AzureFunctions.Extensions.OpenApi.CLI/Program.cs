@@ -56,7 +56,15 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.CLI
             [Option('o', Description = "Generated Open API output location. Default is 'output'")] string output = "output",
             bool console = false)
         {
-            var pi = new ProjectInfo(project, configuration, target);
+            var pi = default(ProjectInfo);
+            try
+            {
+                pi = new ProjectInfo(project, configuration, target);
+            }
+            catch
+            {
+                return;
+            }
 
             var assembly = Assembly.LoadFrom(pi.CompiledDllPath);
 #if NET461
