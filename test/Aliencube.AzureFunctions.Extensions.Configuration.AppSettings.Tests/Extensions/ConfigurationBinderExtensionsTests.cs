@@ -1,6 +1,6 @@
 using System.IO;
 
-using Aliencube.AzureFunctions.Tests.Fakes;
+using Aliencube.AzureFunctions.Extensions.Configuration.AppSettings.Tests.Fakes;
 
 using FluentAssertions;
 

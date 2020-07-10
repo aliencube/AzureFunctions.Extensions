@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using Aliencube.AzureFunctions.Extensions.OpenApi.Attributes;
 using Aliencube.AzureFunctions.Extensions.OpenApi.Enums;
 using Aliencube.AzureFunctions.Extensions.OpenApi.Extensions;
-using Aliencube.AzureFunctions.Tests.Fakes;
+using Aliencube.AzureFunctions.Extensions.OpenApi.Tests.Fakes;
 
 using FluentAssertions;
 

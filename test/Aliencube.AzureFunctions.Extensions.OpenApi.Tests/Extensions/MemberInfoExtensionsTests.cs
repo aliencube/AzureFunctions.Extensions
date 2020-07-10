@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Reflection;
 
-using Aliencube.AzureFunctions.Tests.Fakes;
+using Aliencube.AzureFunctions.Extensions.DependencyInjection.Tests.Fakes;
 
 using FluentAssertions;
 

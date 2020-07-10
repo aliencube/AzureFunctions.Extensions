@@ -4,7 +4,7 @@ using Aliencube.AzureFunctions.Extensions.DependencyInjection.Triggers.Abstracti
 
 using Microsoft.Extensions.Logging;
 
-namespace Aliencube.AzureFunctions.Tests.Fakes
+namespace Aliencube.AzureFunctions.Extensions.DependencyInjection.Tests.Fakes
 {
     /// <summary>
     /// This represents the trigger entity.
