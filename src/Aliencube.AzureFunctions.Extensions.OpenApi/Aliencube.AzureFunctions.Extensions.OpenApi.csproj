@@ -35,7 +35,7 @@
   </PropertyGroup>
 
   <ItemGroup Condition="'$(TargetFramework)'=='net461'">
-    <PackageReference Include="Aliencube.AzureFunctions.Extensions.Configuration.Json" Version="2.1.1" />
+    <PackageReference Include="Aliencube.AzureFunctions.Extensions.Configuration.Json" Version="2.1.1.1" />
     <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.Http" Version="1.1.0" />
     <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
   </ItemGroup>
@@ -46,7 +46,7 @@
   </ItemGroup>
 
   <ItemGroup Condition="'$(Configuration)'=='Release'">
-    <PackageReference Include="Aliencube.AzureFunctions.Extensions.Configuration.AppSettings" Version="1.1.0" />
+    <PackageReference Include="Aliencube.AzureFunctions.Extensions.Configuration.AppSettings" Version="1.2.0" />
   </ItemGroup>
 
   <ItemGroup>
