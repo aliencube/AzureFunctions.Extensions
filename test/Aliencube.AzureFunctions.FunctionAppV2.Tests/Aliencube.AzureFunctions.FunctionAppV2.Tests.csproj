@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Aliencube.AzureFunctions.FunctionAppV2\Aliencube.AzureFunctions.FunctionAppV2.csproj" />
+    <ProjectReference Include="..\..\samples\Aliencube.AzureFunctions.FunctionAppV2\Aliencube.AzureFunctions.FunctionAppV2.csproj" />
     <ProjectReference Include="..\Aliencube.AzureFunctions.Extensions.OpenApi.Tests.Fakes\Aliencube.AzureFunctions.Extensions.OpenApi.Tests.Fakes.csproj" />
   </ItemGroup>
 

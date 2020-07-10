@@ -15,6 +15,10 @@
     <PackageReference Include="Microsoft.Azure.WebJobs" Version="3.0.5" />
   </ItemGroup>
 
+  <ItemGroup Condition="'$(Configuration)'=='Release'">
+    <PackageReference Include="Aliencube.AzureFunctions.Extensions.OpenApi" Version="1.7.0" />
+  </ItemGroup>
+
   <ItemGroup>
     <PackageReference Include="Cocona.Lite" Version="1.4.0" />
     <PackageReference Include="Moq" Version="4.14.5" />
@@ -23,7 +27,7 @@
     <PackageReference Include="System.Runtime.InteropServices" Version="4.3.0" />
   </ItemGroup>
 
-  <ItemGroup>
+  <ItemGroup Condition="'$(Configuration)'=='Debug'">
     <ProjectReference Include="..\Aliencube.AzureFunctions.Extensions.OpenApi\Aliencube.AzureFunctions.Extensions.OpenApi.csproj" />
   </ItemGroup>
 
