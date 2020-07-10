@@ -1,5 +1,5 @@
 ﻿using Aliencube.AzureFunctions.Extensions.DependencyInjection.Extensions;
-using Aliencube.AzureFunctions.Tests.Fakes;
+using Aliencube.AzureFunctions.Extensions.DependencyInjection.Tests.Fakes;
 
 using FluentAssertions;
 

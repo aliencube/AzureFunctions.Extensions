@@ -1,4 +1,4 @@
-﻿namespace Aliencube.AzureFunctions.Tests.Fakes
+﻿namespace Aliencube.AzureFunctions.Extensions.Configuration.AppSettings.Tests.Fakes
 {
     /// <summary>
     /// This represents the fake product settings entity.

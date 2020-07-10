@@ -21,8 +21,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Aliencube.AzureFunctions.Ex
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Aliencube.AzureFunctions.Extensions.DependencyInjection.Tests", "test\Aliencube.AzureFunctions.Extensions.DependencyInjection.Tests\Aliencube.AzureFunctions.Extensions.DependencyInjection.Tests.csproj", "{49C186AD-802E-4C6A-86B1-2092D3FC6660}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Aliencube.AzureFunctions.Tests.Fakes", "test\Aliencube.AzureFunctions.Tests.Fakes\Aliencube.AzureFunctions.Tests.Fakes.csproj", "{16B414D3-F4E4-4236-A7C4-75742626C2C1}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Aliencube.AzureFunctions.FunctionAppV2", "src\Aliencube.AzureFunctions.FunctionAppV2\Aliencube.AzureFunctions.FunctionAppV2.csproj", "{515EB3CC-7FD5-4495-92EF-BB01ECAF9556}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Aliencube.AzureFunctions.FunctionAppV2.Tests", "test\Aliencube.AzureFunctions.FunctionAppV2.Tests\Aliencube.AzureFunctions.FunctionAppV2.Tests.csproj", "{8C565D1A-D0B4-4901-A592-88862E8C6962}"
@@ -47,7 +45,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Aliencube.AzureFunctions.Ex
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Aliencube.AzureFunctions.Extensions.OpenApi.CLI.Tests", "test\Aliencube.AzureFunctions.Extensions.OpenApi.CLI.Tests\Aliencube.AzureFunctions.Extensions.OpenApi.CLI.Tests.csproj", "{65AED6F0-D27E-4D6E-BA42-AD6EE1338082}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aliencube.AzureFunctions.Extensions.Configuration.Json.Tests", "test\Aliencube.AzureFunctions.Extensions.Configuration.Json.Tests\Aliencube.AzureFunctions.Extensions.Configuration.Json.Tests.csproj", "{F0899514-88DC-4CBF-A392-825BDC094689}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Aliencube.AzureFunctions.Extensions.Configuration.Json.Tests", "test\Aliencube.AzureFunctions.Extensions.Configuration.Json.Tests\Aliencube.AzureFunctions.Extensions.Configuration.Json.Tests.csproj", "{F0899514-88DC-4CBF-A392-825BDC094689}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Aliencube.AzureFunctions.Extensions.Configuration.AppSettings.Tests.Fakes", "test\Aliencube.AzureFunctions.Extensions.Configuration.AppSettings.Tests.Fakes\Aliencube.AzureFunctions.Extensions.Configuration.AppSettings.Tests.Fakes.csproj", "{AC89B7CF-0FA5-49EE-97A8-AB39A5F211A8}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Aliencube.AzureFunctions.Extensions.DependencyInjection.Tests.Fakes", "test\Aliencube.AzureFunctions.Extensions.DependencyInjection.Tests.Fakes\Aliencube.AzureFunctions.Extensions.DependencyInjection.Tests.Fakes.csproj", "{A50319A4-2476-4FD2-B066-303A3F7CCF73}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Aliencube.AzureFunctions.Extensions.OpenApi.Tests.Fakes", "test\Aliencube.AzureFunctions.Extensions.OpenApi.Tests.Fakes\Aliencube.AzureFunctions.Extensions.OpenApi.Tests.Fakes.csproj", "{5C2331B8-EF38-48F3-A060-175530F44F8B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -63,10 +67,6 @@ Global
 		{49C186AD-802E-4C6A-86B1-2092D3FC6660}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{49C186AD-802E-4C6A-86B1-2092D3FC6660}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{49C186AD-802E-4C6A-86B1-2092D3FC6660}.Release|Any CPU.Build.0 = Release|Any CPU
-		{16B414D3-F4E4-4236-A7C4-75742626C2C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{16B414D3-F4E4-4236-A7C4-75742626C2C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{16B414D3-F4E4-4236-A7C4-75742626C2C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{16B414D3-F4E4-4236-A7C4-75742626C2C1}.Release|Any CPU.Build.0 = Release|Any CPU
 		{515EB3CC-7FD5-4495-92EF-BB01ECAF9556}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{515EB3CC-7FD5-4495-92EF-BB01ECAF9556}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{515EB3CC-7FD5-4495-92EF-BB01ECAF9556}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -119,6 +119,18 @@ Global
 		{F0899514-88DC-4CBF-A392-825BDC094689}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F0899514-88DC-4CBF-A392-825BDC094689}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F0899514-88DC-4CBF-A392-825BDC094689}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AC89B7CF-0FA5-49EE-97A8-AB39A5F211A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AC89B7CF-0FA5-49EE-97A8-AB39A5F211A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AC89B7CF-0FA5-49EE-97A8-AB39A5F211A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AC89B7CF-0FA5-49EE-97A8-AB39A5F211A8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A50319A4-2476-4FD2-B066-303A3F7CCF73}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A50319A4-2476-4FD2-B066-303A3F7CCF73}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A50319A4-2476-4FD2-B066-303A3F7CCF73}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A50319A4-2476-4FD2-B066-303A3F7CCF73}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5C2331B8-EF38-48F3-A060-175530F44F8B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5C2331B8-EF38-48F3-A060-175530F44F8B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5C2331B8-EF38-48F3-A060-175530F44F8B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5C2331B8-EF38-48F3-A060-175530F44F8B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -126,7 +138,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{EE506010-80F2-40CD-BE0E-861474560592} = {810145E0-41CF-4E24-BD9C-E7517498BA29}
 		{49C186AD-802E-4C6A-86B1-2092D3FC6660} = {8B62E3FB-9062-4716-803A-1FA51FCE68BC}
-		{16B414D3-F4E4-4236-A7C4-75742626C2C1} = {8B62E3FB-9062-4716-803A-1FA51FCE68BC}
 		{515EB3CC-7FD5-4495-92EF-BB01ECAF9556} = {810145E0-41CF-4E24-BD9C-E7517498BA29}
 		{8C565D1A-D0B4-4901-A592-88862E8C6962} = {8B62E3FB-9062-4716-803A-1FA51FCE68BC}
 		{A2DADE47-5803-49C1-B7AD-4D7FA6515BB4} = {810145E0-41CF-4E24-BD9C-E7517498BA29}
@@ -140,6 +151,9 @@ Global
 		{5C35651B-97D0-4115-81FC-ED8D7ACD71A7} = {810145E0-41CF-4E24-BD9C-E7517498BA29}
 		{65AED6F0-D27E-4D6E-BA42-AD6EE1338082} = {8B62E3FB-9062-4716-803A-1FA51FCE68BC}
 		{F0899514-88DC-4CBF-A392-825BDC094689} = {8B62E3FB-9062-4716-803A-1FA51FCE68BC}
+		{AC89B7CF-0FA5-49EE-97A8-AB39A5F211A8} = {8B62E3FB-9062-4716-803A-1FA51FCE68BC}
+		{A50319A4-2476-4FD2-B066-303A3F7CCF73} = {8B62E3FB-9062-4716-803A-1FA51FCE68BC}
+		{5C2331B8-EF38-48F3-A060-175530F44F8B} = {8B62E3FB-9062-4716-803A-1FA51FCE68BC}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {70FEC644-BB3C-4441-AF91-DC694803C8F2}

@@ -1,8 +1,8 @@
 using System.Threading.Tasks;
 
 using Aliencube.AzureFunctions.Extensions.DependencyInjection.Abstractions;
+using Aliencube.AzureFunctions.Extensions.OpenApi.Tests.Fakes;
 using Aliencube.AzureFunctions.FunctionAppCommon.Functions;
-using Aliencube.AzureFunctions.Tests.Fakes;
 
 using FluentAssertions;
 
