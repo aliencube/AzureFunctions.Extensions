@@ -1,7 +1,6 @@
-﻿using System;
-
+﻿
 using Aliencube.AzureFunctions.Extensions.Configuration.AppSettings;
-using Aliencube.AzureFunctions.Extensions.Configuration.AppSettings.Extensions;
+using Aliencube.AzureFunctions.Extensions.OpenApi.Resolvers;
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.OpenApi.Models;
@@ -20,20 +19,13 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Configurations
             : base()
         {
             var basePath = this.GetBasePath();
-            var host = new ConfigurationBuilder()
-                           .SetBasePath(basePath)
-                           .AddJsonFile("host.json")
-                           .Build();
+            var host = HostJsonResolver.Resolve(this.Config, basePath);
+            var openapi = OpenApiSettingsJsonResolver.Resolve(this.Config, basePath);
 
-            this.OpenApiInfo = this.Config.Get<OpenApiInfo>("OpenApi:Info");
+            this.OpenApiInfo = OpenApiInfoResolver.Resolve(host, openapi, this.Config);
             this.SwaggerAuthKey = this.Config.GetValue<string>("OpenApi:ApiKey");
 
-            var version = host.GetSection("version").Value;
-            this.HttpSettings = string.IsNullOrWhiteSpace(version)
-                                    ? host.Get<HttpSettings>("http")
-                                    : (version.Equals("2.0", StringComparison.CurrentCultureIgnoreCase)
-                                           ? host.Get<HttpSettings>("extensions:http")
-                                           : host.Get<HttpSettings>("http"));
+            this.HttpSettings = host.GetHttpSettings();
         }
 
         /// <summary>

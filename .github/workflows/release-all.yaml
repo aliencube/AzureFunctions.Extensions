@@ -65,13 +65,57 @@ jobs:
         dir
         dotnet restore .
 
-    - name: Build solution
+    - name: Build solution for AppSettings
+      if: steps.release.outputs.module == 'appsettings'
+      shell: pwsh
+      run: |
+        dir
+        dotnet build ./src/Aliencube.AzureFunctions.Extensions.Configuration.AppSettings -c Release -p:Version=${{ steps.release.outputs.version }} -v minimal
+
+    - name: Build solution for Configuration.Json
+      if: steps.release.outputs.module == 'configjson'
+      shell: pwsh
+      run: |
+        dir
+        dotnet build ./src/Aliencube.AzureFunctions.Extensions.Configuration.Json -c Release -p:Version=${{ steps.release.outputs.version }} -v minimal
+
+    - name: Build solution for DependencyInjection
+      if: steps.release.outputs.module == 'di'
+      shell: pwsh
+      run: |
+        dir
+        dotnet build ./src/Aliencube.AzureFunctions.Extensions.DependencyInjection -c Release -p:Version=${{ steps.release.outputs.version }} -v minimal
+
+    - name: Build solution for OpenApi
+      if: steps.release.outputs.module == 'swagger'
       shell: pwsh
       run: |
         dir
         dotnet build . -c Release -p:Version=${{ steps.release.outputs.version }} -v minimal
 
-    - name: Test solution
+    - name: Test solution for AppSettings
+      if: steps.release.outputs.module == 'appsettings'
+      shell: pwsh
+      run: |
+        dir
+        dotnet test ./test/Aliencube.AzureFunctions.Extensions.Configuration.AppSettings.Tests -c Release
+
+    - name: Test solution for Configuration.Json
+      if: steps.release.outputs.module == 'configjson'
+      shell: pwsh
+      run: |
+        dir
+        dotnet test ./test/Aliencube.AzureFunctions.Extensions.Configuration.Json.Tests -c Release
+
+    - name: Test solution for DependencyInjection
+      if: steps.release.outputs.module == 'di'
+      shell: pwsh
+      run: |
+        dir
+        dotnet test ./test/Aliencube.AzureFunctions.Extensions.DependencyInjection.Tests -c Release
+
+    - name: Test solution for OpenApi
+      if: steps.release.outputs.module == 'swagger'
       shell: pwsh
       run: |
         dir

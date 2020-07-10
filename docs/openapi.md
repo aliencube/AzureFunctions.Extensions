@@ -41,13 +41,16 @@ public static async Task<IActionResult> RenderSwaggerDocument(
     [HttpTrigger(AuthorizationLevel.Function, "get", Route = "swagger.json")] HttpRequest req,
     ILogger log)
 {
-    var settings = new AppSettings();
+    var openApiInfo = OpenApiInfoResolver.Resolve();
+    var host = HostJsonResolver.Resolve();
+    var httpSettings = host.GetHttpSettings();
+
     var filter = new RouteConstraintFilter();
     var helper = new DocumentHelper(filter);
     var document = new Document(helper);
     var result = await document.InitialiseDocument()
-                               .AddMetadata(settings.OpenApiInfo)
-                               .AddServer(req, settings.HttpSettings.RoutePrefix)
+                               .AddMetadata(openApiInfo)
+                               .AddServer(req, httpSettings.RoutePrefix)
                                .Build(Assembly.GetExecutingAssembly(), new CamelCaseNamingStrategy())
                                .RenderAsync(OpenApiSpecVersion.OpenApi2_0, OpenApiFormat.Json)
                                .ConfigureAwait(false);
@@ -76,12 +79,16 @@ public static async Task<IActionResult> RenderSwaggerUI(
     [HttpTrigger(AuthorizationLevel.Function, "get", Route = "swagger/ui")] HttpRequest req,
     ILogger log)
 {
-    var settings = new AppSettings();
+    var openApiInfo = OpenApiInfoResolver.Resolve();
+    var host = HostJsonResolver.Resolve();
+    var httpSettings = host.GetHttpSettings();
+    var swaggerAuthKey = ConfigurationResolver.GetValue<string>("OpenApi:ApiKey");
+
     var ui = new SwaggerUI();
-    var result = await ui.AddMetadata(settings.OpenApiInfo)
-                         .AddServer(req, settings.HttpSettings.RoutePrefix)
+    var result = await ui.AddMetadata(openApiInfo)
+                         .AddServer(req, httpSettings.RoutePrefix)
                          .BuildAsync()
-                         .RenderAsync("swagger.json", settings.SwaggerAuthKey)
+                         .RenderAsync("swagger.json", swaggerAuthKey)
                          .ConfigureAwait(false);
     var response = new ContentResult()
                        {
@@ -95,7 +102,71 @@ public static async Task<IActionResult> RenderSwaggerUI(
 ```
 
 
-## App Settings ##
+## Open API Metadata ##
+
+To generate an Open API document, [OpenApiInfo object](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#infoObject) needs to be defined. This information can be declared in three places &ndash; `host.json`, `openapisettings.json` or `local.settings.json`.
+
+This library looks for the information in the following order:
+
+1. `host.json`
+2. `openapisettings.json`
+3. `local.settings.json` or App Settings blade
+
+
+### `host.json` ###
+
+Although it has not been officially accepted to be a part of `host.json`, the Open API metadata still can be stored in it like:
+
+```json
+{
+  ...
+  "openApi": {
+    "info": {
+      "version": "3.0.0",
+      "title": "Open API Sample on Azure Functions",
+      "description": "A sample API that runs on Azure Functions 3.x using Open API specification - from **host. json**.",
+      "termsOfService": "https://github.com/aliencube/AzureFunctions.Extensions",
+      "contact": {
+        "name": "Aliencube Community",
+        "email": "no-reply@aliencube.org",
+        "url": "https://github.com/aliencube/AzureFunctions.Extensions/issues"
+      },
+      "license": {
+        "name": "MIT",
+        "url": "http://opensource.org/licenses/MIT"
+      }
+    }
+  }
+  ...
+}
+```
+
+
+### `openapisettings.json` ###
+
+The Open API metadata can be defined in a separate file, `openapisettings.json` like:
+
+```json
+{
+  "info": {
+    "version": "3.0.0",
+    "title": "Open API Sample on Azure Functions",
+    "description": "A sample API that runs on Azure Functions 3.x using Open API specification - from  **openapisettings.json**.",
+    "termsOfService": "https://github.com/aliencube/AzureFunctions.Extensions",
+    "contact": {
+      "name": "Aliencube Community",
+      "email": "no-reply@aliencube.org",
+      "url": "https://github.com/aliencube/AzureFunctions.Extensions/issues"
+    },
+    "license": {
+      "name": "MIT",
+      "url": "http://opensource.org/licenses/MIT"
+    }
+  }
+}
+```
+
+### `local.settings.json` or App Settings ###
 
 On either your `local.settings.json` or App Settings on Azure Functions instance, those details should be set up to render Open API metadata:
 
