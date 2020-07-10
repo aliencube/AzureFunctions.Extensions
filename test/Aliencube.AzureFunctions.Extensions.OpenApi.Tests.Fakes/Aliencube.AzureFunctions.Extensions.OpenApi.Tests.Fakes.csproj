@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net461;netstandard2.0</TargetFrameworks>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Aliencube.AzureFunctions.Extensions.OpenApi\Aliencube.AzureFunctions.Extensions.OpenApi.csproj" />
+    <ProjectReference Include="..\Aliencube.AzureFunctions.Extensions.Configuration.AppSettings.Tests.Fakes\Aliencube.AzureFunctions.Extensions.Configuration.AppSettings.Tests.Fakes.csproj" />
+    <ProjectReference Include="..\Aliencube.AzureFunctions.Extensions.DependencyInjection.Tests.Fakes\Aliencube.AzureFunctions.Extensions.DependencyInjection.Tests.Fakes.csproj" />
+  </ItemGroup>
+
+</Project>

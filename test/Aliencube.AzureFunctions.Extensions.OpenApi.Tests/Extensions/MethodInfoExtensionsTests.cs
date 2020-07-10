@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Reflection;
 
-using Aliencube.AzureFunctions.Tests.Fakes;
+using Aliencube.AzureFunctions.Extensions.OpenApi.Tests.Fakes;
 
 using FluentAssertions;
 

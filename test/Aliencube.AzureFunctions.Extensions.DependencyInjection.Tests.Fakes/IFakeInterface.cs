@@ -1,4 +1,4 @@
-﻿namespace Aliencube.AzureFunctions.Tests.Fakes
+﻿namespace Aliencube.AzureFunctions.Extensions.DependencyInjection.Tests.Fakes
 {
     /// <summary>
     /// This provides interfaces to the <see cref="FakeClass"/> class.
