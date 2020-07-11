@@ -16,7 +16,7 @@ $context = (Invoke-WebRequest `
     -UseBasicParsing).Content
 
 $trigger = (Invoke-WebRequest `
-    -Uri "https://raw.githubusercontent.com/aliencube/AzureFunctions.Extensions/feature/openapi-templates/templates/OpenApiTriggers/OpenApiHttpTrigger.cs" `
+    -Uri "https://raw.githubusercontent.com/aliencube/AzureFunctions.Extensions/dev/templates/OpenApiTriggers/OpenApiHttpTrigger.cs" `
     -UseBasicParsing).Content
 
 # Replaces namespace
@@ -25,6 +25,15 @@ $context = $context.Replace("<# NAMESPACE #>", $Namespace)
 $trigger = $trigger.Replace("<# NAMESPACE #>", $Namespace)
 
 # Save templates
-$interface | Out-File "$ProjectPath/IOpenApiHttpTriggerContext.cs"
-$context | Out-File "$ProjectPath/OpenApiHttpTriggerContext.cs"
-$trigger | Out-File "$ProjectPath/OpenApiHttpTrigger.cs"
+if (!(Test-Path "$ProjectPath/OpenApi" -PathType Container)) {
+    $result = New-Item -ItemType Directory -Force -Path "$ProjectPath/OpenApi"
+}
+
+$interface | Out-File "$ProjectPath/OpenApi/IOpenApiHttpTriggerContext.cs"
+$context | Out-File "$ProjectPath/OpenApi/OpenApiHttpTriggerContext.cs"
+$trigger | Out-File "$ProjectPath/OpenApi/OpenApiHttpTrigger.cs"
+
+Remove-Variable result
+Remove-Variable interface
+Remove-Variable context
+Remove-Variable trigger
