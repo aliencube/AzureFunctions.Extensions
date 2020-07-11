@@ -58,23 +58,6 @@ namespace <# NAMESPACE #>
         {
             log.LogInformation($"swagger.{extension} was requested.");
 
-            var assembly1 = context.GetExecutingAssembly();
-            log.LogInformation($"executing assembly: {assembly1.Location}");
-
-            var assembly2 = Assembly.GetEntryAssembly();
-            log.LogInformation($"entry assembly: {assembly2.Location}");
-
-            var assembly3 = Assembly.GetCallingAssembly();
-            log.LogInformation($"calling assembly: {assembly3.Location}");
-#if NET461
-            var instanceName = req.RequestUri.ParseQueryString()["instance"];
-#else
-            var instanceName = req.Query["instance"].ToString();
-#endif
-            var filename = assembly1.Location.Split(new[] { Path.DirectorySeparatorChar }, StringSplitOptions.RemoveEmptyEntries).Last();
-            var assembly4 = Assembly.Load(AssemblyName.GetAssemblyName($"{assembly1.Location.Replace(filename, "").TrimEnd(Path.DirectorySeparatorChar)}{Path.DirectorySeparatorChar}{instanceName}.dll"));
-            log.LogInformation($"loaded assembly: {assembly4.FullName}");
-
             var result = await context.Document
                                       .InitialiseDocument()
                                       .AddMetadata(context.OpenApiInfo)
@@ -126,23 +109,6 @@ namespace <# NAMESPACE #>
         {
             log.LogInformation($"{version}.{extension} was requested.");
 
-            var assembly1 = context.GetExecutingAssembly();
-            log.LogInformation($"executing assembly: {assembly1.Location}");
-
-            var assembly2 = Assembly.GetEntryAssembly();
-            log.LogInformation($"entry assembly: {assembly2.Location}");
-
-            var assembly3 = Assembly.GetCallingAssembly();
-            log.LogInformation($"calling assembly: {assembly3.Location}");
-#if NET461
-            var instanceName = req.RequestUri.ParseQueryString()["instance"];
-#else
-            var instanceName = req.Query["instance"].ToString();
-#endif
-            var filename = assembly1.Location.Split(new[] { Path.DirectorySeparatorChar }, StringSplitOptions.RemoveEmptyEntries).Last();
-            var assembly4 = Assembly.Load(AssemblyName.GetAssemblyName($"{assembly1.Location.Replace(filename, "").TrimEnd(Path.DirectorySeparatorChar)}{Path.DirectorySeparatorChar}{instanceName}.dll"));
-            log.LogInformation($"loaded assembly: {assembly4.FullName}");
-
             var result = await context.Document
                                       .InitialiseDocument()
                                       .AddMetadata(context.OpenApiInfo)
@@ -189,23 +155,6 @@ namespace <# NAMESPACE #>
             ILogger log)
         {
             log.LogInformation($"SwaggerUI page was requested.");
-
-            var assembly1 = context.GetExecutingAssembly();
-            log.LogInformation($"executing assembly: {assembly1.Location}");
-
-            var assembly2 = Assembly.GetEntryAssembly();
-            log.LogInformation($"entry assembly: {assembly2.Location}");
-
-            var assembly3 = Assembly.GetCallingAssembly();
-            log.LogInformation($"calling assembly: {assembly3.Location}");
-#if NET461
-            var instanceName = req.RequestUri.ParseQueryString()["instance"];
-#else
-            var instanceName = req.Query["instance"].ToString();
-#endif
-            var filename = assembly1.Location.Split(new[] { Path.DirectorySeparatorChar }, StringSplitOptions.RemoveEmptyEntries).Last();
-            var assembly4 = Assembly.Load(AssemblyName.GetAssemblyName($"{assembly1.Location.Replace(filename, "").TrimEnd(Path.DirectorySeparatorChar)}{Path.DirectorySeparatorChar}{instanceName}.dll"));
-            log.LogInformation($"loaded assembly: {assembly4.FullName}");
 
             var result = await context.SwaggerUI
                                       .AddMetadata(context.OpenApiInfo)
