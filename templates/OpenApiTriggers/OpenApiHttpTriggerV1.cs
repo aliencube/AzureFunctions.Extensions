@@ -33,7 +33,7 @@ namespace <# NAMESPACE #>
         [FunctionName(nameof(OpenApiHttpTrigger.RenderSwaggerDocumentInJson))]
         [OpenApiIgnore]
         public static async Task<HttpResponseMessage> RenderSwaggerDocumentInJson(
-            [HttpTrigger(AuthorizationLevel.Admin, "get", Route = "swagger.json")] HttpRequestMessage req,
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "swagger.json")] HttpRequestMessage req,
             ILogger log)
         {
             log.LogInformation($"swagger.json was requested.");
@@ -61,7 +61,7 @@ namespace <# NAMESPACE #>
         [FunctionName(nameof(OpenApiHttpTrigger.RenderSwaggerDocumentInYaml))]
         [OpenApiIgnore]
         public static async Task<HttpResponseMessage> RenderSwaggerDocumentInYaml(
-            [HttpTrigger(AuthorizationLevel.Admin, "get", Route = "swagger.yaml")] HttpRequestMessage req,
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "swagger.yaml")] HttpRequestMessage req,
             ILogger log)
         {
             log.LogInformation($"swagger.yaml was requested.");
@@ -89,7 +89,7 @@ namespace <# NAMESPACE #>
         [FunctionName(nameof(OpenApiHttpTrigger.RenderOpenApiDocumentV2InJson))]
         [OpenApiIgnore]
         public static async Task<HttpResponseMessage> RenderOpenApiDocumentV2InJson(
-            [HttpTrigger(AuthorizationLevel.Admin, "get", Route = "openapi/v2.json")] HttpRequestMessage req,
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "openapi/v2.json")] HttpRequestMessage req,
             ILogger log)
         {
             log.LogInformation($"v2.json was requested.");
@@ -117,7 +117,7 @@ namespace <# NAMESPACE #>
         [FunctionName(nameof(OpenApiHttpTrigger.RenderOpenApiDocumentV2InYaml))]
         [OpenApiIgnore]
         public static async Task<HttpResponseMessage> RenderOpenApiDocumentV2InYaml(
-            [HttpTrigger(AuthorizationLevel.Admin, "get", Route = "openapi/v2.yaml")] HttpRequestMessage req,
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "openapi/v2.yaml")] HttpRequestMessage req,
             ILogger log)
         {
             log.LogInformation($"v2.yaml was requested.");
@@ -145,7 +145,7 @@ namespace <# NAMESPACE #>
         [FunctionName(nameof(OpenApiHttpTrigger.RenderOpenApiDocumentV3InJson))]
         [OpenApiIgnore]
         public static async Task<HttpResponseMessage> RenderOpenApiDocumentV3InJson(
-            [HttpTrigger(AuthorizationLevel.Admin, "get", Route = "openapi/v3.json")] HttpRequestMessage req,
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "openapi/v3.json")] HttpRequestMessage req,
             ILogger log)
         {
             log.LogInformation($"v3.json was requested.");
@@ -173,7 +173,7 @@ namespace <# NAMESPACE #>
         [FunctionName(nameof(OpenApiHttpTrigger.RenderOpenApiDocumentV3InYaml))]
         [OpenApiIgnore]
         public static async Task<HttpResponseMessage> RenderOpenApiDocumentV3InYaml(
-            [HttpTrigger(AuthorizationLevel.Admin, "get", Route = "openapi/v3.yaml")] HttpRequestMessage req,
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "openapi/v3.yaml")] HttpRequestMessage req,
             ILogger log)
         {
             log.LogInformation($"v3.yaml was requested.");
@@ -201,7 +201,7 @@ namespace <# NAMESPACE #>
         [FunctionName(nameof(OpenApiHttpTrigger.RenderSwaggerUI))]
         [OpenApiIgnore]
         public static async Task<HttpResponseMessage> RenderSwaggerUI(
-            [HttpTrigger(AuthorizationLevel.Admin, "get", Route = "swagger/ui")] HttpRequestMessage req,
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "swagger/ui")] HttpRequestMessage req,
             ILogger log)
         {
             log.LogInformation($"SwaggerUI page was requested.");

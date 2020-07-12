@@ -34,7 +34,7 @@ namespace <# NAMESPACE #>
         [FunctionName(nameof(OpenApiHttpTrigger.RenderSwaggerDocument))]
         [OpenApiIgnore]
         public static async Task<IActionResult> RenderSwaggerDocument(
-            [HttpTrigger(AuthorizationLevel.Admin, "get", Route = "swagger.{extension}")] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "swagger.{extension}")] HttpRequest req,
             string extension,
             ILogger log)
         {
@@ -69,7 +69,7 @@ namespace <# NAMESPACE #>
         [FunctionName(nameof(OpenApiHttpTrigger.RenderOpenApiDocument))]
         [OpenApiIgnore]
         public static async Task<IActionResult> RenderOpenApiDocument(
-            [HttpTrigger(AuthorizationLevel.Admin, "get", Route = "openapi/{version}.{extension}")] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "openapi/{version}.{extension}")] HttpRequest req,
             string version,
             string extension,
             ILogger log)
@@ -103,7 +103,7 @@ namespace <# NAMESPACE #>
         [FunctionName(nameof(OpenApiHttpTrigger.RenderSwaggerUI))]
         [OpenApiIgnore]
         public static async Task<IActionResult> RenderSwaggerUI(
-            [HttpTrigger(AuthorizationLevel.Admin, "get", Route = "swagger/ui")] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "swagger/ui")] HttpRequest req,
             ILogger log)
         {
             log.LogInformation($"SwaggerUI page was requested.");

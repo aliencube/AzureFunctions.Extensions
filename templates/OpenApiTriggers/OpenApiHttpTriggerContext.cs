@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Reflection;
 
-using Aliencube.AzureFunctions.Extensions.Configuration.AppSettings.Resolvers;
 using Aliencube.AzureFunctions.Extensions.OpenApi;
 using Aliencube.AzureFunctions.Extensions.OpenApi.Abstractions;
 using Aliencube.AzureFunctions.Extensions.OpenApi.Configurations;
@@ -89,7 +88,9 @@ namespace <# NAMESPACE #>
         /// <inheritdoc />
         public virtual string GetSwaggerAuthKey(string key = "OpenApi__ApiKey")
         {
-            return ConfigurationResolver.GetValue<string>(key);
+            var value = Environment.GetEnvironmentVariable(key);
+
+            return value;
         }
     }
 }
