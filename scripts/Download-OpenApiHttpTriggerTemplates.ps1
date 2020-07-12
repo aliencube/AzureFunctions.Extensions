@@ -1,6 +1,7 @@
 Param(
     [string] [Parameter(Mandatory=$true)] $ProjectPath,
-    [string] [Parameter(Mandatory=$true)] $Namespace
+    [string] [Parameter(Mandatory=$true)] $Namespace,
+    [switch] [Parameter(Mandatory=$false)] $IsVersion1
 )
 
 # Forces TLS 1.2 for GitHub download.
@@ -15,8 +16,14 @@ $context = (Invoke-WebRequest `
     -Uri "https://raw.githubusercontent.com/aliencube/AzureFunctions.Extensions/dev/templates/OpenApiTriggers/OpenApiHttpTriggerContext.cs" `
     -UseBasicParsing).Content
 
+$triggerUri = "https://raw.githubusercontent.com/aliencube/AzureFunctions.Extensions/dev/templates/OpenApiTriggers/OpenApiHttpTrigger.cs"
+if ($IsVersion1 -eq $true)
+{
+    $triggerUri = "https://raw.githubusercontent.com/aliencube/AzureFunctions.Extensions/dev/templates/OpenApiTriggers/OpenApiHttpTriggerV1.cs"
+}
+
 $trigger = (Invoke-WebRequest `
-    -Uri "https://raw.githubusercontent.com/aliencube/AzureFunctions.Extensions/dev/templates/OpenApiTriggers/OpenApiHttpTrigger.cs" `
+    -Uri $triggerUri `
     -UseBasicParsing).Content
 
 # Replaces namespace
@@ -37,3 +44,4 @@ Remove-Variable result
 Remove-Variable interface
 Remove-Variable context
 Remove-Variable trigger
+Remove-Variable triggerUri

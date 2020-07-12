@@ -1,28 +1,14 @@
-﻿using System;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Reflection;
-
-#if NET461
-using System.Net.Http;
-using System.Text;
-#endif
-
+﻿using System.Net;
 using System.Threading.Tasks;
 
 using Aliencube.AzureFunctions.Extensions.OpenApi.Attributes;
 using Aliencube.AzureFunctions.Extensions.OpenApi.Extensions;
 
-#if !NET461
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-#endif
-
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
-
 
 namespace <# NAMESPACE #>
 {
@@ -31,28 +17,24 @@ namespace <# NAMESPACE #>
     /// </summary>
     public static class OpenApiHttpTrigger
     {
+        private const string V2 = "v2";
+        private const string V3 = "v3";
+        private const string JSON = "json";
+        private const string YAML = "yaml";
+
         private readonly static IOpenApiHttpTriggerContext context = new OpenApiHttpTriggerContext();
 
         /// <summary>
         /// Invokes the HTTP trigger endpoint to get Open API document.
         /// </summary>
-#if NET461
-        /// <param name="req"><see cref="HttpRequestMessage"/> instance.</param>
-#else
         /// <param name="req"><see cref="HttpRequest"/> instance.</param>
-#endif
         /// <param name="extension">File extension representing the document format. This MUST be either "json" or "yaml".</param>
         /// <param name="log"><see cref="ILogger"/> instance.</param>
         /// <returns>Open API document in a format of either JSON or YAML.</returns>
         [FunctionName(nameof(OpenApiHttpTrigger.RenderSwaggerDocument))]
         [OpenApiIgnore]
-#if NET461
-        public static async Task<HttpResponseMessage> RenderSwaggerDocument(
-            [HttpTrigger(AuthorizationLevel.Admin, "get", Route = "swagger.{extension}")] HttpRequestMessage req,
-#else
         public static async Task<IActionResult> RenderSwaggerDocument(
             [HttpTrigger(AuthorizationLevel.Admin, "get", Route = "swagger.{extension}")] HttpRequest req,
-#endif
             string extension,
             ILogger log)
         {
@@ -63,14 +45,9 @@ namespace <# NAMESPACE #>
                                       .AddMetadata(context.OpenApiInfo)
                                       .AddServer(req, context.HttpSettings.RoutePrefix)
                                       .Build(context.GetExecutingAssembly())
-                                      .RenderAsync(context.GetOpenApiSpecVersion("v2"), context.GetOpenApiFormat(extension))
+                                      .RenderAsync(context.GetOpenApiSpecVersion(V2), context.GetOpenApiFormat(extension))
                                       .ConfigureAwait(false);
-#if NET461
-            var content = new StringContent(result, Encoding.UTF8, context.GetOpenApiFormat(extension).GetContentType());
-            var response = new HttpResponseMessage(HttpStatusCode.OK) { Content = content };
 
-            return response;
-#else
             var content = new ContentResult()
             {
                 Content = result,
@@ -79,30 +56,20 @@ namespace <# NAMESPACE #>
             };
 
             return content;
-#endif
         }
 
         /// <summary>
         /// Invokes the HTTP trigger endpoint to get Open API document.
         /// </summary>
-#if NET461
-        /// <param name="req"><see cref="HttpRequestMessage"/> instance.</param>
-#else
         /// <param name="req"><see cref="HttpRequest"/> instance.</param>
-#endif
         /// <param name="version">Open API document spec version. This MUST be either "v2" or "v3".</param>
         /// <param name="extension">File extension representing the document format. This MUST be either "json" or "yaml".</param>
         /// <param name="log"><see cref="ILogger"/> instance.</param>
         /// <returns>Open API document in a format of either JSON or YAML.</returns>
         [FunctionName(nameof(OpenApiHttpTrigger.RenderOpenApiDocument))]
         [OpenApiIgnore]
-#if NET461
-        public static async Task<HttpResponseMessage> RenderOpenApiDocument(
-            [HttpTrigger(AuthorizationLevel.Admin, "get", Route = "openapi/{version}.{extension}")] HttpRequestMessage req,
-#else
         public static async Task<IActionResult> RenderOpenApiDocument(
             [HttpTrigger(AuthorizationLevel.Admin, "get", Route = "openapi/{version}.{extension}")] HttpRequest req,
-#endif
             string version,
             string extension,
             ILogger log)
@@ -116,12 +83,7 @@ namespace <# NAMESPACE #>
                                       .Build(context.GetExecutingAssembly())
                                       .RenderAsync(context.GetOpenApiSpecVersion(version), context.GetOpenApiFormat(extension))
                                       .ConfigureAwait(false);
-#if NET461
-            var content = new StringContent(result, Encoding.UTF8, context.GetOpenApiFormat(extension).GetContentType());
-            var response = new HttpResponseMessage(HttpStatusCode.OK) { Content = content };
 
-            return response;
-#else
             var content = new ContentResult()
             {
                 Content = result,
@@ -130,28 +92,18 @@ namespace <# NAMESPACE #>
             };
 
             return content;
-#endif
         }
 
         /// <summary>
         /// Invokes the HTTP trigger endpoint to render Swagger UI in HTML.
         /// </summary>
-#if NET461
-        /// <param name="req"><see cref="HttpRequestMessage"/> instance.</param>
-#else
         /// <param name="req"><see cref="HttpRequest"/> instance.</param>
-#endif
         /// <param name="log"><see cref="ILogger"/> instance.</param>
         /// <returns>Swagger UI in HTML.</returns>
         [FunctionName(nameof(OpenApiHttpTrigger.RenderSwaggerUI))]
         [OpenApiIgnore]
-#if NET461
-        public static async Task<HttpResponseMessage> RenderSwaggerUI(
-            [HttpTrigger(AuthorizationLevel.Admin, "get", Route = "swagger/ui")] HttpRequestMessage req,
-#else
         public static async Task<IActionResult> RenderSwaggerUI(
             [HttpTrigger(AuthorizationLevel.Admin, "get", Route = "swagger/ui")] HttpRequest req,
-#endif
             ILogger log)
         {
             log.LogInformation($"SwaggerUI page was requested.");
@@ -162,12 +114,7 @@ namespace <# NAMESPACE #>
                                       .BuildAsync()
                                       .RenderAsync("swagger.json", context.GetSwaggerAuthKey())
                                       .ConfigureAwait(false);
-#if NET461
-            var content = new StringContent(result, Encoding.UTF8, "text/html");
-            var response = new HttpResponseMessage(HttpStatusCode.OK) { Content = content };
 
-            return response;
-#else
             var content = new ContentResult()
             {
                 Content = result,
@@ -176,7 +123,6 @@ namespace <# NAMESPACE #>
             };
 
             return content;
-#endif
         }
     }
 }
