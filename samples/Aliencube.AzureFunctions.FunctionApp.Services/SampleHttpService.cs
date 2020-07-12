@@ -13,7 +13,10 @@ namespace Aliencube.AzureFunctions.FunctionApp.Services
         /// <inheritdoc />
         public async Task<List<SampleResponseModel>> GetSamples()
         {
-            var result = new List<SampleResponseModel>();
+            var result = new List<SampleResponseModel>()
+            {
+                new SampleResponseModel(),
+            };
 
             return await Task.FromResult(result).ConfigureAwait(false);
         }

@@ -22,7 +22,10 @@ namespace Aliencube.AzureFunctions.FunctionAppV1Static
             [HttpTrigger(AuthorizationLevel.Function, "get", Route = "samples")] HttpRequestMessage req,
             TraceWriter log)
         {
-            var content = new List<SampleResponseModel>();
+            var content = new List<SampleResponseModel>()
+            {
+                new SampleResponseModel(),
+            };
             var result = req.CreateResponse(HttpStatusCode.OK, content);
 
             return await Task.FromResult(result).ConfigureAwait(false);
