@@ -253,7 +253,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.CLI
             this.OpenApiSettingsJsonPath.ThrowIfNullOrWhiteSpace();
             this.LocalSettingsJsonPath.ThrowIfNullOrWhiteSpace();
 
-            var openApiInfo = this.HostSettings.Get<OpenApiInfo>("openApi");
+            var openApiInfo = this.HostSettings.Get<OpenApiInfo>("openApi:info");
             if (this.IsValidOpenApiInfo(openApiInfo))
             {
                 this.OpenApiInfo = openApiInfo;
@@ -264,7 +264,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.CLI
             if (File.Exists(this.OpenApiSettingsJsonPath))
             {
                 var openapiSettings = File.ReadAllText(this.OpenApiSettingsJsonPath, Encoding.UTF8);
-                openApiInfo = JsonConvert.DeserializeObject<OpenApiInfo>(openapiSettings);
+                openApiInfo = JsonConvert.DeserializeObject<OpenApiSettings>(openapiSettings).Info;
                 if (this.IsValidOpenApiInfo(openApiInfo))
                 {
                     this.OpenApiInfo = openApiInfo;
