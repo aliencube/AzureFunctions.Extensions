@@ -34,13 +34,14 @@ $trigger = $trigger.Replace("<# NAMESPACE #>", $Namespace)
 # Save templates
 if (!(Test-Path "$ProjectPath/OpenApi" -PathType Container)) {
     $result = New-Item -ItemType Directory -Force -Path "$ProjectPath/OpenApi"
+
+    Remove-Variable result
 }
 
 $interface | Out-File "$ProjectPath/OpenApi/IOpenApiHttpTriggerContext.cs"
 $context | Out-File "$ProjectPath/OpenApi/OpenApiHttpTriggerContext.cs"
 $trigger | Out-File "$ProjectPath/OpenApi/OpenApiHttpTrigger.cs"
 
-Remove-Variable result
 Remove-Variable interface
 Remove-Variable context
 Remove-Variable trigger

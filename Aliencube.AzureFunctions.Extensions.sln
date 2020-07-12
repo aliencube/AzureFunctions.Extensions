@@ -59,9 +59,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Aliencube.AzureFunctions.Fu
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Aliencube.AzureFunctions.FunctionAppV3Static", "samples\Aliencube.AzureFunctions.FunctionAppV3Static\Aliencube.AzureFunctions.FunctionAppV3Static.csproj", "{C2996131-C3CA-4D3D-8357-C533849792E1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aliencube.AzureFunctions.FunctionApp.Services", "samples\Aliencube.AzureFunctions.FunctionApp.Services\Aliencube.AzureFunctions.FunctionApp.Services.csproj", "{B7CF1C77-FE6F-4586-93FE-801671A5EAFD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Aliencube.AzureFunctions.FunctionApp.Services", "samples\Aliencube.AzureFunctions.FunctionApp.Services\Aliencube.AzureFunctions.FunctionApp.Services.csproj", "{B7CF1C77-FE6F-4586-93FE-801671A5EAFD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aliencube.AzureFunctions.FunctionAppV3IoC", "samples\Aliencube.AzureFunctions.FunctionAppV3IoC\Aliencube.AzureFunctions.FunctionAppV3IoC.csproj", "{8460A7F9-FED4-4495-A595-8C585FC7F606}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Aliencube.AzureFunctions.FunctionAppV3IoC", "samples\Aliencube.AzureFunctions.FunctionAppV3IoC\Aliencube.AzureFunctions.FunctionAppV3IoC.csproj", "{8460A7F9-FED4-4495-A595-8C585FC7F606}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Aliencube.AzureFunctions.FunctionAppV1Static", "samples\Aliencube.AzureFunctions.FunctionAppV1Static\Aliencube.AzureFunctions.FunctionAppV1Static.csproj", "{033D654F-D762-420B-A549-ACC9CC28AB40}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -157,6 +159,10 @@ Global
 		{8460A7F9-FED4-4495-A595-8C585FC7F606}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8460A7F9-FED4-4495-A595-8C585FC7F606}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8460A7F9-FED4-4495-A595-8C585FC7F606}.Release|Any CPU.Build.0 = Release|Any CPU
+		{033D654F-D762-420B-A549-ACC9CC28AB40}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{033D654F-D762-420B-A549-ACC9CC28AB40}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{033D654F-D762-420B-A549-ACC9CC28AB40}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{033D654F-D762-420B-A549-ACC9CC28AB40}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -185,6 +191,7 @@ Global
 		{C2996131-C3CA-4D3D-8357-C533849792E1} = {66D8DEA8-B477-497F-95BB-E8F9A5BAC352}
 		{B7CF1C77-FE6F-4586-93FE-801671A5EAFD} = {66D8DEA8-B477-497F-95BB-E8F9A5BAC352}
 		{8460A7F9-FED4-4495-A595-8C585FC7F606} = {66D8DEA8-B477-497F-95BB-E8F9A5BAC352}
+		{033D654F-D762-420B-A549-ACC9CC28AB40} = {66D8DEA8-B477-497F-95BB-E8F9A5BAC352}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {70FEC644-BB3C-4441-AF91-DC694803C8F2}
