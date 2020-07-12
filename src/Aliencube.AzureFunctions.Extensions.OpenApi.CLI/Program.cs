@@ -80,7 +80,10 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.CLI
             var helper = new DocumentHelper(filter);
             var document = new Document(helper);
 
-            var swagger = document.InitialiseDocument()
+            var swagger = default(string);
+            try
+            {
+                swagger = document.InitialiseDocument()
                                   .AddMetadata(pi.OpenApiInfo)
 #if NET461
                                   .AddServer(req, pi.HostJsonHttpSettings.RoutePrefix)
@@ -90,6 +93,15 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.CLI
                                   .Build(assembly)
                                   .RenderAsync(version.ToOpenApiSpecVersion(), format.ToOpenApiFormat())
                                   .Result;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                Console.WriteLine(ex.StackTrace);
+#if NET461
+                req.Dispose();
+#endif
+            }
 #if NET461
             req.Dispose();
 #endif

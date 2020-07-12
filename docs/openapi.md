@@ -15,6 +15,56 @@ This enables Azure Functions to render Open API document and Swagger UI. The mor
 
 ## Getting Started ##
 
+### Install Open API Templates ###
+
+This is the easiest way to integrate the Open API document rendering. Run the following script based on your preference, which will install the pre-defined Open API document rendering endpoints.
+
+#### Download Installation Scripts ###
+
+First of all, download the installation script from GitHub.
+
+```powershell
+# PowerShell
+(Invoke-WebRequest `
+    -Uri "https://raw.githubusercontent.com/aliencube/AzureFunctions.Extensions/dev/scripts/Install-OpenApiHttpTriggerTemplates.ps1" `
+    -UseBasicParsing).Content | Out-File "scripts/Install-OpenApiHttpTriggerTemplates.ps1"
+```
+
+```bash
+# Bash
+curl -X GET "https://raw.githubusercontent.com/aliencube/AzureFunctions.Extensions/dev/scripts/Install-OpenApiHttpTriggerTemplates.sh" > "scripts/Install-OpenApiHttpTriggerTemplates.sh"
+```
+
+For bash script, run the following command to enable an appropriate permission.
+
+```bash
+# Bash
+chmod +x scripts/Download-OpenApiHttpTriggerTemplates.sh
+```
+
+#### Install Open API Templates ####
+
+Run the following script to install the Open API templates.
+
+```powershell
+# PowerShell
+scripts/Install-OpenApiHttpTriggerTemplates.ps1 `
+    -ProjectPath ./samples/Aliencube.AzureFunctions.FunctionAppV3Static `
+    -Namespace Aliencube.AzureFunctions.FunctionAppV3Static
+```
+
+> **NOTE**: If you're running v1, add a switch, `-IsVersion1` at the end of the PowerShell script.
+
+```bash
+# Bash script
+scripts/Install-OpenApiHttpTriggerTemplates.sh \
+    ./samples/Aliencube.AzureFunctions.FunctionAppV3Static \
+    Aliencube.AzureFunctions.FunctionAppV3Static
+```
+
+However, if you want to manually integrate by yourself, follow the next steps.
+
+
 ### Rendering Open API Document ###
 
 In order to include an HTTP endpoint in the Open API document, use attribute classes (decorators) like:
