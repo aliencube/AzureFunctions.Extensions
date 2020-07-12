@@ -1,4 +1,4 @@
-# Aliencube.AzureFunctions.FunctionAppV3Static #
+# Aliencube.AzureFunctions.FunctionAppV3IoC #
 
 ## Getting Started ##
 
@@ -10,14 +10,14 @@ Run the following script to install the Open API templates:
 # PowerShell
 ../../scripts/Download-OpenApiHttpTriggerTemplates.ps1 `
     -ProjectPath ./ `
-    -Namespace Aliencube.AzureFunctions.FunctionAppV3Static
+    -Namespace Aliencube.AzureFunctions.FunctionAppV3IoC
 ```
 
 ```bash
 # Bash script
 ../../scripts/Download-OpenApiHttpTriggerTemplates.sh \
     . \
-    Aliencube.AzureFunctions.FunctionAppV3Static
+    Aliencube.AzureFunctions.FunctionAppV3IoC
 ```
 
 > You may need to run `chmod +x ../../scripts/Download-OpenApiHttpTriggerTemplates.sh` command.
