@@ -2,19 +2,26 @@
 
 ## Getting Started ##
 
-### Open API Integration ###
+### Install Open API Templates ###
 
-Run the following script to enable Open API integration:
+Run the following script to install the Open API templates:
 
 ```powershell
 # PowerShell
-../../scripts/Download-OpenApiHttpTriggerTemplates.ps1 -ProjectPath ./ -Namespace Aliencube.AzureFunctions.FunctionAppV3Static
+../../scripts/Install-OpenApiHttpTriggerTemplates.ps1 `
+    -ProjectPath ./ `
+    -Namespace Install.AzureFunctions.FunctionAppV3IoC
 ```
 
 ```bash
 # Bash script
-../../scripts/Download-OpenApiHttpTriggerTemplates.sh -ProjectPath ./ -Namespace Aliencube.AzureFunctions.FunctionAppV3Static
+../../scripts/Download-OpenApiHttpTriggerTemplates.sh \
+    . \
+    Aliencube.AzureFunctions.FunctionAppV3IoC
 ```
+
+> You may need to run `chmod +x ../../scripts/Download-OpenApiHttpTriggerTemplates.sh` command.
+
 
 ### Run Function App ###
 
