@@ -21,19 +21,21 @@ This is the easiest way to integrate the Open API document rendering. Run the fo
 
 ```powershell
 # PowerShell
-scripts/Download-OpenApiHttpTriggerTemplates.ps1 `
+scripts/Install-OpenApiHttpTriggerTemplates.ps1 `
     -ProjectPath ./samples/Aliencube.AzureFunctions.FunctionAppV3Static `
     -Namespace Aliencube.AzureFunctions.FunctionAppV3Static
 ```
 
+> **NOTE**: If you're running v1, add a switch, `-IsVersion1` at the end of the PowerShell script.
+
 ```bash
 # Bash script
-scripts/Download-OpenApiHttpTriggerTemplates.sh \
+scripts/Install-OpenApiHttpTriggerTemplates.sh \
     ./samples/Aliencube.AzureFunctions.FunctionAppV3Static \
     Aliencube.AzureFunctions.FunctionAppV3Static
 ```
 
-> You may need to run `chmod +x scripts/Download-OpenApiHttpTriggerTemplates.sh` command.
+> **NOTE**: You may need to run `chmod +x scripts/Download-OpenApiHttpTriggerTemplates.sh` command.
 
 However, if you want to manually integrate by yourself, follow the next steps.
 
