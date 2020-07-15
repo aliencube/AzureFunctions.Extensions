@@ -72,4 +72,19 @@
     <EmbeddedResource Include="dist/swagger-ui-bundle.js" />
     <EmbeddedResource Include="dist/swagger-ui-standalone-preset.js" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="..\..\templates\IOpenApiHttpTriggerContext.cs">
+      <Pack>true</Pack>
+    </Content>
+    <Content Include="..\..\templates\OpenApiHttpTriggerContext.cs">
+      <Pack>true</Pack>
+    </Content>
+    <Content Include="..\..\templates\OpenApiHttpTrigger.cs" Condition="'$(TargetFramework)'!='net461'">
+      <Pack>true</Pack>
+    </Content>
+    <Content Include="..\..\templates\OpenApiHttpTriggerV1.cs" Condition="'$(TargetFramework)'=='net461'">
+      <Pack>true</Pack>
+    </Content>
+  </ItemGroup>
 </Project>
