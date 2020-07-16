@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿#if !NET461
+using System.Net;
 using System.Threading.Tasks;
 
 using Aliencube.AzureFunctions.Extensions.OpenApi.Attributes;
@@ -10,7 +11,7 @@ using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
 
-namespace <# NAMESPACE #>
+namespace Aliencube.AzureFunctions.Extensions.OpenApi
 {
     /// <summary>
     /// This represents the HTTP trigger entity for Open API documents.
@@ -126,3 +127,4 @@ namespace <# NAMESPACE #>
         }
     }
 }
+#endif

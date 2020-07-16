@@ -74,17 +74,25 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="..\..\templates\IOpenApiHttpTriggerContext.cs">
+    <Content Include="..\..\templates\OpenApiEndpints\IOpenApiHttpTriggerContext.cs">
       <Pack>true</Pack>
+      <BuildAction>Compile</BuildAction>
+      <PackagePath>contentFiles\any\net461\OpenApi\;contentFiles\any\netstandard2.0\OpenApi\;</PackagePath>
     </Content>
-    <Content Include="..\..\templates\OpenApiHttpTriggerContext.cs">
+    <Content Include="..\..\templates\OpenApiEndpints\OpenApiHttpTriggerContext.cs">
       <Pack>true</Pack>
+      <BuildAction>Compile</BuildAction>
+      <PackagePath>contentFiles\any\net461\OpenApi\;contentFiles\any\netstandard2.0\OpenApi\;</PackagePath>
     </Content>
-    <Content Include="..\..\templates\OpenApiHttpTrigger.cs" Condition="'$(TargetFramework)'!='net461'">
+    <Content Include="..\..\templates\OpenApiEndpints\OpenApiHttpTrigger.cs">
       <Pack>true</Pack>
+      <BuildAction>Compile</BuildAction>
+      <PackagePath>contentFiles\any\netstandard2.0\OpenApi\;</PackagePath>
     </Content>
-    <Content Include="..\..\templates\OpenApiHttpTriggerV1.cs" Condition="'$(TargetFramework)'=='net461'">
+    <Content Include="..\..\templates\OpenApiEndpints\OpenApiHttpTriggerV1.cs">
       <Pack>true</Pack>
+      <BuildAction>Compile</BuildAction>
+      <PackagePath>contentFiles\any\net461\OpenApi\;</PackagePath>
     </Content>
   </ItemGroup>
 </Project>

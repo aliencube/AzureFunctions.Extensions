@@ -7,7 +7,7 @@ using Aliencube.AzureFunctions.Extensions.OpenApi.Enums;
 using Microsoft.OpenApi;
 using Microsoft.OpenApi.Models;
 
-namespace <# NAMESPACE #>
+namespace Aliencube.AzureFunctions.Extensions.OpenApi
 {
     /// <summary>
     /// This provides interfaces to <see cref="OpenApiHttpTriggerContext"/>.
