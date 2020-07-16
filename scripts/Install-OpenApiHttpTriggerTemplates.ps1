@@ -1,6 +1,6 @@
 Param(
-    [string] [Parameter(Mandatory=$true)] $ProjectPath,
-    [string] [Parameter(Mandatory=$true)] $Namespace,
+    [string] [Parameter(Mandatory=$false)] $ProjectPath = ".",
+    [string] [Parameter(Mandatory=$false)] $Namespace = "Aliencube.AzureFunctions.Extensions.OpenApi",
     [switch] [Parameter(Mandatory=$false)] $IsVersion1
 )
 

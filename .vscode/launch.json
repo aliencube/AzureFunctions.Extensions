@@ -1,27 +1,46 @@
 {
-   // Use IntelliSense to find out which attributes exist for C# debugging
-   // Use hover for the description of the existing attributes
-   // For further information visit https://github.com/OmniSharp/omnisharp-vscode/blob/master/debugger-launchjson.md
-   "version": "0.2.0",
-   "configurations": [
-        {
-            "name": ".NET Core Launch (console)",
-            "type": "coreclr",
-            "request": "launch",
-            "preLaunchTask": "build",
-            // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/test/Aliencube.AzureFunctions.FunctionAppV2.Tests/bin/Debug/netcoreapp2.0/Aliencube.AzureFunctions.FunctionAppV2.Tests.dll",
-            "args": [],
-            "cwd": "${workspaceFolder}/test/Aliencube.AzureFunctions.FunctionAppV2.Tests",
-            // For more information about the 'console' field, see https://aka.ms/VSCode-CS-LaunchJson-Console
-            "console": "internalConsole",
-            "stopAtEntry": false
-        },
-        {
-            "name": ".NET Core Attach",
-            "type": "coreclr",
-            "request": "attach",
-            "processId": "${command:pickProcess}"
-        }
-    ]
+  // Use IntelliSense to find out which attributes exist for C# debugging
+  // Use hover for the description of the existing attributes
+  // For further information visit https://github.com/OmniSharp/omnisharp-vscode/blob/master/debugger-launchjson.md
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": ".NET Core Console - Open API CLI",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build cli",
+      // If you have changed target frameworks, make sure to update the program path.
+      "program": "${workspaceFolder}/src/Aliencube.AzureFunctions.Extensions.OpenApi.CLI/bin/Debug/netcoreapp3.1/azfuncopenapi.dll",
+      "args": [],
+      "cwd": "${workspaceFolder}",
+      "stopAtEntry": false,
+      // For more information about the 'console' field, see https://aka.ms/VSCode-CS-LaunchJson-Console
+      "console": "internalConsole"
+    },
+    {
+      "name": ".NET Core Test - Sample Function App V2",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build",
+      // If you have changed target frameworks, make sure to update the program path.
+      "program": "${workspaceFolder}/test/Aliencube.AzureFunctions.FunctionAppV2.Tests/bin/Debug/netcoreapp2.0/Aliencube.AzureFunctions.FunctionAppV2.Tests.dll",
+      "args": [],
+      "cwd": "${workspaceFolder}/test/Aliencube.AzureFunctions.FunctionAppV2.Tests",
+      // For more information about the 'console' field, see https://aka.ms/VSCode-CS-LaunchJson-Console
+      "console": "internalConsole",
+      "stopAtEntry": false
+    },
+    {
+      "name": ".NET Core Attach",
+      "type": "coreclr",
+      "request": "attach",
+      "processId": "${command:pickProcess}"
+    },
+    {
+      "name": "Attach to .NET Functions",
+      "type": "coreclr",
+      "request": "attach",
+      "processId": "${command:azureFunctions.pickProcess}"
+    }
+  ]
 }

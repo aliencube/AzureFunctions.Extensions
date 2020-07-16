@@ -3,6 +3,9 @@
 path=$1
 namespace=$2
 
+[ -z "$path" ] && path=.
+[ -z "$namespace" ] && namespace=Aliencube.AzureFunctions.Extensions.OpenApi
+
 # Checks if directory exists
 [ ! -d "$path/OpenApi" ] && mkdir -p "$path/OpenApi"
 

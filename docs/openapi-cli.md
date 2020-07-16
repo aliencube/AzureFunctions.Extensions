@@ -12,6 +12,11 @@ This generates Open API document through command-line without having to run the 
 * In order to read JSON configuration on Azure Functions 1.x, these extensions have copied the source code of [Microsoft.Extensions.Configuration.Json](https://github.com/aspnet/Extensions/tree/master/src/Configuration/Config.Json) to make use of [Newtonsoft.Json 9.0.1](https://www.nuget.org/packages/Newtonsoft.Json/9.0.1) under the [MIT License](http://opensource.org/licenses/MIT).
 
 
+## Issues? ##
+
+While using this CLI, if you find any issue, please raise a ticket on the [Issue](https://github.com/aliencube/AzureFunctions.Extensions/issues) page.
+
+
 ## Getting Started ##
 
 ### Download CLI ###
@@ -60,12 +65,12 @@ For Linux/MacOS
 
 Here are options:
 
-* `--project|-p`: Project path. It can be a fully qualified project path including `.csproj` or project directory. Default is the current directory.
-* `--configuration|-c`: Configuration value. It can be either `Debug`, `Release` or something else. Default is `Debug`.
-* `--target|-t`: Target framework. It should be `net4x` for Azure Functions v1, `netcoreapp2.x` for Azure Functions v2, and `netcoreapp3.x` for Azure Functions v3. Default is `netcoreapp2.1`.
-* `--version|-v`: Open API spec version. It should be either `v2` or `v3`. Default is `v2`.
-* `--format|-f`: Open API document format. It should be either `json` or `yaml`. Default is `json`.
-* `--output|-o`: Output directory for the generated Open API document. It can be a fully qualified directory path or relative path from `<PROJECT_ROOT>/bin/<CONFIGURATION>/<TARGET_FRAMEWORK>`. Default is `output`.
+* `-p|--project`: Project path. It can be a fully qualified project path including `.csproj` or project directory. Default is the current directory.
+* `-c|--configuration`: Configuration value. It can be either `Debug`, `Release` or something else. Default is `Debug`.
+* `-t|--target`: Target framework. It should be `net4x` for Azure Functions v1, `netcoreapp2.x` for Azure Functions v2, and `netcoreapp3.x` for Azure Functions v3. Default is `netcoreapp2.1`.
+* `-v|--version`: Open API spec version. It should be either `v2` or `v3`. Default is `v2`.
+* `-f|--format`: Open API document format. It should be either `json` or `yaml`. Default is `json`.
+* `-o|--output`: Output directory for the generated Open API document. It can be a fully qualified directory path or relative path from `<PROJECT_ROOT>/bin/<CONFIGURATION>/<TARGET_FRAMEWORK>`. Default is `output`.
 * `--console`: Value indicating whether to display the generated document to console or not. Default is `false`.
 
 

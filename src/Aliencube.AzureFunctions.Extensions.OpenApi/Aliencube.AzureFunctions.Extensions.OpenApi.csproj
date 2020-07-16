@@ -72,4 +72,27 @@
     <EmbeddedResource Include="dist/swagger-ui-bundle.js" />
     <EmbeddedResource Include="dist/swagger-ui-standalone-preset.js" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="..\..\templates\OpenApiEndpints\IOpenApiHttpTriggerContext.cs">
+      <Pack>true</Pack>
+      <BuildAction>Compile</BuildAction>
+      <PackagePath>contentFiles\any\net461\OpenApi\;contentFiles\any\netstandard2.0\OpenApi\;</PackagePath>
+    </Content>
+    <Content Include="..\..\templates\OpenApiEndpints\OpenApiHttpTriggerContext.cs">
+      <Pack>true</Pack>
+      <BuildAction>Compile</BuildAction>
+      <PackagePath>contentFiles\any\net461\OpenApi\;contentFiles\any\netstandard2.0\OpenApi\;</PackagePath>
+    </Content>
+    <Content Include="..\..\templates\OpenApiEndpints\OpenApiHttpTrigger.cs">
+      <Pack>true</Pack>
+      <BuildAction>Compile</BuildAction>
+      <PackagePath>contentFiles\any\netstandard2.0\OpenApi\;</PackagePath>
+    </Content>
+    <Content Include="..\..\templates\OpenApiEndpints\OpenApiHttpTriggerV1.cs">
+      <Pack>true</Pack>
+      <BuildAction>Compile</BuildAction>
+      <PackagePath>contentFiles\any\net461\OpenApi\;</PackagePath>
+    </Content>
+  </ItemGroup>
 </Project>

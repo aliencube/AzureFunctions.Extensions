@@ -13,65 +13,29 @@ This enables Azure Functions to render Open API document and Swagger UI. The mor
 * [Swagger UI](https://github.com/swagger-api/swagger-ui) version used for this library is [3.20.5](https://github.com/swagger-api/swagger-ui/releases/tag/v3.20.5) under the [Apache 2.0 license](https://opensource.org/licenses/Apache-2.0).
 
 
+## Issues? ##
+
+While using this library, if you find any issue, please raise a ticket on the [Issue](https://github.com/aliencube/AzureFunctions.Extensions/issues) page.
+
+
 ## Getting Started ##
 
-### Install Open API Templates ###
+### Install NuGet Package ###
 
-This is the easiest way to integrate the Open API document rendering. Run the following script based on your preference, which will install the pre-defined Open API document rendering endpoints.
-
-#### Download Installation Scripts ###
-
-First of all, download the installation script from GitHub.
-
-```powershell
-# PowerShell
-(Invoke-WebRequest `
-    -Uri "https://raw.githubusercontent.com/aliencube/AzureFunctions.Extensions/dev/scripts/Install-OpenApiHttpTriggerTemplates.ps1" `
-    -UseBasicParsing).Content | Out-File "scripts/Install-OpenApiHttpTriggerTemplates.ps1"
-```
+In order for your Azure Functions app to enable Open API capability, download the following NuGet package into your Azure Functions project.
 
 ```bash
-# Bash
-curl -X GET "https://raw.githubusercontent.com/aliencube/AzureFunctions.Extensions/dev/scripts/Install-OpenApiHttpTriggerTemplates.sh" > "scripts/Install-OpenApiHttpTriggerTemplates.sh"
+dotnet add <PROJECT> package Aliencube.AzureFunctions.Extensions.OpenApi
 ```
 
-For bash script, run the following command to enable an appropriate permission.
 
-```bash
-# Bash
-chmod +x scripts/Download-OpenApiHttpTriggerTemplates.sh
-```
+### Expose Endpoints to Open API Document ###
 
-#### Install Open API Templates ####
-
-Run the following script to install the Open API templates.
-
-```powershell
-# PowerShell
-scripts/Install-OpenApiHttpTriggerTemplates.ps1 `
-    -ProjectPath ./samples/Aliencube.AzureFunctions.FunctionAppV3Static `
-    -Namespace Aliencube.AzureFunctions.FunctionAppV3Static
-```
-
-> **NOTE**: If you're running v1, add a switch, `-IsVersion1` at the end of the PowerShell script.
-
-```bash
-# Bash script
-scripts/Install-OpenApiHttpTriggerTemplates.sh \
-    ./samples/Aliencube.AzureFunctions.FunctionAppV3Static \
-    Aliencube.AzureFunctions.FunctionAppV3Static
-```
-
-However, if you want to manually integrate by yourself, follow the next steps.
-
-
-### Rendering Open API Document ###
-
-In order to include an HTTP endpoint in the Open API document, use attribute classes (decorators) like:
+In order to include HTTP endpoints into the Open API document, use attribute classes (decorators) like:
 
 ```csharp
 [FunctionName(nameof(PostSample))]
-[OpenApiOperation("add", "sample")]
+[OpenApiOperation("postSample", "sample")]
 [OpenApiRequestBody("application/json", typeof(SampleRequestModel))]
 [OpenApiResponseBody(HttpStatusCode.OK, "application/json", typeof(SampleResponseModel))]
 public static async Task<IActionResult> PostSample(
@@ -82,85 +46,30 @@ public static async Task<IActionResult> PostSample(
 }
 ```
 
-Then, define another HTTP endpoint to render Swagger document:
 
-```csharp
-[FunctionName(nameof(RenderSwaggerDocument))]
-[OpenApiIgnore]
-public static async Task<IActionResult> RenderSwaggerDocument(
-    [HttpTrigger(AuthorizationLevel.Function, "get", Route = "swagger.json")] HttpRequest req,
-    ILogger log)
-{
-    var openApiInfo = OpenApiInfoResolver.Resolve();
-    var host = HostJsonResolver.Resolve();
-    var httpSettings = host.GetHttpSettings();
+### Configure App Settings Key ###
 
-    var filter = new RouteConstraintFilter();
-    var helper = new DocumentHelper(filter);
-    var document = new Document(helper);
-    var result = await document.InitialiseDocument()
-                               .AddMetadata(openApiInfo)
-                               .AddServer(req, httpSettings.RoutePrefix)
-                               .Build(Assembly.GetExecutingAssembly(), new CamelCaseNamingStrategy())
-                               .RenderAsync(OpenApiSpecVersion.OpenApi2_0, OpenApiFormat.Json)
-                               .ConfigureAwait(false);
-    var response = new ContentResult()
-                       {
-                           Content = result,
-                           ContentType = "application/json",
-                           StatusCode = (int)HttpStatusCode.OK
-                       };
+This key is only required if:
 
-    return response;
-}
-```
+* The Function app is deployed to Azure, and
+* The Open API related endpoints has the `AuthorizationLevel` value other than `Anonymous`.
 
-> **NOTE**: In order to render payload definitions in `camelCasing`, add `new CamelCaseNamingStrategy()` as an optional argument to the `Build()` method. If this is omitted, payload will be rendered as defined in the payload definitions.
+If the above conditions are met, add the following key to your `locall.settings.json` or App Settings blade on Azure.
+
+* `OpenApi__ApiKey`: either the host key value or the master key value.
+
+> **NOTE**: It is NOT required if your Open API related endpoints are set to the authorisation level of `Anonymous`.
 
 
-### Rendering Swagger UI ###
+## Open API Metadata Configuration ##
 
-In order to render Swagger UI, define another HTTP endpoint for it:
-
-```csharp
-[FunctionName(nameof(RenderSwaggerUI))]
-[OpenApiIgnore]
-public static async Task<IActionResult> RenderSwaggerUI(
-    [HttpTrigger(AuthorizationLevel.Function, "get", Route = "swagger/ui")] HttpRequest req,
-    ILogger log)
-{
-    var openApiInfo = OpenApiInfoResolver.Resolve();
-    var host = HostJsonResolver.Resolve();
-    var httpSettings = host.GetHttpSettings();
-    var swaggerAuthKey = ConfigurationResolver.GetValue<string>("OpenApi:ApiKey");
-
-    var ui = new SwaggerUI();
-    var result = await ui.AddMetadata(openApiInfo)
-                         .AddServer(req, httpSettings.RoutePrefix)
-                         .BuildAsync()
-                         .RenderAsync("swagger.json", swaggerAuthKey)
-                         .ConfigureAwait(false);
-    var response = new ContentResult()
-                       {
-                           Content = result,
-                           ContentType = "text/html",
-                           StatusCode = (int)HttpStatusCode.OK
-                       };
-
-    return response;
-}
-```
-
-
-## Open API Metadata ##
-
-To generate an Open API document, [OpenApiInfo object](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#infoObject) needs to be defined. This information can be declared in three places &ndash; `host.json`, `openapisettings.json` or `local.settings.json`.
+To generate an Open API document, [OpenApiInfo object](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#infoObject) needs to be defined. This information can be declared in **ONE OF THREE** places &ndash; `host.json`, `openapisettings.json` or `local.settings.json`.
 
 This library looks for the information in the following order:
 
 1. `host.json`
 2. `openapisettings.json`
-3. `local.settings.json` or App Settings blade
+3. `local.settings.json` or App Settings blade on Azure
 
 
 ### `host.json` ###
@@ -172,7 +81,7 @@ Although it has not been officially accepted to be a part of `host.json`, the Op
   ...
   "openApi": {
     "info": {
-      "version": "3.0.0",
+      "version": "1.0.0",
       "title": "Open API Sample on Azure Functions",
       "description": "A sample API that runs on Azure Functions 3.x using Open API specification - from **host. json**.",
       "termsOfService": "https://github.com/aliencube/AzureFunctions.Extensions",
@@ -199,7 +108,7 @@ The Open API metadata can be defined in a separate file, `openapisettings.json` 
 ```json
 {
   "info": {
-    "version": "3.0.0",
+    "version": "1.0.0",
     "title": "Open API Sample on Azure Functions",
     "description": "A sample API that runs on Azure Functions 3.x using Open API specification - from  **openapisettings.json**.",
     "termsOfService": "https://github.com/aliencube/AzureFunctions.Extensions",
@@ -216,9 +125,10 @@ The Open API metadata can be defined in a separate file, `openapisettings.json` 
 }
 ```
 
-### `local.settings.json` or App Settings ###
 
-On either your `local.settings.json` or App Settings on Azure Functions instance, those details should be set up to render Open API metadata:
+### `local.settings.json` or App Settings Blade ###
+
+On either your `local.settings.json` or App Settings on Azure Functions instance, those details can be set up like:
 
 * `OpenApi__Info__Version`: **REQUIRED** Version of Open API document. This is not the version of Open API spec. eg. 1.0.0
 * `OpenApi__Info__Title`: **REQUIRED** Title of Open API document. eg. Open API Sample on Azure Functions
@@ -229,9 +139,8 @@ On either your `local.settings.json` or App Settings on Azure Functions instance
 * `OpenApi__Info__Contact__Url`: Contact URL. eg. https://github.com/aliencube/AzureFunctions.Extensions/issues
 * `OpenApi__Info__License__Name`: **REQUIRED** License name. eg. MIT
 * `OpenApi__Info__License__Url`: License URL. eg. http://opensource.org/licenses/MIT
-* `OpenApi__ApiKey`: API Key of the endpoint that renders the Open API document.
 
-> **NOTE**: In order to deploy Azure Functions v1 to Azure, the `AzureWebJobsScriptRoot` **MUST** be specified in the app settings section; otherwise it will throw an error that can't find `host.json`. Local debugging is fine, though. For more details, please visit [this page](https://docs.microsoft.com/bs-latn-ba/azure/azure-functions/functions-app-settings#azurewebjobsscriptroot).
+> **NOTE**: In order to deploy Azure Functions v1 to Azure, the `AzureWebJobsScriptRoot` **MUST** be specified in the app settings section; otherwise it will throw an error that can't find `host.json`. Local debugging is fine, though. For more details, please visit [this page](https://docs.microsoft.com/azure/azure-functions/functions-app-settings#azurewebjobsscriptroot?WT.mc_id=azfuncextension-github-juyoo).
 
 
 ## Decorators ##
