@@ -65,9 +65,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Aliencube.AzureFunctions.Fu
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Aliencube.AzureFunctions.FunctionAppV1Static", "samples\Aliencube.AzureFunctions.FunctionAppV1Static\Aliencube.AzureFunctions.FunctionAppV1Static.csproj", "{033D654F-D762-420B-A549-ACC9CC28AB40}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aliencube.AzureFunctions.FunctionApp.Functions", "samples\Aliencube.AzureFunctions.FunctionApp.Functions\Aliencube.AzureFunctions.FunctionApp.Functions.csproj", "{B6C530E3-6C74-426A-B518-218FC7581D3F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Aliencube.AzureFunctions.FunctionApp.Functions", "samples\Aliencube.AzureFunctions.FunctionApp.Functions\Aliencube.AzureFunctions.FunctionApp.Functions.csproj", "{B6C530E3-6C74-426A-B518-218FC7581D3F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aliencube.AzureFunctions.FunctionAppV1IoC", "samples\Aliencube.AzureFunctions.FunctionAppV1IoC\Aliencube.AzureFunctions.FunctionAppV1IoC.csproj", "{7FD855AB-EB0E-42AE-A26D-E164D375D6A5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Aliencube.AzureFunctions.FunctionAppV1IoC", "samples\Aliencube.AzureFunctions.FunctionAppV1IoC\Aliencube.AzureFunctions.FunctionAppV1IoC.csproj", "{7FD855AB-EB0E-42AE-A26D-E164D375D6A5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aliencube.AzureFunctions.FunctionAppV2Static", "samples\Aliencube.AzureFunctions.FunctionAppV2Static\Aliencube.AzureFunctions.FunctionAppV2Static.csproj", "{848EDB8F-9C45-462B-A544-EA237774F3BA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aliencube.AzureFunctions.FunctionAppV2IoC", "samples\Aliencube.AzureFunctions.FunctionAppV2IoC\Aliencube.AzureFunctions.FunctionAppV2IoC.csproj", "{D6C3806E-2685-4E8D-9F4F-7A93E5270891}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -175,6 +179,14 @@ Global
 		{7FD855AB-EB0E-42AE-A26D-E164D375D6A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7FD855AB-EB0E-42AE-A26D-E164D375D6A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7FD855AB-EB0E-42AE-A26D-E164D375D6A5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{848EDB8F-9C45-462B-A544-EA237774F3BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{848EDB8F-9C45-462B-A544-EA237774F3BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{848EDB8F-9C45-462B-A544-EA237774F3BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{848EDB8F-9C45-462B-A544-EA237774F3BA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D6C3806E-2685-4E8D-9F4F-7A93E5270891}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D6C3806E-2685-4E8D-9F4F-7A93E5270891}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D6C3806E-2685-4E8D-9F4F-7A93E5270891}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D6C3806E-2685-4E8D-9F4F-7A93E5270891}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -206,6 +218,8 @@ Global
 		{033D654F-D762-420B-A549-ACC9CC28AB40} = {66D8DEA8-B477-497F-95BB-E8F9A5BAC352}
 		{B6C530E3-6C74-426A-B518-218FC7581D3F} = {66D8DEA8-B477-497F-95BB-E8F9A5BAC352}
 		{7FD855AB-EB0E-42AE-A26D-E164D375D6A5} = {66D8DEA8-B477-497F-95BB-E8F9A5BAC352}
+		{848EDB8F-9C45-462B-A544-EA237774F3BA} = {66D8DEA8-B477-497F-95BB-E8F9A5BAC352}
+		{D6C3806E-2685-4E8D-9F4F-7A93E5270891} = {66D8DEA8-B477-497F-95BB-E8F9A5BAC352}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {70FEC644-BB3C-4441-AF91-DC694803C8F2}
