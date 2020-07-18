@@ -59,7 +59,13 @@ namespace Aliencube.AzureFunctions.FunctionAppV2
         [OpenApiResponseBody(statusCode: HttpStatusCode.InternalServerError, contentType: "application/json", bodyType: typeof(List<string>), Summary = "Sample response of a List")]
         [OpenApiResponseBody(statusCode: HttpStatusCode.NotImplemented, contentType: "application/json", bodyType: typeof(Dictionary<string, int>), Summary = "Sample response of a Dictionary")]
         [OpenApiResponseBody(statusCode: HttpStatusCode.BadGateway, contentType: "application/json", bodyType: typeof(SampleGenericResponseModel<SampleResponseModel>), Summary = "Sample response of a Generic")]
+<<<<<<< HEAD:samples/Aliencube.AzureFunctions.FunctionAppV2/SampleHttpTrigger.cs
         public async Task<IActionResult> GetSample(
+=======
+        [OpenApiResponse(statusCode: HttpStatusCode.NoContent)]
+        [OpenApiResponse(statusCode: HttpStatusCode.RequestTimeout, Description = "Sample response with only status code", Summary = "Sample summary")]
+        public static async Task<IActionResult> GetSample(
+>>>>>>> Add_support_for_defining_responses_without_body:src/Aliencube.AzureFunctions.FunctionAppV2/SampleHttpTrigger.cs
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "samples/{id:int}/categories/{category:regex(^[a-z]{{3,}}$)}")] HttpRequest req,
             int id,
             string category,

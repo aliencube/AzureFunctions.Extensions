@@ -88,7 +88,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Abstractions
         /// <param name="element"><see cref="MethodInfo"/> instance.</param>
         /// <param name="namingStrategy"><see cref="NamingStrategy"/> instance to create the JSON schema from .NET Types.</param>
         /// <returns><see cref="OpenApiResponses"/> instance.</returns>
-        OpenApiResponses GetOpenApiResponseBody(MethodInfo element, NamingStrategy namingStrategy = null);
+        OpenApiResponses GetOpenApiResponses(MethodInfo element, NamingStrategy namingStrategy = null);
 
         /// <summary>
         /// Gets the collection of <see cref="OpenApiSchema"/> instances.
