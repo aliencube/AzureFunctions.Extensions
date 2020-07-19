@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFrameworks>net461;netcoreapp2.1;netcoreapp3.1</TargetFrameworks>
@@ -18,7 +18,7 @@
     <ProjectReference Include="..\Aliencube.AzureFunctions.Extensions.OpenApi.Tests.Fakes\Aliencube.AzureFunctions.Extensions.OpenApi.Tests.Fakes.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)'!='netcoreapp3.1'">
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
 

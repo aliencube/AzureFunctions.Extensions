@@ -1,4 +1,4 @@
-﻿using System.Reflection;
+using System.Reflection;
 
 using Aliencube.AzureFunctions.Extensions.OpenApi.Abstractions;
 using Aliencube.AzureFunctions.Extensions.OpenApi.Configurations;
@@ -6,6 +6,8 @@ using Aliencube.AzureFunctions.Extensions.OpenApi.Enums;
 
 using Microsoft.OpenApi;
 using Microsoft.OpenApi.Models;
+
+using Newtonsoft.Json.Serialization;
 
 namespace Aliencube.AzureFunctions.Extensions.OpenApi
 {
@@ -33,6 +35,11 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi
         /// Gets the <see cref="ISwaggerUI"/> instance.
         /// </summary>
         ISwaggerUI SwaggerUI { get; }
+
+        /// <summary>
+        /// Gets the <see cref="NamingStrategy"/> instance.
+        /// </summary>
+        NamingStrategy NamingStrategy { get; }
 
         /// <summary>
         /// Gets the executing assembly.

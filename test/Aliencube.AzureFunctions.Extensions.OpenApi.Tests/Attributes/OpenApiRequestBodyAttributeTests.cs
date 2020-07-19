@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 using Aliencube.AzureFunctions.Extensions.OpenApi.Attributes;
 
@@ -31,6 +31,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Tests.Attributes
             attribute.ContentType.Should().BeEquivalentTo(contentType);
             attribute.BodyType.Should().Be(bodyType);
             attribute.Description.Should().BeNullOrWhiteSpace();
+            attribute.Required.Should().Be(false);
         }
     }
 }

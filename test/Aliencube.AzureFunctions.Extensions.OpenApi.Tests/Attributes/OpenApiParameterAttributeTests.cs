@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 using Aliencube.AzureFunctions.Extensions.OpenApi.Attributes;
 using Aliencube.AzureFunctions.Extensions.OpenApi.Enums;
@@ -32,6 +32,8 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Tests.Attributes
             attribute.Description.Should().BeNullOrWhiteSpace();
             attribute.Type.Should().Be<string>();
             attribute.In.Should().Be(ParameterLocation.Path);
+            attribute.CollectionDelimiter.Should().Be(OpenApiParameterCollectionDelimiterType.Comma);
+            attribute.Explode.Should().Be(false);
             attribute.Required.Should().Be(false);
             attribute.Visibility.Should().Be(OpenApiVisibilityType.Undefined);
         }

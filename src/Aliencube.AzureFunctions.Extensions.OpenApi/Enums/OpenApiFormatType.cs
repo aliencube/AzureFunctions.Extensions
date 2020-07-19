@@ -1,4 +1,4 @@
-﻿using Aliencube.AzureFunctions.Extensions.OpenApi.Attributes;
+using Aliencube.AzureFunctions.Extensions.OpenApi.Attributes;
 
 namespace Aliencube.AzureFunctions.Extensions.OpenApi.Enums
 {

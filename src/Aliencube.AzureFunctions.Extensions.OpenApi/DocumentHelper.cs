@@ -119,10 +119,10 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi
         }
 
         /// <inheritdoc />
-        public List<OpenApiParameter> GetOpenApiParameters(MethodInfo element, HttpTriggerAttribute trigger)
+        public List<OpenApiParameter> GetOpenApiParameters(MethodInfo element, HttpTriggerAttribute trigger, NamingStrategy namingStrategy = null)
         {
             var parameters = element.GetCustomAttributes<OpenApiParameterAttribute>(inherit: false)
-                                    .Select(p => p.ToOpenApiParameter())
+                                    .Select(p => p.ToOpenApiParameter(namingStrategy))
                                     .ToList();
 
             // This needs to be provided separately.
@@ -143,7 +143,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi
                 return null;
             }
 
-            var contents = attributes.ToDictionary(p => p.ContentType, p => p.ToOpenApiMediaType());
+            var contents = attributes.ToDictionary(p => p.ContentType, p => p.ToOpenApiMediaType(namingStrategy));
 
             if (contents.Any())
             {

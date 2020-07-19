@@ -1,4 +1,4 @@
-﻿using System.IO;
+using System.IO;
 
 #if NET461
 using System.Net.Http;
@@ -42,9 +42,9 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi
         public IDocument InitialiseDocument()
         {
             this._document = new OpenApiDocument()
-                                 {
-                                     Components = new OpenApiComponents()
-                                 };
+            {
+                Components = new OpenApiComponents()
+            };
 
             return this;
         }
@@ -121,9 +121,9 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi
                     continue;
                 }
 
-                operation.Parameters = this._helper.GetOpenApiParameters(method, trigger);
-                operation.RequestBody = this._helper.GetOpenApiRequestBody(method);
-                operation.Responses = this._helper.GetOpenApiResponses(method);
+                operation.Parameters = this._helper.GetOpenApiParameters(method, trigger, namingStrategy);
+                operation.RequestBody = this._helper.GetOpenApiRequestBody(method, namingStrategy);
+                operation.Responses = this._helper.GetOpenApiResponses(method, namingStrategy);
 
                 operations[verb] = operation;
                 item.Operations = operations;
