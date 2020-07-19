@@ -1,4 +1,4 @@
-# Aliencube.AzureFunctions.FunctionAppV3IoC #
+# Aliencube.AzureFunctions.FunctionAppV2IoC #
 
 ## Getting Started ##
 

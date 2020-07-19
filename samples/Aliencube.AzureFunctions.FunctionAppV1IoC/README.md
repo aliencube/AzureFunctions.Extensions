@@ -2,16 +2,12 @@
 
 ## Getting Started ##
 
-### Install Open API Templates ###
+### Restore NuGet Packages ###
 
-Run the following script to install the Open API templates:
+Run the following command to restore all necessary NuGet packages into the project.
 
-```powershell
-# PowerShell
-../../scripts/Install-OpenApiHttpTriggerTemplates.ps1 `
-    -ProjectPath ./ `
-    -Namespace Aliencube.AzureFunctions.FunctionAppV1IoC `
-    -IsVersion1
+```bash
+dotnet restore .
 ```
 
 
@@ -19,7 +15,7 @@ Run the following script to install the Open API templates:
 
 Run the Function app locally.
 
-```powershell
+```bash
 func start
 ```
 
