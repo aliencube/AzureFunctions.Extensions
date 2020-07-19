@@ -211,6 +211,8 @@ public static async Task<IActionResult> GetSample(
 * `Description`: is the description of the parameter.
 * `Type`: defines the parameter type. Default value is `typeof(string)`.
 * `In`: identifies where the parameter is located &ndash; `header`, `path`, `query` or `cookie`. Default value is `path`.
+* `CollectionDelimiter`: identifies the delimiter when a query parameter accepts multiple values &ndash; `comma`, `space` or `pipe`. Default value is `comma`.
+* `Explode`: indicates whether a query parameter is used multiple times (eg. `foo=bar1&foo=bar2&foo=bar3`) or not (eg. `foo=bar1,bar2,bar3`). Default value is `false`.
 * `Required`: indicates whether the parameter is required or not. Default value is `false`.
 * `Visibility`: indicates how the parameter is visible in Azure Logic Apps &ndash; `important`, `advanced` or `internal`. Default value is `undefined`.
 
