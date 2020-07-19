@@ -30,15 +30,9 @@
   </ItemGroup>
 
   <!--<ItemGroup Condition="'$(Configuration)'=='Debug'">
-    <Compile Include="..\..\templates\OpenApiEndpints\IOpenApiHttpTriggerContext.cs">
-      <BuildAction>Compile</BuildAction>
-    </Compile>
-    <Compile Include="..\..\templates\OpenApiEndpints\OpenApiHttpTriggerContext.cs">
-      <BuildAction>Compile</BuildAction>
-    </Compile>
-    <Compile Include="..\..\templates\OpenApiEndpints\OpenApiHttpTriggerV1.cs">
-      <BuildAction>Compile</BuildAction>
-    </Compile>
+    <Compile Include="..\..\templates\OpenApiEndpints\IOpenApiHttpTriggerContext.cs" />
+    <Compile Include="..\..\templates\OpenApiEndpints\OpenApiHttpTriggerContext.cs" />
+    <Compile Include="..\..\templates\OpenApiEndpints\OpenApiHttpTriggerV1.cs" />
   </ItemGroup>-->
 
 </Project>
