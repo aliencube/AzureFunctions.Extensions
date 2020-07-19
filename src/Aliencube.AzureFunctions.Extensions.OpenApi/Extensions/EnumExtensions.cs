@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Reflection;
 
@@ -37,6 +37,11 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
         public static string ToDataType(this Type type)
         {
             var @enum = Type.GetTypeCode(type);
+            if (!type.IsNullOrDefault() && type.IsEnum)
+            {
+                @enum = TypeCode.String;
+            }
+
             switch (@enum)
             {
                 case TypeCode.Int16:
@@ -95,6 +100,11 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
         public static string ToDataFormat(this Type type)
         {
             var @enum = Type.GetTypeCode(type);
+            if (!type.IsNullOrDefault() && type.IsEnum)
+            {
+                @enum = TypeCode.String;
+            }
+
             switch (@enum)
             {
                 case TypeCode.Int16:
@@ -123,6 +133,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
                 case TypeCode.Boolean:
                 case TypeCode.String:
                     return null;
+
                 case TypeCode.Object:
                     if (type == typeof(Guid))
                     {

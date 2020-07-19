@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 using Aliencube.AzureFunctions.Extensions.OpenApi.Enums;
 
@@ -45,6 +45,17 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Attributes
         /// Gets or sets the parameter location. Default is <see cref="ParameterLocation.Path"/>.
         /// </summary>
         public virtual ParameterLocation In { get; set; } = ParameterLocation.Path;
+
+        /// <summary>
+        /// Gets or sets the parameter collection delimiter. Default is <see cref="OpenApiParameterCollectionDelimiterType.Comma"/>.
+        /// </summary>
+        public virtual OpenApiParameterCollectionDelimiterType CollectionDelimiter { get; set; } = OpenApiParameterCollectionDelimiterType.Comma;
+
+        /// <summary>
+        /// Gets or sets the value indicating whether the same query string parameter can be used multiple times or not.
+        /// This value is only valid when the <see cref="In"/> parameter value is <see cref="ParameterLocation.Query"/>.
+        /// </summary>
+        public virtual bool Explode { get; set; }
 
         /// <summary>
         /// Gets or sets the value indicating whether the parameter is required or not. Default is <c>false</c>.

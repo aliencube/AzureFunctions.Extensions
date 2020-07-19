@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 using Aliencube.AzureFunctions.Extensions.OpenApi.Enums;
 using Aliencube.AzureFunctions.Extensions.OpenApi.Extensions;

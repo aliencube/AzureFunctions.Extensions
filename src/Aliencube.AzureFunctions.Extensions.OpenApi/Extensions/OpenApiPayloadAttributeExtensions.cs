@@ -1,4 +1,4 @@
-﻿using Aliencube.AzureFunctions.Extensions.OpenApi.Attributes;
+using Aliencube.AzureFunctions.Extensions.OpenApi.Attributes;
 
 using Microsoft.OpenApi.Models;
 
@@ -22,56 +22,56 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
         {
             attribute.ThrowIfNullOrDefault();
 
-            bool isJObject = attribute.BodyType.IsJObjectType();
-            bool isDictionary = attribute.BodyType.IsOpenApiDictionary();
-            bool isList = attribute.BodyType.IsOpenApiArray();
-            bool isGeneric = attribute.BodyType.IsGenericType;
-            bool isSimpleType = (isDictionary || isList)
-                                ? attribute.BodyType.GetOpenApiSubType().IsSimpleType()
-                                : attribute.BodyType.IsSimpleType();
+            var isJObject = attribute.BodyType.IsJObjectType();
+            var isDictionary = attribute.BodyType.IsOpenApiDictionary();
+            var isList = attribute.BodyType.IsOpenApiArray();
+            var isGeneric = attribute.BodyType.IsGenericType;
+            var isSimpleType = (isDictionary || isList)
+                               ? attribute.BodyType.GetOpenApiSubType().IsSimpleType()
+                               : attribute.BodyType.IsSimpleType();
 
             var reference = new OpenApiReference()
-                                {
-                                    Type = ReferenceType.Schema,
-                                    Id = attribute.BodyType.GetOpenApiReferenceId(isDictionary, isList)
-                                };
+            {
+                Type = ReferenceType.Schema,
+                Id = attribute.BodyType.GetOpenApiReferenceId(isDictionary, isList)
+            };
 
             var schema = new OpenApiSchema() { Reference = reference };
 
             if (isJObject)
             {
                 schema = new OpenApiSchema()
-                             {
-                                 Type = "object"
-                             };
+                {
+                    Type = "object"
+                };
             }
             else if (isDictionary)
             {
                 schema = new OpenApiSchema()
-                             {
-                                 Type = "object",
-                                 AdditionalProperties = isSimpleType
-                                                        ? attribute.BodyType.GetOpenApiSubType().ToOpenApiSchema(namingStrategy)
-                                                        : schema
-                             };
+                {
+                    Type = "object",
+                    AdditionalProperties = isSimpleType
+                                           ? attribute.BodyType.GetOpenApiSubType().ToOpenApiSchema(namingStrategy)
+                                           : schema
+                };
             }
             else if (isList)
             {
                 schema = new OpenApiSchema()
-                             {
-                                 Type = "array",
-                                 Items = isSimpleType
-                                         ? attribute.BodyType.GetOpenApiSubType().ToOpenApiSchema(namingStrategy)
-                                         : schema
-                             };
+                {
+                    Type = "array",
+                    Items = isSimpleType
+                            ? attribute.BodyType.GetOpenApiSubType().ToOpenApiSchema(namingStrategy)
+                            : schema
+                };
             }
             else if (isGeneric)
             {
                 reference = new OpenApiReference()
-                                {
-                                    Type = ReferenceType.Schema,
-                                    Id = attribute.BodyType.GetOpenApiRootReferenceId()
-                                };
+                {
+                    Type = ReferenceType.Schema,
+                    Id = attribute.BodyType.GetOpenApiRootReferenceId()
+                };
 
                 schema = new OpenApiSchema() { Reference = reference };
             }

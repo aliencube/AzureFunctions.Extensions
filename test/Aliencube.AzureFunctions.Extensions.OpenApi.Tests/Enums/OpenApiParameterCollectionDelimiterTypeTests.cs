@@ -1,4 +1,4 @@
-using System.Linq;
+﻿using System.Linq;
 using System.Reflection;
 
 using Aliencube.AzureFunctions.Extensions.OpenApi.Attributes;
@@ -11,21 +11,23 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Aliencube.AzureFunctions.Extensions.OpenApi.Tests.Enums
 {
     [TestClass]
-    public class OpenApiFormatTypeTests
+    public class OpenApiParameterCollectionDelimiterTypeTests
     {
         [DataTestMethod]
-        [DataRow("Json")]
-        [DataRow("Yaml")]
+        [DataRow("Comma")]
+        [DataRow("Space")]
+        [DataRow("Pipe")]
         public void Given_Enum_Should_Have_Member(string memberName)
         {
-            var members = typeof(OpenApiFormatType).GetMembers().Select(p => p.Name);
+            var members = typeof(OpenApiParameterCollectionDelimiterType).GetMembers().Select(p => p.Name);
 
             members.Should().Contain(memberName);
         }
 
         [DataTestMethod]
-        [DataRow("Json", "json")]
-        [DataRow("Yaml", "yaml")]
+        [DataRow("Comma", "comma")]
+        [DataRow("Space", "space")]
+        [DataRow("Pipe", "pipe")]
         public void Given_Enum_Should_Have_Decorator(string memberName, string displayName)
         {
             var member = this.GetMemberInfo(memberName);
@@ -37,7 +39,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Tests.Enums
 
         private MemberInfo GetMemberInfo(string name)
         {
-            var member = typeof(OpenApiFormatType).GetMember(name).First();
+            var member = typeof(OpenApiParameterCollectionDelimiterType).GetMember(name).First();
 
             return member;
         }
