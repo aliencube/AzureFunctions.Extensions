@@ -59,9 +59,9 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi
         /// <param name="req"><see cref="HttpRequestMessage"/> instance.</param>
         /// <param name="log"><see cref="ILogger"/> instance.</param>
         /// <returns>Swagger document in a format in YAML.</returns>
-        [FunctionName(nameof(OpenApiHttpTrigger.RenderSwaggerDocumentInYaml))]
+        [FunctionName(nameof(OpenApiHttpTrigger.RenderSwaggerDocumentInYml))]
         [OpenApiIgnore]
-        public static async Task<HttpResponseMessage> RenderSwaggerDocumentInYaml(
+        public static async Task<HttpResponseMessage> RenderSwaggerDocumentInYml(
             [HttpTrigger(AuthorizationLevel.Function, "get", Route = "swagger.yml")] HttpRequestMessage req,
             ILogger log)
         {
@@ -143,9 +143,9 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi
         /// <param name="req"><see cref="HttpRequestMessage"/> instance.</param>
         /// <param name="log"><see cref="ILogger"/> instance.</param>
         /// <returns>Open API document v2 in a format of YAML.</returns>
-        [FunctionName(nameof(OpenApiHttpTrigger.RenderOpenApiDocumentV2InYaml))]
+        [FunctionName(nameof(OpenApiHttpTrigger.RenderOpenApiDocumentV2InYml))]
         [OpenApiIgnore]
-        public static async Task<HttpResponseMessage> RenderOpenApiDocumentV2InYaml(
+        public static async Task<HttpResponseMessage> RenderOpenApiDocumentV2InYml(
             [HttpTrigger(AuthorizationLevel.Function, "get", Route = "openapi/v2.yml")] HttpRequestMessage req,
             ILogger log)
         {
@@ -227,9 +227,9 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi
         /// <param name="req"><see cref="HttpRequestMessage"/> instance.</param>
         /// <param name="log"><see cref="ILogger"/> instance.</param>
         /// <returns>Open API document v3 in a format of YAML.</returns>
-        [FunctionName(nameof(OpenApiHttpTrigger.RenderOpenApiDocumentV3InYaml))]
+        [FunctionName(nameof(OpenApiHttpTrigger.RenderOpenApiDocumentV3InYml))]
         [OpenApiIgnore]
-        public static async Task<HttpResponseMessage> RenderOpenApiDocumentV3InYaml(
+        public static async Task<HttpResponseMessage> RenderOpenApiDocumentV3InYml(
             [HttpTrigger(AuthorizationLevel.Function, "get", Route = "openapi/v3.yml")] HttpRequestMessage req,
             ILogger log)
         {
