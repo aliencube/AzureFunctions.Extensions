@@ -125,6 +125,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi
                                     .Select(p => p.ToOpenApiParameter())
                                     .ToList();
 
+            // This needs to be provided separately.
             if (trigger.AuthLevel != AuthorizationLevel.Anonymous)
             {
                 parameters.AddOpenApiParameter<string>("code", @in: ParameterLocation.Query, required: false);
@@ -136,12 +137,21 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi
         /// <inheritdoc />
         public OpenApiRequestBody GetOpenApiRequestBody(MethodInfo element, NamingStrategy namingStrategy = null)
         {
-            var contents = element.GetCustomAttributes<OpenApiRequestBodyAttribute>(inherit: false)
-                                  .ToDictionary(p => p.ContentType, p => p.ToOpenApiMediaType());
+            var attributes = element.GetCustomAttributes<OpenApiRequestBodyAttribute>(inherit: false);
+            if (!attributes.Any())
+            {
+                return null;
+            }
+
+            var contents = attributes.ToDictionary(p => p.ContentType, p => p.ToOpenApiMediaType());
 
             if (contents.Any())
             {
-                return new OpenApiRequestBody() { Content = contents };
+                return new OpenApiRequestBody()
+                {
+                    Content = contents,
+                    Required = attributes.First().Required
+                };
             }
 
             return null;
