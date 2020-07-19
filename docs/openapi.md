@@ -233,16 +233,18 @@ public static async Task<IActionResult> PostSample(
 
 * `ContentType`: defines the content type of the request body payload. eg) `application/json` or `text/xml`
 * `BodyType`: defines the type of the request payload.
-* `Description`: is the description of the request body payload.
+* `Summary`: is the summary of the request payload.
+* `Description`: is the description of the request payload.
+* `Required`: indicates whether the request payload is mandatory or not.
 
 
-### `OpenApiResponseBodyAttribute` ###
+### `OpenApiResponseWithBodyAttribute` ###
 
 This decorator implements the [Response object](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#responseObject) spec.
 
 ```csharp
 [FunctionName(nameof(PostSample))]
-[OpenApiResponseBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(SampleResponseModel))]
+[OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(SampleResponseModel))]
 ...
 public static async Task<IActionResult> PostSample(
     [HttpTrigger(AuthorizationLevel.Function, "post", Route = "samples")] HttpRequest req,
@@ -253,10 +255,31 @@ public static async Task<IActionResult> PostSample(
 ```
 
 * `StatusCode`: defines the HTTP status code. eg) `HttpStatusCode.OK`
-* `ContentType`: defines the content type of the response body payload. eg) `application/json` or `text/xml`
+* `ContentType`: defines the content type of the response payload. eg) `application/json` or `text/xml`
 * `BodyType`: defines the type of the response payload.
-* `Description`: is the description of the response body payload.
-* `Summary`: is the summary of the response body payload.
+* `Summary`: is the summary of the response.
+* `Description`: is the description of the response.
+
+
+### `OpenApiResponseWithoutBodyAttribute` ###
+
+This decorator implements the [Response object](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#responseObject) spec.
+
+```csharp
+[FunctionName(nameof(PostSample))]
+[OpenApiResponseWithoutBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(SampleResponseModel))]
+...
+public static async Task<IActionResult> PostSample(
+    [HttpTrigger(AuthorizationLevel.Function, "post", Route = "samples")] HttpRequest req,
+    ILogger log)
+{
+    ...
+}
+```
+
+* `StatusCode`: defines the HTTP status code. eg) `HttpStatusCode.OK`
+* `Summary`: is the summary of the response.
+* `Description`: is the description of the response.
 
 
 ## Supported Json.NET Decorators ##
