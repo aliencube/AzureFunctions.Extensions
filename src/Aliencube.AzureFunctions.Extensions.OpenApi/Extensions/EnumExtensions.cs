@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Reflection;
 
@@ -37,6 +37,11 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
         public static string ToDataType(this Type type)
         {
             var @enum = Type.GetTypeCode(type);
+            if (!type.IsNullOrDefault() && type.IsEnum)
+            {
+                @enum = TypeCode.String;
+            }
+
             switch (@enum)
             {
                 case TypeCode.Int16:
@@ -95,6 +100,11 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
         public static string ToDataFormat(this Type type)
         {
             var @enum = Type.GetTypeCode(type);
+            if (!type.IsNullOrDefault() && type.IsEnum)
+            {
+                @enum = TypeCode.String;
+            }
+
             switch (@enum)
             {
                 case TypeCode.Int16:
@@ -123,6 +133,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
                 case TypeCode.Boolean:
                 case TypeCode.String:
                     return null;
+
                 case TypeCode.Object:
                     if (type == typeof(Guid))
                     {
@@ -147,6 +158,26 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
                     throw new InvalidOperationException("Invalid data type");
             }
         }
+
+        ///// <summary>
+        ///// Converts the enum into the list of strings specified in Open API spec.
+        ///// </summary>
+        ///// <param name="type">Enum type.</param>
+        ///// <returns>Returns the list of strings representing the enum values.</returns>
+        //public static List<IOpenApiAny> ToEnumList(this Type type)
+        //{
+        //    if (!type.IsEnum)
+        //    {
+        //        return null;
+        //    }
+
+        //    var values = Enum.GetNames(type)
+        //                     .Select(p => Enum.Parse(type, p))
+        //                     .Select(p => (IOpenApiAny)new OpenApiString(p.ToString()))
+        //                     .ToList();
+
+        //    return values;
+        //}
 
         /// <summary>
         /// Gets the content type.

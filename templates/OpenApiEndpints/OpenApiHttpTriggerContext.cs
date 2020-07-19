@@ -1,7 +1,6 @@
-﻿using System;
+using System;
 using System.Reflection;
 
-using Aliencube.AzureFunctions.Extensions.OpenApi;
 using Aliencube.AzureFunctions.Extensions.OpenApi.Abstractions;
 using Aliencube.AzureFunctions.Extensions.OpenApi.Configurations;
 using Aliencube.AzureFunctions.Extensions.OpenApi.Enums;
@@ -10,6 +9,8 @@ using Aliencube.AzureFunctions.Extensions.OpenApi.Resolvers;
 
 using Microsoft.OpenApi;
 using Microsoft.OpenApi.Models;
+
+using Newtonsoft.Json.Serialization;
 
 namespace Aliencube.AzureFunctions.Extensions.OpenApi
 {
@@ -46,6 +47,9 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi
 
         /// <inheritdoc />
         public virtual ISwaggerUI SwaggerUI { get; }
+
+        /// <inheritdoc />
+        public virtual NamingStrategy NamingStrategy { get; } = new CamelCaseNamingStrategy();
 
         /// <inheritdoc />
         public virtual Assembly GetExecutingAssembly()

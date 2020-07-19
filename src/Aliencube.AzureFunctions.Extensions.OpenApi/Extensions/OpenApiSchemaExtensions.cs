@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -98,13 +98,19 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
                 if (!converterAttribute.IsNullOrDefault()
                     && typeof(StringEnumConverter).IsAssignableFrom(converterAttribute.ConverterType))
                 {
+                    var enums = type.ToOpenApiStringCollection(namingStrategy);
+
                     schema.Type = "string";
                     schema.Format = null;
-                    schema.Enum = type.ToOpenApiStringCollection(namingStrategy);
+                    schema.Enum = enums;
+                    schema.Default = enums.First();
                 }
                 else
                 {
-                    schema.Enum = type.ToOpenApiIntegerCollection();
+                    var enums = type.ToOpenApiIntegerCollection();
+
+                    schema.Enum = enums;
+                    schema.Default = enums.First();
                 }
             }
 

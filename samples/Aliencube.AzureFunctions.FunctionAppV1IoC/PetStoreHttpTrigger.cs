@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -21,6 +22,7 @@ namespace Aliencube.AzureFunctions.FunctionAppV1IoC
         /// <summary>
         /// Gets the <see cref="IFunctionFactory"/> instance as an IoC container.
         /// </summary>
+        [SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "")]
         public static IFunctionFactory Factory = new FunctionFactory<StartUp>();
 
         [FunctionName(nameof(PetStoreHttpTrigger.AddPet))]

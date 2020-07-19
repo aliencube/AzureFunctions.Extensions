@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 using Aliencube.AzureFunctions.Extensions.OpenApi.Attributes;
@@ -200,32 +200,34 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Tests.Extensions
         }
 
         [TestMethod]
-        public void Given_FakeModel_It_Should_Return_Result()
+        public void Given_FakeModel_When_ToOpenApiSchemas_Invoked_Then_It_Should_Return_Result()
         {
             var type = typeof(FakeModel);
+            var subType = typeof(FakeSubModel);
+            var enumType = typeof(FakeEnum);
+
             var strategy = new CamelCaseNamingStrategy();
 
             var schemas = OpenApiSchemaExtensions.ToOpenApiSchemas(type, strategy);
+
             schemas.Count.Should().Be(3);
-            var fmSchema = schemas[type.Name];
-            var fsmType = typeof(FakeSubModel);
-            var fsmSchema = schemas[fsmType.Name];
-            var feType = typeof(FakeEnum);
-            var feSchema = schemas[feType.Name];
-            fmSchema.Type.Should().Be("object");
-            fmSchema.Properties["fakeProperty"].Type.Should().BeEquivalentTo("string");
-            fmSchema.Properties["nullableInt"].Type.Should().BeEquivalentTo("integer");
-            fmSchema.Properties["nullableInt"].Nullable.Should().BeTrue();
-            fmSchema.Properties["subProperty"].Reference.Id.Should().BeEquivalentTo(fsmType.Name);
-            fmSchema.Properties["enumProperty"].Reference.Id.Should().BeEquivalentTo(feType.Name);
 
-            fsmSchema.Type.Should().Be("object");
-            fsmSchema.Properties["fakeSubModelProperty"].Type.Should().BeEquivalentTo("integer");
+            var schema = schemas[type.Name];
+            var subSchema = schemas[subType.Name];
+            var enumSchema = schemas[enumType.Name];
 
-            feSchema.Type.Should().Be("integer");
-            feSchema.Enum.Count.Should().Be(2);
+            schema.Type.Should().Be("object");
+            schema.Properties["fakeProperty"].Type.Should().BeEquivalentTo("string");
+            schema.Properties["nullableInt"].Type.Should().BeEquivalentTo("integer");
+            schema.Properties["nullableInt"].Nullable.Should().BeTrue();
+            schema.Properties["subProperty"].Reference.Id.Should().BeEquivalentTo(subType.Name);
+            schema.Properties["enumProperty"].Reference.Id.Should().BeEquivalentTo(enumType.Name);
 
+            subSchema.Type.Should().Be("object");
+            subSchema.Properties["fakeSubModelProperty"].Type.Should().BeEquivalentTo("integer");
 
+            enumSchema.Type.Should().Be("string");
+            enumSchema.Enum.Count.Should().Be(2);
         }
 
         [TestMethod]

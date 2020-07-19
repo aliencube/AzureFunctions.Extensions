@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 using Aliencube.AzureFunctions.Extensions.OpenApi.Enums;
 using Aliencube.AzureFunctions.Extensions.OpenApi.Extensions;
@@ -102,6 +102,29 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Tests.Extensions
 
             dataType.Should().BeNull();
         }
+
+        //[DataTestMethod]
+        //[DataRow(typeof(FakeClass))]
+        //public void Given_Type_When_ToEnumList_Invoked_Then_It_Should_Return_Result(Type type)
+        //{
+        //    var result = EnumExtensions.ToEnumList(type);
+
+        //    result.Should().BeNull();
+        //}
+
+        //[DataTestMethod]
+        //[DataRow(typeof(FakeEnum))]
+        //public void Given_Enum_When_ToEnumList_Invoked_Then_It_Should_Return_Result(Type type)
+        //{
+        //    var values = Enum.GetNames(type).Select(p => Enum.Parse(type, p).ToString()).ToList();
+
+        //    var results = EnumExtensions.ToEnumList(type).OfType<OpenApiString>().ToList();
+
+        //    for (var i = 0; i < results.Count; i++)
+        //    {
+        //        results[i].Value.Should().BeEquivalentTo(values[i]);
+        //    }
+        //}
 
         [DataTestMethod]
         [DataRow(OpenApiFormat.Json, "application/json")]
