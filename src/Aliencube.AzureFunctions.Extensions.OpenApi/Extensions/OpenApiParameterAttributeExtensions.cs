@@ -1,4 +1,3 @@
-
 using System.Linq;
 using System.Reflection;
 
@@ -43,17 +42,6 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
                 schema.Format = null;
                 schema.Items = (type.GetElementType() ?? type.GetGenericArguments()[0]).ToOpenApiSchema(namingStrategy);
             }
-
-            ////if (type.IsDictionaryType())
-            ////{
-            ////    var genType = type.GetGenericArguments()[1];
-            ////    @enum = Type.GetTypeCode(genType);
-
-            ////    if (genType.IsEnum)
-            ////    {
-            ////        @enum = TypeCode.String;
-            ////    }
-            ////}
 
             if (type.IsUnflaggedEnumType())
             {

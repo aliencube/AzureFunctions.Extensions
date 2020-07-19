@@ -51,8 +51,8 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
                 {
                     Type = "object",
                     AdditionalProperties = isSimpleType
-                                                        ? attribute.BodyType.GetOpenApiSubType().ToOpenApiSchema(namingStrategy)
-                                                        : schema
+                                           ? attribute.BodyType.GetOpenApiSubType().ToOpenApiSchema(namingStrategy)
+                                           : schema
                 };
             }
             else if (isList)
@@ -61,8 +61,8 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
                 {
                     Type = "array",
                     Items = isSimpleType
-                                         ? attribute.BodyType.GetOpenApiSubType().ToOpenApiSchema(namingStrategy)
-                                         : schema
+                            ? attribute.BodyType.GetOpenApiSubType().ToOpenApiSchema(namingStrategy)
+                            : schema
                 };
             }
             else if (isGeneric)

@@ -159,26 +159,6 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
             }
         }
 
-        ///// <summary>
-        ///// Converts the enum into the list of strings specified in Open API spec.
-        ///// </summary>
-        ///// <param name="type">Enum type.</param>
-        ///// <returns>Returns the list of strings representing the enum values.</returns>
-        //public static List<IOpenApiAny> ToEnumList(this Type type)
-        //{
-        //    if (!type.IsEnum)
-        //    {
-        //        return null;
-        //    }
-
-        //    var values = Enum.GetNames(type)
-        //                     .Select(p => Enum.Parse(type, p))
-        //                     .Select(p => (IOpenApiAny)new OpenApiString(p.ToString()))
-        //                     .ToList();
-
-        //    return values;
-        //}
-
         /// <summary>
         /// Gets the content type.
         /// </summary>
