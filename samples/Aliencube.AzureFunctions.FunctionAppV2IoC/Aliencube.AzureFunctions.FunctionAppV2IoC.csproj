@@ -6,12 +6,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Aliencube.AzureFunctions.Extensions.OpenApi" Version="2.0.0.1" />
     <PackageReference Include="Microsoft.Azure.Functions.Extensions" Version="1.0.0" />
     <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="1.0.28" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Aliencube.AzureFunctions.Extensions.OpenApi\Aliencube.AzureFunctions.Extensions.OpenApi.csproj" />
+    <!--<ProjectReference Include="..\..\src\Aliencube.AzureFunctions.Extensions.OpenApi\Aliencube.AzureFunctions.Extensions.OpenApi.csproj" />-->
     <ProjectReference Include="..\Aliencube.AzureFunctions.FunctionApp.Services\Aliencube.AzureFunctions.FunctionApp.Services.csproj" />
   </ItemGroup>
 
@@ -28,7 +29,7 @@
     </None>
   </ItemGroup>
 
-  <ItemGroup Condition="'$(Configuration)'=='Debug'">
+  <!--<ItemGroup Condition="'$(Configuration)'=='Debug'">
     <Compile Include="..\..\templates\OpenApiEndpints\IOpenApiHttpTriggerContext.cs">
       <BuildAction>Compile</BuildAction>
     </Compile>
@@ -38,6 +39,6 @@
     <Compile Include="..\..\templates\OpenApiEndpints\OpenApiHttpTrigger.cs">
       <BuildAction>Compile</BuildAction>
     </Compile>
-  </ItemGroup>
+  </ItemGroup>-->
 
 </Project>
