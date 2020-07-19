@@ -6,12 +6,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Aliencube.AzureFunctions.Extensions.OpenApi" Version="1.8.0" />
     <PackageReference Include="Microsoft.Azure.Functions.Extensions" Version="1.0.0" />
     <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="3.0.3" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\src\Aliencube.AzureFunctions.Extensions.OpenApi\Aliencube.AzureFunctions.Extensions.OpenApi.csproj" />
     <ProjectReference Include="..\Aliencube.AzureFunctions.FunctionApp.Services\Aliencube.AzureFunctions.FunctionApp.Services.csproj" />
   </ItemGroup>
 
