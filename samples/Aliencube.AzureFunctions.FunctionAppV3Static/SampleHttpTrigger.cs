@@ -18,7 +18,7 @@ namespace Aliencube.AzureFunctions.FunctionAppV3Static
     {
         [FunctionName(nameof(SampleHttpTrigger.GetSamples))]
         [OpenApiOperation(operationId: "list", tags: new[] { "sample" }, Summary = "Gets the list of samples", Description = "This gets the list of samples.", Visibility = OpenApiVisibilityType.Important)]
-        [OpenApiResponseBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(List<SampleResponseModel>), Summary = "List of the sample responses")]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(List<SampleResponseModel>), Summary = "List of the sample responses")]
         public static async Task<IActionResult> GetSamples(
             [HttpTrigger(AuthorizationLevel.Function, "get", Route = "samples")] HttpRequest req,
             ILogger log)

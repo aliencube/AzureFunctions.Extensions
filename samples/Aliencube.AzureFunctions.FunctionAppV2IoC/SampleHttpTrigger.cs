@@ -14,7 +14,7 @@ using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
 
-namespace Aliencube.AzureFunctions.FunctionAppV3IoC
+namespace Aliencube.AzureFunctions.FunctionAppV2IoC
 {
     public class SampleHttpTrigger
     {

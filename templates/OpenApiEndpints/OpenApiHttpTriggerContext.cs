@@ -72,6 +72,11 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi
         /// <inheritdoc />
         public virtual OpenApiFormat GetOpenApiFormat(string format = "json")
         {
+            if (format.Equals("yml", StringComparison.InvariantCultureIgnoreCase))
+            {
+                format = "yaml";
+            }
+
             var parsed = Enum.TryParse(format, true, out OpenApiFormatType output)
                              ? output
                              : throw new InvalidOperationException("Invalid Open API format");

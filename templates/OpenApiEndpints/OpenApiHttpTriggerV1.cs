@@ -59,6 +59,34 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi
         /// <param name="req"><see cref="HttpRequestMessage"/> instance.</param>
         /// <param name="log"><see cref="ILogger"/> instance.</param>
         /// <returns>Swagger document in a format in YAML.</returns>
+        [FunctionName(nameof(OpenApiHttpTrigger.RenderSwaggerDocumentInYml))]
+        [OpenApiIgnore]
+        public static async Task<HttpResponseMessage> RenderSwaggerDocumentInYml(
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "swagger.yml")] HttpRequestMessage req,
+            ILogger log)
+        {
+            log.LogInformation($"swagger.yaml was requested.");
+
+            var result = await context.Document
+                                      .InitialiseDocument()
+                                      .AddMetadata(context.OpenApiInfo)
+                                      .AddServer(req, context.HttpSettings.RoutePrefix)
+                                      .Build(context.GetExecutingAssembly())
+                                      .RenderAsync(context.GetOpenApiSpecVersion(V2), context.GetOpenApiFormat(YAML))
+                                      .ConfigureAwait(false);
+
+            var content = new StringContent(result, Encoding.UTF8, context.GetOpenApiFormat(YAML).GetContentType());
+            var response = new HttpResponseMessage(HttpStatusCode.OK) { Content = content };
+
+            return response;
+        }
+
+        /// <summary>
+        /// Invokes the HTTP trigger endpoint to get Swagger document in a format of YAML.
+        /// </summary>
+        /// <param name="req"><see cref="HttpRequestMessage"/> instance.</param>
+        /// <param name="log"><see cref="ILogger"/> instance.</param>
+        /// <returns>Swagger document in a format in YAML.</returns>
         [FunctionName(nameof(OpenApiHttpTrigger.RenderSwaggerDocumentInYaml))]
         [OpenApiIgnore]
         public static async Task<HttpResponseMessage> RenderSwaggerDocumentInYaml(
@@ -115,6 +143,34 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi
         /// <param name="req"><see cref="HttpRequestMessage"/> instance.</param>
         /// <param name="log"><see cref="ILogger"/> instance.</param>
         /// <returns>Open API document v2 in a format of YAML.</returns>
+        [FunctionName(nameof(OpenApiHttpTrigger.RenderOpenApiDocumentV2InYml))]
+        [OpenApiIgnore]
+        public static async Task<HttpResponseMessage> RenderOpenApiDocumentV2InYml(
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "openapi/v2.yml")] HttpRequestMessage req,
+            ILogger log)
+        {
+            log.LogInformation($"v2.yaml was requested.");
+
+            var result = await context.Document
+                                      .InitialiseDocument()
+                                      .AddMetadata(context.OpenApiInfo)
+                                      .AddServer(req, context.HttpSettings.RoutePrefix)
+                                      .Build(context.GetExecutingAssembly())
+                                      .RenderAsync(context.GetOpenApiSpecVersion(V2), context.GetOpenApiFormat(YAML))
+                                      .ConfigureAwait(false);
+
+            var content = new StringContent(result, Encoding.UTF8, context.GetOpenApiFormat(YAML).GetContentType());
+            var response = new HttpResponseMessage(HttpStatusCode.OK) { Content = content };
+
+            return response;
+        }
+
+        /// <summary>
+        /// Invokes the HTTP trigger endpoint to get Open API document v2 in a format of YAML.
+        /// </summary>
+        /// <param name="req"><see cref="HttpRequestMessage"/> instance.</param>
+        /// <param name="log"><see cref="ILogger"/> instance.</param>
+        /// <returns>Open API document v2 in a format of YAML.</returns>
         [FunctionName(nameof(OpenApiHttpTrigger.RenderOpenApiDocumentV2InYaml))]
         [OpenApiIgnore]
         public static async Task<HttpResponseMessage> RenderOpenApiDocumentV2InYaml(
@@ -160,6 +216,34 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi
                                       .ConfigureAwait(false);
 
             var content = new StringContent(result, Encoding.UTF8, context.GetOpenApiFormat(JSON).GetContentType());
+            var response = new HttpResponseMessage(HttpStatusCode.OK) { Content = content };
+
+            return response;
+        }
+
+        /// <summary>
+        /// Invokes the HTTP trigger endpoint to get Open API document v3 in a format of YAML.
+        /// </summary>
+        /// <param name="req"><see cref="HttpRequestMessage"/> instance.</param>
+        /// <param name="log"><see cref="ILogger"/> instance.</param>
+        /// <returns>Open API document v3 in a format of YAML.</returns>
+        [FunctionName(nameof(OpenApiHttpTrigger.RenderOpenApiDocumentV3InYml))]
+        [OpenApiIgnore]
+        public static async Task<HttpResponseMessage> RenderOpenApiDocumentV3InYml(
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "openapi/v3.yml")] HttpRequestMessage req,
+            ILogger log)
+        {
+            log.LogInformation($"v3.yaml was requested.");
+
+            var result = await context.Document
+                                      .InitialiseDocument()
+                                      .AddMetadata(context.OpenApiInfo)
+                                      .AddServer(req, context.HttpSettings.RoutePrefix)
+                                      .Build(context.GetExecutingAssembly())
+                                      .RenderAsync(context.GetOpenApiSpecVersion(V3), context.GetOpenApiFormat(YAML))
+                                      .ConfigureAwait(false);
+
+            var content = new StringContent(result, Encoding.UTF8, context.GetOpenApiFormat(YAML).GetContentType());
             var response = new HttpResponseMessage(HttpStatusCode.OK) { Content = content };
 
             return response;
