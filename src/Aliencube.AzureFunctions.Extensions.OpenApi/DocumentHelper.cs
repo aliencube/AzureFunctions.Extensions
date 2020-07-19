@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -148,15 +148,32 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi
         }
 
         /// <inheritdoc />
+        [Obsolete("This method is obsolete from 2.0.0. Use GetOpenApiResponses instead", error: true)]
+        public OpenApiResponses GetOpenApiResponseBody(MethodInfo element, NamingStrategy namingStrategy = null)
+        {
+            return this.GetOpenApiResponses(element, namingStrategy);
+
+            //var responses = element.GetCustomAttributes<OpenApiResponseBodyAttribute>(inherit: false)
+            //                       .ToDictionary(p => ((int)p.StatusCode).ToString(), p => p.ToOpenApiResponse(namingStrategy))
+            //                       .ToOpenApiResponses();
+
+            //return responses;
+        }
+
+        /// <inheritdoc />
         public OpenApiResponses GetOpenApiResponses(MethodInfo element, NamingStrategy namingStrategy = null)
         {
-            var responsesWithBody = element.GetCustomAttributes<OpenApiResponseBodyAttribute>(inherit: false)
-                                   .Select(p => (StatusCode: p.StatusCode, Response: p.ToOpenApiResponse(namingStrategy)));
+            var responsesWithBody = element.GetCustomAttributes<OpenApiResponseWithBodyAttribute>(inherit: false)
+                                    .Select(p => new { StatusCode = p.StatusCode, Response = p.ToOpenApiResponse(namingStrategy) });
 
-            var responses = element.GetCustomAttributes<OpenApiResponseAttribute>(inherit: false)
-                                   .Select(p => (StatusCode: p.StatusCode, Response: p.ToOpenApiResponse(namingStrategy)));
+            var responsesWithoutBody = element.GetCustomAttributes<OpenApiResponseWithoutBodyAttribute>(inherit: false)
+                                       .Select(p => new { StatusCode = p.StatusCode, Response = p.ToOpenApiResponse(namingStrategy) });
 
-            return responses.Concat(responsesWithBody).ToDictionary(x => ((int)x.StatusCode).ToString(), x => x.Response).ToOpenApiResponses();
+            var responses = responsesWithBody.Concat(responsesWithoutBody)
+                                             .ToDictionary(p => ((int)p.StatusCode).ToString(), p => p.Response)
+                                             .ToOpenApiResponses();
+
+            return responses;
         }
 
         /// <inheritdoc />
@@ -164,7 +181,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi
         {
             var requests = elements.SelectMany(p => p.GetCustomAttributes<OpenApiRequestBodyAttribute>(inherit: false))
                                    .Select(p => p.BodyType);
-            var responses = elements.SelectMany(p => p.GetCustomAttributes<OpenApiResponseBodyAttribute>(inherit: false))
+            var responses = elements.SelectMany(p => p.GetCustomAttributes<OpenApiResponseWithBodyAttribute>(inherit: false))
                                     .Select(p => p.BodyType);
             var types = requests.Union(responses)
                                 .Select(p => p.IsOpenApiArray() || p.IsOpenApiDictionary() ? p.GetOpenApiSubType() : p)

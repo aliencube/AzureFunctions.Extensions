@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Net;
 
 namespace Aliencube.AzureFunctions.Extensions.OpenApi.Attributes
@@ -6,17 +6,17 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Attributes
     /// <summary>
     /// This represents the attribute entity for HTTP triggers to define response body payload.
     /// </summary>
-    [Obsolete("This class is obsolete from 2.0.0. Use OpenApiResponseWithBodyAttribute instead", error: true)]
+
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = true, Inherited = false)]
-    public class OpenApiResponseBodyAttribute : OpenApiPayloadAttribute
+    public class OpenApiResponseWithBodyAttribute : OpenApiPayloadAttribute
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="OpenApiResponseBodyAttribute"/> class.
+        /// Initializes a new instance of the <see cref="OpenApiResponseWithBodyAttribute"/> class.
         /// </summary>
         /// <param name="statusCode">HTTP status code.</param>
         /// <param name="contentType">Content type.</param>
         /// <param name="bodyType">Type of payload.</param>
-        public OpenApiResponseBodyAttribute(HttpStatusCode statusCode, string contentType, Type bodyType)
+        public OpenApiResponseWithBodyAttribute(HttpStatusCode statusCode, string contentType, Type bodyType)
             : base(contentType, bodyType)
         {
             this.StatusCode = statusCode;

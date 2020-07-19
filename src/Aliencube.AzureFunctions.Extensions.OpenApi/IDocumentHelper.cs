@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+using System;
+using System.Collections.Generic;
 using System.Reflection;
 
 using Microsoft.Azure.WebJobs;
@@ -81,6 +82,15 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Abstractions
         /// <param name="namingStrategy"><see cref="NamingStrategy"/> instance to create the JSON schema from .NET Types.</param>
         /// <returns><see cref="OpenApiRequestBody"/> instance.</returns>
         OpenApiRequestBody GetOpenApiRequestBody(MethodInfo element, NamingStrategy namingStrategy = null);
+
+        /// <summary>
+        /// Gets the <see cref="OpenApiResponses"/> instance.
+        /// </summary>
+        /// <param name="element"><see cref="MethodInfo"/> instance.</param>
+        /// <param name="namingStrategy"><see cref="NamingStrategy"/> instance to create the JSON schema from .NET Types.</param>
+        /// <returns><see cref="OpenApiResponses"/> instance.</returns>
+        [Obsolete("This method is obsolete from 2.0.0. Use GetOpenApiResponses instead", error: true)]
+        OpenApiResponses GetOpenApiResponseBody(MethodInfo element, NamingStrategy namingStrategy = null);
 
         /// <summary>
         /// Gets the <see cref="OpenApiResponses"/> instance.
