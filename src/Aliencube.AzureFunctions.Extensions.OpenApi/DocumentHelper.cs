@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -125,6 +125,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi
                                     .Select(p => p.ToOpenApiParameter())
                                     .ToList();
 
+            // This needs to be provided separately.
             if (trigger.AuthLevel != AuthorizationLevel.Anonymous)
             {
                 parameters.AddOpenApiParameter<string>("code", @in: ParameterLocation.Query, required: false);
@@ -136,23 +137,51 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi
         /// <inheritdoc />
         public OpenApiRequestBody GetOpenApiRequestBody(MethodInfo element, NamingStrategy namingStrategy = null)
         {
-            var contents = element.GetCustomAttributes<OpenApiRequestBodyAttribute>(inherit: false)
-                                  .ToDictionary(p => p.ContentType, p => p.ToOpenApiMediaType());
+            var attributes = element.GetCustomAttributes<OpenApiRequestBodyAttribute>(inherit: false);
+            if (!attributes.Any())
+            {
+                return null;
+            }
+
+            var contents = attributes.ToDictionary(p => p.ContentType, p => p.ToOpenApiMediaType());
 
             if (contents.Any())
             {
-                return new OpenApiRequestBody() { Content = contents };
+                return new OpenApiRequestBody()
+                {
+                    Content = contents,
+                    Required = attributes.First().Required
+                };
             }
 
             return null;
         }
 
         /// <inheritdoc />
+        [Obsolete("This method is obsolete from 2.0.0. Use GetOpenApiResponses instead", error: true)]
         public OpenApiResponses GetOpenApiResponseBody(MethodInfo element, NamingStrategy namingStrategy = null)
         {
-            var responses = element.GetCustomAttributes<OpenApiResponseBodyAttribute>(inherit: false)
-                                   .ToDictionary(p => ((int)p.StatusCode).ToString(), p => p.ToOpenApiResponse(namingStrategy))
-                                   .ToOpenApiResponses();
+            return this.GetOpenApiResponses(element, namingStrategy);
+
+            //var responses = element.GetCustomAttributes<OpenApiResponseBodyAttribute>(inherit: false)
+            //                       .ToDictionary(p => ((int)p.StatusCode).ToString(), p => p.ToOpenApiResponse(namingStrategy))
+            //                       .ToOpenApiResponses();
+
+            //return responses;
+        }
+
+        /// <inheritdoc />
+        public OpenApiResponses GetOpenApiResponses(MethodInfo element, NamingStrategy namingStrategy = null)
+        {
+            var responsesWithBody = element.GetCustomAttributes<OpenApiResponseWithBodyAttribute>(inherit: false)
+                                    .Select(p => new { StatusCode = p.StatusCode, Response = p.ToOpenApiResponse(namingStrategy) });
+
+            var responsesWithoutBody = element.GetCustomAttributes<OpenApiResponseWithoutBodyAttribute>(inherit: false)
+                                       .Select(p => new { StatusCode = p.StatusCode, Response = p.ToOpenApiResponse(namingStrategy) });
+
+            var responses = responsesWithBody.Concat(responsesWithoutBody)
+                                             .ToDictionary(p => ((int)p.StatusCode).ToString(), p => p.Response)
+                                             .ToOpenApiResponses();
 
             return responses;
         }
@@ -162,7 +191,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi
         {
             var requests = elements.SelectMany(p => p.GetCustomAttributes<OpenApiRequestBodyAttribute>(inherit: false))
                                    .Select(p => p.BodyType);
-            var responses = elements.SelectMany(p => p.GetCustomAttributes<OpenApiResponseBodyAttribute>(inherit: false))
+            var responses = elements.SelectMany(p => p.GetCustomAttributes<OpenApiResponseWithBodyAttribute>(inherit: false))
                                     .Select(p => p.BodyType);
             var types = requests.Union(responses)
                                 .Select(p => p.IsOpenApiArray() || p.IsOpenApiDictionary() ? p.GetOpenApiSubType() : p)

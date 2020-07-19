@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace Aliencube.AzureFunctions.Extensions.OpenApi.Attributes
 {
@@ -17,5 +17,10 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Attributes
             : base(contentType, bodyType)
         {
         }
+
+        /// <summary>
+        /// Gets or sets the value indicating whether the request body is required or not.
+        /// </summary>
+        public virtual bool Required { get; set; }
     }
 }
