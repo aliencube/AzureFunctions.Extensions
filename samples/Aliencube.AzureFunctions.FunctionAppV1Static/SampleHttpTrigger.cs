@@ -9,7 +9,7 @@ using Aliencube.AzureFunctions.FunctionApp.Models;
 
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
-using Microsoft.Azure.WebJobs.Host;
+using Microsoft.Extensions.Logging;
 
 namespace Aliencube.AzureFunctions.FunctionAppV1Static
 {
@@ -17,10 +17,10 @@ namespace Aliencube.AzureFunctions.FunctionAppV1Static
     {
         [FunctionName(nameof(SampleHttpTrigger.GetSamples))]
         [OpenApiOperation(operationId: "list", tags: new[] { "sample" }, Summary = "Gets the list of samples", Description = "This gets the list of samples.", Visibility = OpenApiVisibilityType.Important)]
-        [OpenApiResponseBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(List<SampleResponseModel>), Summary = "List of the sample responses")]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(List<SampleResponseModel>), Summary = "List of the sample responses")]
         public static async Task<HttpResponseMessage> GetSamples(
             [HttpTrigger(AuthorizationLevel.Function, "get", Route = "samples")] HttpRequestMessage req,
-            TraceWriter log)
+            ILogger log)
         {
             var content = new List<SampleResponseModel>()
             {

@@ -95,4 +95,5 @@
       <PackagePath>contentFiles\any\net461\OpenApi\;</PackagePath>
     </Content>
   </ItemGroup>
+
 </Project>

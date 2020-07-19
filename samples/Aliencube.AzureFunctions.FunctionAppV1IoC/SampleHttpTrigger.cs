@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -21,11 +22,12 @@ namespace Aliencube.AzureFunctions.FunctionAppV1IoC
         /// <summary>
         /// Gets the <see cref="IFunctionFactory"/> instance as an IoC container.
         /// </summary>
+        [SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "")]
         public static IFunctionFactory Factory = new FunctionFactory<StartUp>();
 
         [FunctionName(nameof(SampleHttpTrigger.GetSamples))]
         [OpenApiOperation(operationId: "list", tags: new[] { "sample" }, Summary = "Gets the list of samples", Description = "This gets the list of samples.", Visibility = OpenApiVisibilityType.Important)]
-        [OpenApiResponseBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(List<SampleResponseModel>), Summary = "List of the sample responses")]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(List<SampleResponseModel>), Summary = "List of the sample responses")]
         public static async Task<HttpResponseMessage> GetSamples(
             [HttpTrigger(AuthorizationLevel.Function, "get", Route = "samples")] HttpRequestMessage req,
             ILogger log)
