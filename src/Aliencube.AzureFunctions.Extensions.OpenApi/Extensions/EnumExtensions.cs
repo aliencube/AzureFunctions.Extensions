@@ -7,6 +7,8 @@ using Aliencube.AzureFunctions.Extensions.OpenApi.Enums;
 
 using Microsoft.OpenApi;
 
+using Newtonsoft.Json.Serialization;
+
 namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
 {
     /// <summary>
@@ -18,15 +20,21 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
         /// Gets the display name of the enum value.
         /// </summary>
         /// <param name="enum">Enum value.</param>
+        /// <param name="namingStrategy"><see cref="NamingStrategy"/> instance.</param>
         /// <returns>Display name of the enum value.</returns>
-        public static string ToDisplayName(this Enum @enum)
+        public static string ToDisplayName(this Enum @enum, NamingStrategy namingStrategy = null)
         {
+            if (namingStrategy.IsNullOrDefault())
+            {
+                namingStrategy = new DefaultNamingStrategy();
+            }
+
             var type = @enum.GetType();
             var member = type.GetMember(@enum.ToString()).First();
             var attribute = member.GetCustomAttribute<DisplayAttribute>(inherit: false);
             var name = attribute == null ? @enum.ToString() : attribute.Name;
 
-            return name;
+            return namingStrategy.GetPropertyName(name, hasSpecifiedName: false);
         }
 
         /// <summary>

@@ -8,6 +8,7 @@ using Aliencube.AzureFunctions.Extensions.OpenApi.Attributes;
 using Aliencube.AzureFunctions.Extensions.OpenApi.Configurations;
 using Aliencube.AzureFunctions.Extensions.OpenApi.Enums;
 using Aliencube.AzureFunctions.Extensions.OpenApi.Extensions;
+using Aliencube.AzureFunctions.Extensions.OpenApi.Visitors;
 
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
@@ -25,14 +26,17 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi
     public class DocumentHelper : IDocumentHelper
     {
         private readonly RouteConstraintFilter _filter;
+        private readonly IOpenApiSchemaAcceptor _acceptor;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DocumentHelper"/> class.
         /// </summary>
         /// <param name="filter"><see cref="RouteConstraintFilter"/> instance.</param>
-        public DocumentHelper(RouteConstraintFilter filter)
+        /// <param name="acceptor"><see cref="IAcceptor"/> instance.</param>
+        public DocumentHelper(RouteConstraintFilter filter, IOpenApiSchemaAcceptor acceptor)
         {
             this._filter = filter.ThrowIfNullOrDefault();
+            this._acceptor = acceptor.ThrowIfNullOrDefault();
         }
 
         /// <inheritdoc />
@@ -187,7 +191,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi
         }
 
         /// <inheritdoc />
-        public Dictionary<string, OpenApiSchema> GetOpenApiSchemas(List<MethodInfo> elements, NamingStrategy namingStrategy)
+        public Dictionary<string, OpenApiSchema> GetOpenApiSchemas(List<MethodInfo> elements, NamingStrategy namingStrategy, VisitorCollection collection)
         {
             var requests = elements.SelectMany(p => p.GetCustomAttributes<OpenApiRequestBodyAttribute>(inherit: false))
                                    .Select(p => p.BodyType);
@@ -202,10 +206,30 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi
                                 .Where(p => !typeof(Array).IsAssignableFrom(p))
                                 .ToList();
 
+            var rootSchemas = new Dictionary<string, OpenApiSchema>();
             var schemas = new Dictionary<string, OpenApiSchema>();
-            types.ForEach(p => schemas.AddRange(p.ToOpenApiSchemas(namingStrategy)));
 
-            return schemas;
+            this._acceptor.Types = types.ToDictionary(p => p.GetOpenApiTypeName(namingStrategy), p => p);
+            this._acceptor.RootSchemas = rootSchemas;
+            this._acceptor.Schemas = schemas;
+
+            this._acceptor.Accept(collection, namingStrategy);
+            //types.ForEach(p => schemas.AddRange(p.ToOpenApiSchemas(namingStrategy)));
+
+            var union = schemas.Union(rootSchemas)
+                               .Distinct()
+                               .OrderBy(p => p.Key)
+                               .ToDictionary(p => p.Key,
+                                             p =>
+                                             {
+                                                 // Title was intentionally added for schema key.
+                                                 // It's not necessary when it's added to the root schema.
+                                                 // Therefore, it's removed.
+                                                 p.Value.Title = null;
+                                                 return p.Value;
+                                             });
+
+            return union;
         }
 
         /// <inheritdoc />

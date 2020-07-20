@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 
 using Aliencube.AzureFunctions.Extensions.OpenApi.Extensions;
 
@@ -7,6 +7,9 @@ using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Newtonsoft.Json.Linq;
+using Newtonsoft.Json.Serialization;
+
+using TypeExtensions = Aliencube.AzureFunctions.Extensions.OpenApi.Extensions.TypeExtensions;
 
 namespace Aliencube.AzureFunctions.Extensions.OpenApi.Tests.Extensions
 {
@@ -32,5 +35,27 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Tests.Extensions
         [TestMethod]
         public void Given_String_Method_Should_Return_False() =>
             typeof(string).IsOpenApiArray().Should().BeFalse();
+
+        [TestMethod]
+        public void Given_DefaultNamingStrategy_When_GetOpenApiTypeName_Invoked_Then_It_Should_Return_Result()
+        {
+            var type = typeof(int);
+            var strategy = new DefaultNamingStrategy();
+
+            var result = TypeExtensions.GetOpenApiTypeName(type, strategy);
+
+            result.Should().Be("Int32");
+        }
+
+        [TestMethod]
+        public void Given_CamelCaseNamingStrategy_When_GetOpenApiTypeName_Invoked_Then_It_Should_Return_Result()
+        {
+            var type = typeof(int);
+            var strategy = new CamelCaseNamingStrategy();
+
+            var result = TypeExtensions.GetOpenApiTypeName(type, strategy);
+
+            result.Should().Be("int32");
+        }
     }
 }

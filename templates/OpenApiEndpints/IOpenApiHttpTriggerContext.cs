@@ -3,6 +3,7 @@ using System.Reflection;
 using Aliencube.AzureFunctions.Extensions.OpenApi.Abstractions;
 using Aliencube.AzureFunctions.Extensions.OpenApi.Configurations;
 using Aliencube.AzureFunctions.Extensions.OpenApi.Enums;
+using Aliencube.AzureFunctions.Extensions.OpenApi.Visitors;
 
 using Microsoft.OpenApi;
 using Microsoft.OpenApi.Models;
@@ -46,6 +47,12 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi
         /// </summary>
         /// <returns>Returns the executing assembly.</returns>
         Assembly GetExecutingAssembly();
+
+        /// <summary>
+        /// Gets the <see cref="VisitorCollection"/> instance.
+        /// </summary>
+        /// <returns>Returns the <see cref="VisitorCollection"/> instance.</returns>
+        VisitorCollection GetVisitorCollection();
 
         /// <summary>
         /// Gets the <see cref="OpenApiSpecVersion"/> value.

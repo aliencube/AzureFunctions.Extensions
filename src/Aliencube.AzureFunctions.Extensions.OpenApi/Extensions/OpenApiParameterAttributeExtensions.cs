@@ -1,5 +1,4 @@
 using System.Linq;
-using System.Reflection;
 
 using Aliencube.AzureFunctions.Extensions.OpenApi.Attributes;
 using Aliencube.AzureFunctions.Extensions.OpenApi.Enums;
@@ -7,7 +6,6 @@ using Aliencube.AzureFunctions.Extensions.OpenApi.Enums;
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
 
-using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
 
@@ -45,9 +43,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
 
             if (type.IsUnflaggedEnumType())
             {
-                var converterAttribute = type.GetCustomAttribute<JsonConverterAttribute>();
-                if (!converterAttribute.IsNullOrDefault()
-                    && typeof(StringEnumConverter).IsAssignableFrom(converterAttribute.ConverterType))
+                if (type.HasJsonConverterAttribute<StringEnumConverter>())
                 {
                     var enums = type.ToOpenApiStringCollection(namingStrategy);
 

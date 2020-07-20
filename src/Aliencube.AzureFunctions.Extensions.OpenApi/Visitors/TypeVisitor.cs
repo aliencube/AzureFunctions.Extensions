@@ -1,0 +1,109 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+using Aliencube.AzureFunctions.Extensions.OpenApi.Attributes;
+using Aliencube.AzureFunctions.Extensions.OpenApi.Extensions;
+
+using Microsoft.OpenApi.Any;
+using Microsoft.OpenApi.Models;
+
+using Newtonsoft.Json.Serialization;
+
+namespace Aliencube.AzureFunctions.Extensions.OpenApi.Visitors
+{
+    /// <summary>
+    /// This represents the visitor entity for type. This MUST be inherited.
+    /// </summary>
+    public abstract class TypeVisitor : IVisitor
+    {
+        /// <summary>
+        /// Gets the <see cref="Type"/> object.
+        /// </summary>
+        protected Type Type { get; private set; }
+
+        /// <inheritdoc />
+        public virtual bool IsVisitable(Type type)
+        {
+            return true;
+        }
+
+        /// <inheritdoc />
+        public virtual void Visit(IAcceptor acceptor, KeyValuePair<string, Type> type, NamingStrategy namingStrategy, params Attribute[] attributes)
+        {
+            return;
+        }
+
+        /// <inheritdoc />
+        public virtual bool IsNavigatable(Type type)
+        {
+            return false;
+        }
+
+        /// <summary>
+        /// Checks whether the type is visitable or not.
+        /// </summary>
+        /// <param name="type">Type to check.</param>
+        /// <param name="code"><see cref="TypeCode"/> value.</param>
+        /// <returns>Returns <c>True</c>, if the type is visitable; otherwise returns <c>False</c>.</returns>
+        protected bool IsVisitable(Type type, TypeCode code)
+        {
+            var @enum = Type.GetTypeCode(type);
+            var isVisitable = @enum == code;
+
+            if (isVisitable)
+            {
+                this.Type = type;
+            }
+
+            return isVisitable;
+        }
+
+        /// <summary>
+        /// Visits and process the acceptor.
+        /// </summary>
+        /// <param name="acceptor"><see cref="IAcceptor"/> instance.</param>
+        /// <param name="name">Property name.</param>
+        /// <param name="title">Type name.</param>
+        /// <param name="dataType">Data type.</param>
+        /// <param name="dataFormat">Data format.</param>
+        /// <param name="attributes">List of attribute instances.</param>
+        /// <returns>Returns the name as the schema key.</returns>
+        protected string Visit(IAcceptor acceptor, string name, string title, string dataType, string dataFormat, params Attribute[] attributes)
+        {
+            var instance = acceptor as OpenApiSchemaAcceptor;
+            if (instance.IsNullOrDefault())
+            {
+                return null;
+            }
+
+            if (instance.Schemas.ContainsKey(name))
+            {
+                return null;
+            }
+
+            var schema = new OpenApiSchema()
+            {
+                Title = title,
+                Type = dataType,
+                Format = dataFormat
+            };
+
+            // Adds the visibility property.
+            if (attributes.Any())
+            {
+                var visibilityAttribute = attributes.OfType<OpenApiSchemaVisibilityAttribute>().SingleOrDefault();
+                if (!visibilityAttribute.IsNullOrDefault())
+                {
+                    var extension = new OpenApiString(visibilityAttribute.Visibility.ToDisplayName());
+
+                    schema.Extensions.Add("x-ms-visibility", extension);
+                }
+            }
+
+            instance.Schemas.Add(name, schema);
+
+            return name;
+        }
+    }
+}

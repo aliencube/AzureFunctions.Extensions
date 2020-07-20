@@ -6,6 +6,7 @@ using Aliencube.AzureFunctions.Extensions.OpenApi.Configurations;
 using Aliencube.AzureFunctions.Extensions.OpenApi.Enums;
 using Aliencube.AzureFunctions.Extensions.OpenApi.Extensions;
 using Aliencube.AzureFunctions.Extensions.OpenApi.Resolvers;
+using Aliencube.AzureFunctions.Extensions.OpenApi.Visitors;
 
 using Microsoft.OpenApi;
 using Microsoft.OpenApi.Models;
@@ -30,7 +31,8 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi
             this.HttpSettings = host.GetHttpSettings();
 
             var filter = new RouteConstraintFilter();
-            var helper = new DocumentHelper(filter);
+            var acceptor = new OpenApiSchemaAcceptor();
+            var helper = new DocumentHelper(filter, acceptor);
 
             this.Document = new Document(helper);
             this.SwaggerUI = new SwaggerUI();
@@ -55,6 +57,14 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi
         public virtual Assembly GetExecutingAssembly()
         {
             return Assembly.GetExecutingAssembly();
+        }
+
+        /// <inheritdoc />
+        public virtual VisitorCollection GetVisitorCollection()
+        {
+            var collection = VisitorCollection.CreateInstance();
+
+            return collection;
         }
 
         /// <inheritdoc />

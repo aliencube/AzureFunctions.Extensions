@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 
+using Aliencube.AzureFunctions.Extensions.OpenApi.Visitors;
+
 using Microsoft.Azure.WebJobs;
 using Microsoft.OpenApi.Models;
 
@@ -106,8 +108,9 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Abstractions
         /// </summary>
         /// <param name="elements">List of <see cref="MethodInfo"/> instance.</param>
         /// <param name="namingStrategy"><see cref="NamingStrategy"/> instance to create the JSON schema from .NET Types.</param>
+        /// <param name="collection"><see cref="VisitorCollection"/> instance to add types to schema.</param>
         /// <returns>Collection of <see cref="OpenApiSchema"/> instance.</returns>
-        Dictionary<string, OpenApiSchema> GetOpenApiSchemas(List<MethodInfo> elements, NamingStrategy namingStrategy);
+        Dictionary<string, OpenApiSchema> GetOpenApiSchemas(List<MethodInfo> elements, NamingStrategy namingStrategy, VisitorCollection collection);
 
         /// <summary>
         /// Gets the collection of <see cref="OpenApiSecurityScheme"/> instances.

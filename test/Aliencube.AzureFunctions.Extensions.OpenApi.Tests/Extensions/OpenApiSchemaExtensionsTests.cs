@@ -212,9 +212,9 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Tests.Extensions
 
             schemas.Count.Should().Be(3);
 
-            var schema = schemas[type.Name];
-            var subSchema = schemas[subType.Name];
-            var enumSchema = schemas[enumType.Name];
+            var schema = schemas[strategy.GetPropertyName(type.Name, false)];
+            var subSchema = schemas[strategy.GetPropertyName(subType.Name, false)];
+            var enumSchema = schemas[strategy.GetPropertyName(enumType.Name, false)];
 
             schema.Type.Should().Be("object");
             schema.Properties["fakeProperty"].Type.Should().BeEquivalentTo("string");
@@ -238,9 +238,9 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Tests.Extensions
 
             var schemas = OpenApiSchemaExtensions.ToOpenApiSchemas(type, strategy);
             schemas.Count.Should().Be(2);
-            var fmSchema = schemas[type.Name];
+            var fmSchema = schemas[strategy.GetPropertyName(type.Name, false)];
             var fsmType = typeof(FakeSubModel);
-            var fsmSchema = schemas[fsmType.Name];
+            var fsmSchema = schemas[strategy.GetPropertyName(fsmType.Name, false)];
             fmSchema.Type.Should().Be("object");
             fmSchema.Properties["parent"].Reference.Id.Should().BeEquivalentTo(fsmType.Name);
             fmSchema.Properties["items"].Type.Should().BeEquivalentTo("array");
@@ -259,9 +259,9 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Tests.Extensions
 
             var schemas = OpenApiSchemaExtensions.ToOpenApiSchemas(type, strategy);
             schemas.Count.Should().Be(2);
-            var fmSchema = schemas[type.Name];
+            var fmSchema = schemas[strategy.GetPropertyName(type.Name, false)];
             var fsmType = typeof(FakeModelWithCircularRefSub);
-            var fsmSchema = schemas[fsmType.Name];
+            var fsmSchema = schemas[strategy.GetPropertyName(fsmType.Name, false)];
             fmSchema.Type.Should().Be("object");
             fmSchema.Properties["subProperty"].Reference.Id.Should().BeEquivalentTo(fsmType.Name);
 

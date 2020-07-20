@@ -48,7 +48,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
             type.ThrowIfNullOrDefault();
 
             var schema = (OpenApiSchema)null;
-            var schemeName = type.IsGenericType ? type.GetOpenApiGenericRootName() : type.Name;
+            var schemeName = type.GetOpenApiTypeName(namingStrategy);
 
             if (depth == 8)
             {
@@ -70,8 +70,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
                 return new Dictionary<string, OpenApiSchema>() { { schemeName, schema } };
             }
 
-            var unwrappedValueType = Nullable.GetUnderlyingType(type);
-            if (!unwrappedValueType.IsNullOrDefault())
+            if (type.IsOpenApiNullable(out var unwrappedValueType))
             {
                 schema = unwrappedValueType.ToOpenApiSchemas(namingStrategy, null, true, depth).Single().Value;
                 schema.Nullable = true;
@@ -143,7 +142,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
             foreach (var property in properties)
             {
                 var visiblity = property.GetCustomAttribute<OpenApiSchemaVisibilityAttribute>(inherit: false);
-                var propertyName = property.GetJsonPropertyName();
+                var propertyName = property.GetJsonPropertyName(namingStrategy);
 
                 var ts = property.DeclaringType.GetGenericArguments();
                 if (!ts.Any())

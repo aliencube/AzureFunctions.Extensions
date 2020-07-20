@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 
 using Microsoft.OpenApi.Any;
 
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
 
@@ -133,6 +135,60 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
         }
 
         /// <summary>
+        /// Converts the given <see cref="Type"/> instance to the list of underlying enum values of <see cref="short"/>.
+        /// </summary>
+        /// <param name="type"><see cref="Type"/> instance.</param>
+        /// <returns>Returns the list of underlying enum values of <see cref="short"/>.</returns>
+        public static List<IOpenApiAny> ToOpenApiInt16Collection(this Type type)
+        {
+            if (!type.IsUnflaggedEnumType())
+            {
+                return null;
+            }
+
+            var names = Enum.GetValues(type).Cast<short>();
+
+            return names.Select(p => (IOpenApiAny)new OpenApiInteger(Convert.ToInt32(p)))
+                        .ToList();
+        }
+
+        /// <summary>
+        /// Converts the given <see cref="Type"/> instance to the list of underlying enum values of <see cref="int"/>.
+        /// </summary>
+        /// <param name="type"><see cref="Type"/> instance.</param>
+        /// <returns>Returns the list of underlying enum values of <see cref="int"/>.</returns>
+        public static List<IOpenApiAny> ToOpenApiInt32Collection(this Type type)
+        {
+            if (!type.IsUnflaggedEnumType())
+            {
+                return null;
+            }
+
+            var names = Enum.GetValues(type).Cast<int>();
+
+            return names.Select(p => (IOpenApiAny)new OpenApiInteger(p))
+                        .ToList();
+        }
+
+        /// <summary>
+        /// Converts the given <see cref="Type"/> instance to the list of underlying enum values of <see cref="long"/>.
+        /// </summary>
+        /// <param name="type"><see cref="Type"/> instance.</param>
+        /// <returns>Returns the list of underlying enum values of <see cref="long"/>.</returns>
+        public static List<IOpenApiAny> ToOpenApiInt64Collection(this Type type)
+        {
+            if (!type.IsUnflaggedEnumType())
+            {
+                return null;
+            }
+
+            var names = Enum.GetValues(type).Cast<long>();
+
+            return names.Select(p => (IOpenApiAny)new OpenApiLong(p))
+                        .ToList();
+        }
+
+        /// <summary>
         /// Converts the given <see cref="Type"/> instance to the list of underlying enum value.
         /// </summary>
         /// <param name="type"><see cref="Type"/> instance.</param>
@@ -200,20 +256,73 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
         }
 
         /// <summary>
+        /// Checks whether the given type is nullable or not.
+        /// </summary>
+        /// <param name="type">Type to check.</param>
+        /// <returns>Returns <c>True</c>, if the given type is nullable; otherwise returns <c>False</c>.</returns>
+        public static bool IsOpenApiNullable(this Type type)
+        {
+            return type.IsNullableType(out var underlyingType);
+        }
+
+        /// <summary>
+        /// Checks whether the given type is nullable or not.
+        /// </summary>
+        /// <param name="type">Type to check.</param>
+        /// <param name="underlyingType">Underlying type to return</param>
+        /// <returns>Returns <c>True</c>, if the given type is nullable; otherwise returns <c>False</c>.</returns>
+        public static bool IsOpenApiNullable(this Type type, out Type underlyingType)
+        {
+            if (type.IsNullOrDefault())
+            {
+                underlyingType = null;
+
+                return false;
+            }
+
+            return type.IsNullableType(out underlyingType);
+        }
+
+        /// <summary>
+        /// Checks whether the given enum type has <see cref="JsonConverterAttribute"/> or not.
+        /// </summary>
+        /// <typeparam name="T">Type of <see cref="JsonConverter"/>.</typeparam>
+        /// <param name="type">Enum type.</param>
+        /// <returns>Returns <c>True</c>, if the given enum type has <see cref="JsonConverterAttribute"/>; otherwise, returns <c>False</c>.</returns>
+        public static bool HasJsonConverterAttribute<T>(this Type type) where T : JsonConverter
+        {
+            var attribute = type.GetCustomAttribute<JsonConverterAttribute>(inherit: false);
+            if (attribute.IsNullOrDefault())
+            {
+                return false;
+            }
+
+            return typeof(T).IsAssignableFrom(attribute.ConverterType);
+        }
+
+        /// <summary>
         /// Gets the Open API reference ID.
         /// </summary>
         /// <param name="type"><see cref="Type"/> instance.</param>
         /// <param name="isDictionary">Value indicating whether the type is <see cref="Dictionary{TKey, TValue}"/> or not.</param>
         /// <param name="isList">Value indicating whether the type is <see cref="List{T}"/> or not.</param>
+        /// <param name="namingStrategy"><see cref="NamingStrategy"/> instance.</param>
         /// <returns>Returns the Open API reference ID.</returns>
-        public static string GetOpenApiReferenceId(this Type type, bool isDictionary, bool isList)
+        public static string GetOpenApiReferenceId(this Type type, bool isDictionary, bool isList, NamingStrategy namingStrategy = null)
         {
-            if (isDictionary || isList)
+            if (namingStrategy.IsNullOrDefault())
             {
-                return type.GetOpenApiSubTypeName();
+                namingStrategy = new DefaultNamingStrategy();
             }
 
-            return type.Name;
+            if (isDictionary || isList)
+            {
+                var name = type.GetOpenApiSubTypeName(namingStrategy);
+
+                return namingStrategy.GetPropertyName(name, hasSpecifiedName: false);
+            }
+
+            return namingStrategy.GetPropertyName(type.Name, hasSpecifiedName: false);
         }
 
         /// <summary>
@@ -284,6 +393,25 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
             return name;
         }
 
+        /// <summary>
+        /// Gets the type name applied by <see cref="NamingStrategy"/>.
+        /// </summary>
+        /// <param name="type">Type to check.</param>
+        /// <param name="namingStrategy"><see cref="NamingStrategy"/> instance.</param>
+        /// <returns>Returns the type name applied by <see cref="NamingStrategy"/>.</returns>
+        public static string GetOpenApiTypeName(this Type type, NamingStrategy namingStrategy = null)
+        {
+            if (namingStrategy.IsNullOrDefault())
+            {
+                namingStrategy = new DefaultNamingStrategy();
+            }
+
+            var typeName = type.IsGenericType ? type.GetOpenApiGenericRootName() : type.Name;
+            var name = namingStrategy.GetPropertyName(typeName, hasSpecifiedName: false);
+
+            return name;
+        }
+
 
         /// <summary>
         /// Gets the sub type of the given <see cref="Type"/>.
@@ -314,22 +442,34 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
         /// Gets the name of the sub type of the given <see cref="Type"/>.
         /// </summary>
         /// <param name="type"><see cref="Type"/> instance.</param>
+        /// <param name="namingStrategy"><see cref="NamingStrategy"/> instance.</param>
         /// <returns>Returns the name of the sub type of the given <see cref="Type"/>.</returns>
-        public static string GetOpenApiSubTypeName(this Type type)
+        public static string GetOpenApiSubTypeName(this Type type, NamingStrategy namingStrategy = null)
         {
+            if (namingStrategy.IsNullOrDefault())
+            {
+                namingStrategy = new DefaultNamingStrategy();
+            }
+
             if (type.IsDictionaryType())
             {
-                return type.GetGenericArguments()[1].Name;
+                var name = type.GetGenericArguments()[1].Name;
+
+                return namingStrategy.GetPropertyName(name, hasSpecifiedName: false);
             }
 
             if (type.BaseType == typeof(Array))
             {
-                return type.GetElementType().Name;
+                var name = type.GetElementType().Name;
+
+                return namingStrategy.GetPropertyName(name, hasSpecifiedName: false);
             }
 
             if (type.IsArrayType())
             {
-                return type.GetGenericArguments()[0].Name;
+                var name = type.GetGenericArguments()[0].Name;
+
+                return namingStrategy.GetPropertyName(name, hasSpecifiedName: false);
             }
 
             return null;
@@ -361,6 +501,22 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
             names += $"and {types[types.Count - 1].GetOpenApiGenericRootName()}";
 
             return names;
+        }
+
+        /// <summary>
+        /// Checks whether the given type has a recursive property or not.
+        /// </summary>
+        /// <param name="type">Type to check.</param>
+        /// <returns>Returns <c>True</c>, if the given type has a recursive property; otherwise returns <c>False</c>.</returns>
+        public static bool HasRecursiveProperty(this Type type)
+        {
+            var properties = type.GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                                 .Where(p => !p.ExistsCustomAttribute<JsonIgnoreAttribute>());
+
+            var hasRecursiveType = properties.Select(p => p.PropertyType)
+                                             .Any(p => p == type);
+
+            return hasRecursiveType;
         }
 
         private static bool IsArrayType(this Type type)
@@ -406,6 +562,13 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
             }
 
             return false;
+        }
+
+        private static bool IsNullableType(this Type type, out Type underlyingType)
+        {
+            underlyingType = Nullable.GetUnderlyingType(type);
+
+            return !underlyingType.IsNullOrDefault();
         }
     }
 }

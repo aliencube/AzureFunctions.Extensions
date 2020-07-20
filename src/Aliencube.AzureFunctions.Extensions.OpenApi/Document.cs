@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 using Aliencube.AzureFunctions.Extensions.OpenApi.Abstractions;
 using Aliencube.AzureFunctions.Extensions.OpenApi.Extensions;
+using Aliencube.AzureFunctions.Extensions.OpenApi.Visitors;
 
 #if NETSTANDARD2_0
 using Microsoft.AspNetCore.Http;
@@ -29,6 +30,8 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi
         private readonly IDocumentHelper _helper;
 
         private OpenApiDocument _document;
+        private NamingStrategy _strategy;
+        private VisitorCollection _collection;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Document"/> class.
@@ -80,11 +83,35 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi
         }
 #endif
         /// <inheritdoc />
-        public IDocument Build(Assembly assembly, NamingStrategy namingStrategy = null)
+        public IDocument AddNamingStrategy(NamingStrategy strategy)
         {
-            if (namingStrategy.IsNullOrDefault())
+            this._strategy = strategy.ThrowIfNullOrDefault();
+
+            return this;
+        }
+
+        /// <inheritdoc />
+        public IDocument AddVisitors(VisitorCollection collection)
+        {
+            this._collection = collection.ThrowIfNullOrDefault();
+
+            return this;
+        }
+
+        /// <inheritdoc />
+        public IDocument Build(string assemblyPath)
+        {
+            var assembly = Assembly.LoadFrom(assemblyPath);
+
+            return this.Build(assembly);
+        }
+
+        /// <inheritdoc />
+        public IDocument Build(Assembly assembly)
+        {
+            if (this._strategy.IsNullOrDefault())
             {
-                namingStrategy = new DefaultNamingStrategy();
+                this._strategy = new DefaultNamingStrategy();
             }
 
             var paths = new OpenApiPaths();
@@ -121,9 +148,9 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi
                     continue;
                 }
 
-                operation.Parameters = this._helper.GetOpenApiParameters(method, trigger, namingStrategy);
-                operation.RequestBody = this._helper.GetOpenApiRequestBody(method, namingStrategy);
-                operation.Responses = this._helper.GetOpenApiResponses(method, namingStrategy);
+                operation.Parameters = this._helper.GetOpenApiParameters(method, trigger, this._strategy);
+                operation.RequestBody = this._helper.GetOpenApiRequestBody(method, this._strategy);
+                operation.Responses = this._helper.GetOpenApiResponses(method, this._strategy);
 
                 operations[verb] = operation;
                 item.Operations = operations;
@@ -132,7 +159,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi
             }
 
             this._document.Paths = paths;
-            this._document.Components.Schemas = this._helper.GetOpenApiSchemas(methods, namingStrategy);
+            this._document.Components.Schemas = this._helper.GetOpenApiSchemas(methods, this._strategy, this._collection);
             this._document.Components.SecuritySchemes = this._helper.GetOpenApiSecuritySchemes();
 
             return this;
