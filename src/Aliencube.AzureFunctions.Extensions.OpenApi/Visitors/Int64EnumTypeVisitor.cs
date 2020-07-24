@@ -39,6 +39,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Visitors
                 return;
             }
 
+            // Adds enum values to the schema.
             var enums = type.Value.ToOpenApiInt64Collection();
 
             var schema = new OpenApiSchema()
@@ -65,6 +66,29 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Visitors
         {
             var schema = this.ParameterVisit(dataType: "integer", dataFormat: "int64");
 
+            // Adds enum values to the schema.
+            var enums = type.ToOpenApiInt64Collection();
+
+            schema.Enum = enums;
+            schema.Default = enums.First();
+
+            return schema;
+        }
+
+        /// <inheritdoc />
+        public override bool IsPayloadVisitable(Type type)
+        {
+            var isVisitable = this.IsVisitable(type);
+
+            return isVisitable;
+        }
+
+        /// <inheritdoc />
+        public override OpenApiSchema PayloadVisit(Type type, NamingStrategy namingStrategy)
+        {
+            var schema = this.PayloadVisit(dataType: "integer", dataFormat: "int64");
+
+            // Adds enum values to the schema.
             var enums = type.ToOpenApiInt64Collection();
 
             schema.Enum = enums;

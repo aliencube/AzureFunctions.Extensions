@@ -32,6 +32,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Visitors
                 return;
             }
 
+            // Gets the schema for the underlying type.
             type.Value.IsOpenApiNullable(out var underlyingType);
 
             var types = new Dictionary<string, Type>()
@@ -49,11 +50,52 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Visitors
             var collection = VisitorCollection.CreateInstance();
             subAcceptor.Accept(collection, namingStrategy);
 
+            // Adds the schema for the underlying type.
             var name = subAcceptor.Schemas.First().Key;
             var schema = subAcceptor.Schemas.First().Value;
             schema.Nullable = true;
 
             instance.Schemas.Add(name, schema);
+        }
+
+        /// <inheritdoc />
+        public override bool IsParameterVisitable(Type type)
+        {
+            var isVisitable = this.IsVisitable(type);
+
+            return isVisitable;
+        }
+
+        /// <inheritdoc />
+        public override OpenApiSchema ParameterVisit(Type type, NamingStrategy namingStrategy)
+        {
+            type.IsOpenApiNullable(out var underlyingType);
+            var collection = VisitorCollection.CreateInstance();
+            var schema = collection.ParameterVisit(underlyingType, namingStrategy);
+
+            schema.Nullable = true;
+
+            return schema;
+        }
+
+        /// <inheritdoc />
+        public override bool IsPayloadVisitable(Type type)
+        {
+            var isVisitable = this.IsVisitable(type);
+
+            return isVisitable;
+        }
+
+        /// <inheritdoc />
+        public override OpenApiSchema PayloadVisit(Type type, NamingStrategy namingStrategy)
+        {
+            type.IsOpenApiNullable(out var underlyingType);
+            var collection = VisitorCollection.CreateInstance();
+            var schema = collection.PayloadVisit(underlyingType, namingStrategy);
+
+            schema.Nullable = true;
+
+            return schema;
         }
     }
 }

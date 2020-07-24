@@ -3,6 +3,8 @@ using System.Collections.Generic;
 
 using Aliencube.AzureFunctions.Extensions.OpenApi.Extensions;
 
+using Microsoft.OpenApi.Models;
+
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
 
@@ -32,6 +34,20 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Visitors
         public override bool IsParameterVisitable(Type type)
         {
             return false;
+        }
+
+        /// <inheritdoc />
+        public override bool IsPayloadVisitable(Type type)
+        {
+            var isVisitable = this.IsVisitable(type);
+
+            return isVisitable;
+        }
+
+        /// <inheritdoc />
+        public override OpenApiSchema PayloadVisit(Type type, NamingStrategy namingStrategy)
+        {
+            return this.PayloadVisit(dataType: "object", dataFormat: null);
         }
     }
 }

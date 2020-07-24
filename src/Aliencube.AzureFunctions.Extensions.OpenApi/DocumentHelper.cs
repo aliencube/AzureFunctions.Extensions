@@ -140,7 +140,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi
         }
 
         /// <inheritdoc />
-        public OpenApiRequestBody GetOpenApiRequestBody(MethodInfo element, NamingStrategy namingStrategy = null)
+        public OpenApiRequestBody GetOpenApiRequestBody(MethodInfo element, NamingStrategy namingStrategy, VisitorCollection collection)
         {
             var attributes = element.GetCustomAttributes<OpenApiRequestBodyAttribute>(inherit: false);
             if (!attributes.Any())
@@ -148,7 +148,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi
                 return null;
             }
 
-            var contents = attributes.ToDictionary(p => p.ContentType, p => p.ToOpenApiMediaType(namingStrategy));
+            var contents = attributes.ToDictionary(p => p.ContentType, p => p.ToOpenApiMediaType(namingStrategy, collection));
 
             if (contents.Any())
             {
@@ -166,7 +166,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi
         [Obsolete("This method is obsolete from 2.0.0. Use GetOpenApiResponses instead", error: true)]
         public OpenApiResponses GetOpenApiResponseBody(MethodInfo element, NamingStrategy namingStrategy = null)
         {
-            return this.GetOpenApiResponses(element, namingStrategy);
+            return this.GetOpenApiResponses(element, namingStrategy, null);
 
             //var responses = element.GetCustomAttributes<OpenApiResponseBodyAttribute>(inherit: false)
             //                       .ToDictionary(p => ((int)p.StatusCode).ToString(), p => p.ToOpenApiResponse(namingStrategy))
@@ -176,7 +176,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi
         }
 
         /// <inheritdoc />
-        public OpenApiResponses GetOpenApiResponses(MethodInfo element, NamingStrategy namingStrategy = null)
+        public OpenApiResponses GetOpenApiResponses(MethodInfo element, NamingStrategy namingStrategy, VisitorCollection collection)
         {
             var responsesWithBody = element.GetCustomAttributes<OpenApiResponseWithBodyAttribute>(inherit: false)
                                     .Select(p => new { StatusCode = p.StatusCode, Response = p.ToOpenApiResponse(namingStrategy) });

@@ -52,6 +52,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Visitors
         /// <inheritdoc />
         public void Accept(VisitorCollection collection, NamingStrategy namingStrategy)
         {
+            // Checks the properties only.
             if (this.Properties.Any())
             {
                 foreach (var property in this.Properties)
@@ -73,6 +74,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Visitors
                 return;
             }
 
+            // Checks the types only.
             foreach (var type in this.Types)
             {
                 foreach (var visitor in collection.Visitors)

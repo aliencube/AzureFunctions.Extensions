@@ -75,14 +75,15 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Visitors
                 return;
             }
 
+            // Processes properties.
             var properties = type.Value
                                  .GetProperties(BindingFlags.Public | BindingFlags.Instance)
                                  .Where(p => !p.ExistsCustomAttribute<JsonIgnoreAttribute>())
                                  .ToDictionary(p => p.GetJsonPropertyName(namingStrategy), p => p);
 
-            // Processes properties
             this.ProcessProperties(instance, name, properties, namingStrategy);
 
+            // Adds the reference.
             var reference = new OpenApiReference()
             {
                 Type = ReferenceType.Schema,
@@ -124,6 +125,20 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Visitors
             return false;
         }
 
+        /// <inheritdoc />
+        public override bool IsPayloadVisitable(Type type)
+        {
+            var isVisitable = this.IsVisitable(type);
+
+            return isVisitable;
+        }
+
+        /// <inheritdoc />
+        public override OpenApiSchema PayloadVisit(Type type, NamingStrategy namingStrategy)
+        {
+            return this.PayloadVisit(dataType: "object", dataFormat: null);
+        }
+
         private void ProcessProperties(IOpenApiSchemaAcceptor instance, string schemaName, Dictionary<string, PropertyInfo> properties, NamingStrategy namingStrategy)
         {
             var schemas = new Dictionary<string, OpenApiSchema>();
@@ -162,6 +177,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Visitors
 
             instance.Schemas[schemaName].Properties = subAcceptor.Schemas;
 
+            // Adds schemas to the root.
             var schemasToBeAdded = subAcceptor.Schemas
                                               .Where(p => !instance.Schemas.Keys.Contains(p.Key))
                                               .Where(p => p.Value.Type == "object" &&

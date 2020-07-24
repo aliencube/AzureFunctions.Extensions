@@ -84,8 +84,9 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Abstractions
         /// </summary>
         /// <param name="element"><see cref="MethodInfo"/> instance.</param>
         /// <param name="namingStrategy"><see cref="NamingStrategy"/> instance to create the JSON schema from .NET Types.</param>
+        /// <param name="collection"><see cref="VisitorCollection"/> instance to process parameters.</param>
         /// <returns><see cref="OpenApiRequestBody"/> instance.</returns>
-        OpenApiRequestBody GetOpenApiRequestBody(MethodInfo element, NamingStrategy namingStrategy = null);
+        OpenApiRequestBody GetOpenApiRequestBody(MethodInfo element, NamingStrategy namingStrategy, VisitorCollection collection);
 
         /// <summary>
         /// Gets the <see cref="OpenApiResponses"/> instance.
@@ -101,8 +102,9 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Abstractions
         /// </summary>
         /// <param name="element"><see cref="MethodInfo"/> instance.</param>
         /// <param name="namingStrategy"><see cref="NamingStrategy"/> instance to create the JSON schema from .NET Types.</param>
+        /// <param name="collection"><see cref="VisitorCollection"/> instance to process parameters.</param>
         /// <returns><see cref="OpenApiResponses"/> instance.</returns>
-        OpenApiResponses GetOpenApiResponses(MethodInfo element, NamingStrategy namingStrategy = null);
+        OpenApiResponses GetOpenApiResponses(MethodInfo element, NamingStrategy namingStrategy, VisitorCollection collection);
 
         /// <summary>
         /// Gets the collection of <see cref="OpenApiSchema"/> instances.

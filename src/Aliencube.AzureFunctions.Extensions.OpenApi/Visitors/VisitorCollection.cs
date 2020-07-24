@@ -75,5 +75,28 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Visitors
 
             return schema;
         }
+
+        /// <summary>
+        /// Processes the request/response payload type.
+        /// </summary>
+        /// <param name="type">Type of the payload.</param>
+        /// <param name="namingStrategy"><see cref="NamingStrategy"/> instance.</param>
+        /// <returns>Returns <see cref="OpenApiSchema"/> instance.</returns>
+        public OpenApiSchema PayloadVisit(Type type, NamingStrategy namingStrategy)
+        {
+            var schema = default(OpenApiSchema);
+            foreach (var visitor in this.Visitors)
+            {
+                if (!visitor.IsPayloadVisitable(type))
+                {
+                    continue;
+                }
+
+                schema = visitor.PayloadVisit(type, namingStrategy);
+                break;
+            }
+
+            return schema;
+        }
     }
 }

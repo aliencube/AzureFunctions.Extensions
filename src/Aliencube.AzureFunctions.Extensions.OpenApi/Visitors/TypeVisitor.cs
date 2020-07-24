@@ -52,6 +52,18 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Visitors
             return default;
         }
 
+        /// <inheritdoc />
+        public virtual bool IsPayloadVisitable(Type type)
+        {
+            return false;
+        }
+
+        /// <inheritdoc />
+        public virtual OpenApiSchema PayloadVisit(Type type, NamingStrategy namingStrategy)
+        {
+            return default;
+        }
+
         /// <summary>
         /// Checks whether the type is visitable or not.
         /// </summary>
@@ -125,6 +137,23 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Visitors
         /// <param name="dataFormat">Data format.</param>
         /// <returns>Returns <see cref="OpenApiSchema"/> instance.</returns>
         protected OpenApiSchema ParameterVisit(string dataType, string dataFormat)
+        {
+            var schema = new OpenApiSchema()
+            {
+                Type = dataType,
+                Format = dataFormat
+            };
+
+            return schema;
+        }
+
+        /// <summary>
+        /// Visits and processes the <see cref="OpenApiSchema"/> for payloads.
+        /// </summary>
+        /// <param name="dataType">Data type.</param>
+        /// <param name="dataFormat">Data format.</param>
+        /// <returns>Returns <see cref="OpenApiSchema"/> instance.</returns>
+        protected OpenApiSchema PayloadVisit(string dataType, string dataFormat)
         {
             var schema = new OpenApiSchema()
             {

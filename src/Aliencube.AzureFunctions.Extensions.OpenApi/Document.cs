@@ -149,8 +149,8 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi
                 }
 
                 operation.Parameters = this._helper.GetOpenApiParameters(method, trigger, this._strategy, this._collection);
-                operation.RequestBody = this._helper.GetOpenApiRequestBody(method, this._strategy);
-                operation.Responses = this._helper.GetOpenApiResponses(method, this._strategy);
+                operation.RequestBody = this._helper.GetOpenApiRequestBody(method, this._strategy, this._collection);
+                operation.Responses = this._helper.GetOpenApiResponses(method, this._strategy, this._collection);
 
                 operations[verb] = operation;
                 item.Operations = operations;

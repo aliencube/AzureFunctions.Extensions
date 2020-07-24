@@ -39,6 +39,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Visitors
                 return;
             }
 
+            // Gets the schema for the underlying type.
             var underlyingType = type.Value.GetGenericArguments()[1];
             var types = new Dictionary<string, Type>()
             {
@@ -56,8 +57,20 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Visitors
             var collection = VisitorCollection.CreateInstance();
             subAcceptor.Accept(collection, namingStrategy);
 
-            instance.Schemas[name].AdditionalProperties = subAcceptor.Schemas.First().Value;
+            var properties = subAcceptor.Schemas.First().Value;
 
+            // Adds the reference to the schema for the underlying type.
+            var reference = new OpenApiReference()
+            {
+                Type = ReferenceType.Schema,
+                Id = underlyingType.GetOpenApiReferenceId(isDictionary: false, isList: false, namingStrategy)
+            };
+
+            properties.Reference = reference;
+
+            instance.Schemas[name].AdditionalProperties = properties;
+
+            // Adds schemas to the root.
             var schemasToBeAdded = subAcceptor.Schemas
                                               .Where(p => !instance.Schemas.Keys.Contains(p.Key))
                                               .Where(p => p.Value.Type == "object" &&
@@ -71,31 +84,53 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Visitors
                 return;
             }
 
-            foreach (var schema in schemasToBeAdded)
+            foreach (var schemaToBeAdded in schemasToBeAdded)
             {
-                if (instance.RootSchemas.ContainsKey(schema.Key))
+                if (instance.RootSchemas.ContainsKey(schemaToBeAdded.Key))
                 {
                     continue;
                 }
 
-                instance.RootSchemas.Add(schema.Key, schema.Value);
+                instance.RootSchemas.Add(schemaToBeAdded.Key, schemaToBeAdded.Value);
             }
-
-            //instance.Schemas.AddRange(schemasToBeAdded);
-
-            var reference = new OpenApiReference()
-            {
-                Type = ReferenceType.Schema,
-                Id = underlyingType.GetOpenApiReferenceId(isDictionary: false, isList: false, namingStrategy)
-            };
-
-            instance.Schemas[name].AdditionalProperties.Reference = reference;
         }
 
         /// <inheritdoc />
         public override bool IsParameterVisitable(Type type)
         {
             return false;
+        }
+
+        /// <inheritdoc />
+        public override bool IsPayloadVisitable(Type type)
+        {
+            var isVisitable = this.IsVisitable(type);
+
+            return isVisitable;
+        }
+
+        /// <inheritdoc />
+        public override OpenApiSchema PayloadVisit(Type type, NamingStrategy namingStrategy)
+        {
+            var schema = this.PayloadVisit(dataType: "object", dataFormat: null);
+
+            // Gets the schema for the underlying type.
+            var underlyingType = type.GetGenericArguments()[1];
+            var collection = VisitorCollection.CreateInstance();
+            var properties = collection.PayloadVisit(underlyingType, namingStrategy);
+
+            // Adds the reference to the schema for the underlying type.
+            var reference = new OpenApiReference()
+            {
+                Type = ReferenceType.Schema,
+                Id = underlyingType.GetOpenApiReferenceId(isDictionary: false, isList: false, namingStrategy)
+            };
+
+            properties.Reference = reference;
+
+            schema.AdditionalProperties = properties;
+
+            return schema;
         }
     }
 }

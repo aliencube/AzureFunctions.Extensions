@@ -39,5 +39,19 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Visitors
         {
             return this.ParameterVisit(dataType: "number", dataFormat: "double");
         }
+
+        /// <inheritdoc />
+        public override bool IsPayloadVisitable(Type type)
+        {
+            var isVisitable = this.IsVisitable(type);
+
+            return isVisitable;
+        }
+
+        /// <inheritdoc />
+        public override OpenApiSchema PayloadVisit(Type type, NamingStrategy namingStrategy)
+        {
+            return this.PayloadVisit(dataType: "number", dataFormat: "double");
+        }
     }
 }

@@ -36,10 +36,10 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Visitors
         bool IsNavigatable(Type type);
 
         /// <summary>
-        /// Checks whether the type is visitable or not for parameter.
+        /// Checks whether the type is visitable or not for parameters.
         /// </summary>
         /// <param name="type">Type to check.</param>
-        /// <returns>Returns <c>True</c>, if the type is visitable for parameter; otherwise returns <c>False</c>.</returns>
+        /// <returns>Returns <c>True</c>, if the type is visitable for parameters; otherwise returns <c>False</c>.</returns>
         bool IsParameterVisitable(Type type);
 
         /// <summary>
@@ -48,5 +48,19 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Visitors
         /// <param name="type">Type to check.</param>
         /// <param name="namingStrategy"><see cref="NamingStrategy"/> instance.</param>
         OpenApiSchema ParameterVisit(Type type, NamingStrategy namingStrategy);
+
+        /// <summary>
+        /// Checks whether the type is visitable or not for payloads.
+        /// </summary>
+        /// <param name="type">Type to check.</param>
+        /// <returns>Returns <c>True</c>, if the type is visitable for payloads; otherwise returns <c>False</c>.</returns>
+        bool IsPayloadVisitable(Type type);
+
+        /// <summary>
+        /// Visits and process the type for payloads.
+        /// </summary>
+        /// <param name="type">Type to check.</param>
+        /// <param name="namingStrategy"><see cref="NamingStrategy"/> instance.</param>
+        OpenApiSchema PayloadVisit(Type type, NamingStrategy namingStrategy);
     }
 }
