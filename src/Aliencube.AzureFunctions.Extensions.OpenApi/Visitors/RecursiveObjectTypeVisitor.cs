@@ -136,6 +136,12 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Visitors
             return true;
         }
 
+        /// <inheritdoc />
+        public override bool IsParameterVisitable(Type type)
+        {
+            return false;
+        }
+
         private void ProcessProperties(IOpenApiSchemaAcceptor instance, string schemaName, Dictionary<string, PropertyInfo> properties, NamingStrategy namingStrategy)
         {
             var schemas = new Dictionary<string, OpenApiSchema>();

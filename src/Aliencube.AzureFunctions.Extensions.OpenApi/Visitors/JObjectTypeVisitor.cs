@@ -27,5 +27,11 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Visitors
             var title = namingStrategy.GetPropertyName(type.Value.Name, hasSpecifiedName: false);
             this.Visit(acceptor, name: type.Key, title: title, dataType: "object", dataFormat: null, attributes: attributes);
         }
+
+        /// <inheritdoc />
+        public override bool IsParameterVisitable(Type type)
+        {
+            return false;
+        }
     }
 }

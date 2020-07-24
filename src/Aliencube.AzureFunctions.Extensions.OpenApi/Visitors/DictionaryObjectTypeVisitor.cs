@@ -91,5 +91,11 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Visitors
 
             instance.Schemas[name].AdditionalProperties.Reference = reference;
         }
+
+        /// <inheritdoc />
+        public override bool IsParameterVisitable(Type type)
+        {
+            return false;
+        }
     }
 }

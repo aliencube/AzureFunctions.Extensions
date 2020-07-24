@@ -1,12 +1,10 @@
-using System.Linq;
-
 using Aliencube.AzureFunctions.Extensions.OpenApi.Attributes;
 using Aliencube.AzureFunctions.Extensions.OpenApi.Enums;
+using Aliencube.AzureFunctions.Extensions.OpenApi.Visitors;
 
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
 
-using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
 
 namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
@@ -20,46 +18,26 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
         /// Converts <see cref="OpenApiParameterAttribute"/> to <see cref="OpenApiParameter"/>.
         /// </summary>
         /// <param name="attribute"><see cref="OpenApiParameterAttribute"/> instance.</param>
-        /// <param name="namingStrategy"></param>
+        /// <param name="namingStrategy"><see cref="NamingStrategy"/> instance.</param>
+        /// <param name="collection"><see cref="VisitorCollection"/> instance.</param>
         /// <returns><see cref="OpenApiParameter"/> instance.</returns>
-        public static OpenApiParameter ToOpenApiParameter(this OpenApiParameterAttribute attribute, NamingStrategy namingStrategy = null)
+        public static OpenApiParameter ToOpenApiParameter(this OpenApiParameterAttribute attribute, NamingStrategy namingStrategy = null, VisitorCollection collection = null)
         {
             attribute.ThrowIfNullOrDefault();
 
+            if (namingStrategy.IsNullOrDefault())
+            {
+                namingStrategy = new DefaultNamingStrategy();
+            }
+
+            if (collection.IsNullOrDefault())
+            {
+                collection = VisitorCollection.CreateInstance();
+            }
+
             var type = attribute.Type;
 
-            var schema = new OpenApiSchema()
-            {
-                Type = type.ToDataType(),
-                Format = type.ToDataFormat(),
-            };
-
-            if (type.IsOpenApiArray())
-            {
-                schema.Type = "array";
-                schema.Format = null;
-                schema.Items = (type.GetElementType() ?? type.GetGenericArguments()[0]).ToOpenApiSchema(namingStrategy);
-            }
-
-            if (type.IsUnflaggedEnumType())
-            {
-                if (type.HasJsonConverterAttribute<StringEnumConverter>())
-                {
-                    var enums = type.ToOpenApiStringCollection(namingStrategy);
-
-                    schema.Type = "string";
-                    schema.Format = null;
-                    schema.Enum = enums;
-                    schema.Default = enums.First();
-                }
-                else
-                {
-                    var enums = type.ToOpenApiIntegerCollection();
-
-                    schema.Enum = enums;
-                    schema.Default = enums.First();
-                }
-            }
+            var schema = collection.ParameterVisit(type, namingStrategy);
 
             var parameter = new OpenApiParameter()
             {

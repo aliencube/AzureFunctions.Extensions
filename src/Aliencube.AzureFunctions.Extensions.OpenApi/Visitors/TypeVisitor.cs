@@ -25,7 +25,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Visitors
         /// <inheritdoc />
         public virtual bool IsVisitable(Type type)
         {
-            return true;
+            return false;
         }
 
         /// <inheritdoc />
@@ -38,6 +38,18 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Visitors
         public virtual bool IsNavigatable(Type type)
         {
             return false;
+        }
+
+        /// <inheritdoc />
+        public virtual bool IsParameterVisitable(Type type)
+        {
+            return false;
+        }
+
+        /// <inheritdoc />
+        public virtual OpenApiSchema ParameterVisit(Type type, NamingStrategy namingStrategy)
+        {
+            return default;
         }
 
         /// <summary>
@@ -60,7 +72,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Visitors
         }
 
         /// <summary>
-        /// Visits and process the acceptor.
+        /// Visits and processes the acceptor.
         /// </summary>
         /// <param name="acceptor"><see cref="IAcceptor"/> instance.</param>
         /// <param name="name">Property name.</param>
@@ -104,6 +116,23 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Visitors
             instance.Schemas.Add(name, schema);
 
             return name;
+        }
+
+        /// <summary>
+        /// Visits and processes the <see cref="OpenApiSchema"/> for parameters.
+        /// </summary>
+        /// <param name="dataType">Data type.</param>
+        /// <param name="dataFormat">Data format.</param>
+        /// <returns>Returns <see cref="OpenApiSchema"/> instance.</returns>
+        protected OpenApiSchema ParameterVisit(string dataType, string dataFormat)
+        {
+            var schema = new OpenApiSchema()
+            {
+                Type = dataType,
+                Format = dataFormat
+            };
+
+            return schema;
         }
     }
 }

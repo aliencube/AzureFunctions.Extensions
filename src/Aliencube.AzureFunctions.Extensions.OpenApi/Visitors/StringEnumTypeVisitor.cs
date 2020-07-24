@@ -50,5 +50,26 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Visitors
 
             instance.Schemas.Add(name, schema);
         }
+
+        /// <inheritdoc />
+        public override bool IsParameterVisitable(Type type)
+        {
+            var isVisitable = this.IsVisitable(type);
+
+            return isVisitable;
+        }
+
+        /// <inheritdoc />
+        public override OpenApiSchema ParameterVisit(Type type, NamingStrategy namingStrategy)
+        {
+            var schema = this.ParameterVisit(dataType: "string", dataFormat: null);
+
+            var enums = type.ToOpenApiStringCollection(namingStrategy);
+
+            schema.Enum = enums;
+            schema.Default = enums.First();
+
+            return schema;
+        }
     }
 }

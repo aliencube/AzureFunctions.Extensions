@@ -75,8 +75,9 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Abstractions
         /// <param name="element"><see cref="MethodInfo"/> instance.</param>
         /// <param name="trigger"><see cref="HttpTriggerAttribute"/> instance.</param>
         /// <param name="namingStrategy"><see cref="NamingStrategy"/> instance to create the JSON schema from .NET Types.</param>
+        /// <param name="collection"><see cref="VisitorCollection"/> instance to process parameters.</param>
         /// <returns>List of <see cref="OpenApiParameter"/> instance.</returns>
-        List<OpenApiParameter> GetOpenApiParameters(MethodInfo element, HttpTriggerAttribute trigger, NamingStrategy namingStrategy = null);
+        List<OpenApiParameter> GetOpenApiParameters(MethodInfo element, HttpTriggerAttribute trigger, NamingStrategy namingStrategy, VisitorCollection collection);
 
         /// <summary>
         /// Gets the <see cref="OpenApiRequestBody"/> instance.

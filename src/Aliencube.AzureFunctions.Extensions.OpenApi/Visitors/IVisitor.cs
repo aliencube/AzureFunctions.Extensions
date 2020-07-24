@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 
+using Microsoft.OpenApi.Models;
+
 using Newtonsoft.Json.Serialization;
 
 namespace Aliencube.AzureFunctions.Extensions.OpenApi.Visitors
@@ -32,5 +34,19 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Visitors
         /// <param name="type">Type to check.</param>
         /// <returns>Returns <c>True</c>, if the type is navigatable; otherwise returns <c>False</c>.</returns>
         bool IsNavigatable(Type type);
+
+        /// <summary>
+        /// Checks whether the type is visitable or not for parameter.
+        /// </summary>
+        /// <param name="type">Type to check.</param>
+        /// <returns>Returns <c>True</c>, if the type is visitable for parameter; otherwise returns <c>False</c>.</returns>
+        bool IsParameterVisitable(Type type);
+
+        /// <summary>
+        /// Visits and process the type for parameters.
+        /// </summary>
+        /// <param name="type">Type to check.</param>
+        /// <param name="namingStrategy"><see cref="NamingStrategy"/> instance.</param>
+        OpenApiSchema ParameterVisit(Type type, NamingStrategy namingStrategy);
     }
 }

@@ -4,6 +4,10 @@ using System.Linq;
 
 using Aliencube.AzureFunctions.Extensions.OpenApi.Extensions;
 
+using Microsoft.OpenApi.Models;
+
+using Newtonsoft.Json.Serialization;
+
 namespace Aliencube.AzureFunctions.Extensions.OpenApi.Visitors
 {
     /// <summary>
@@ -47,6 +51,29 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Visitors
             var collection = new VisitorCollection(visitors);
 
             return collection;
+        }
+
+        /// <summary>
+        /// Processes the parameter type.
+        /// </summary>
+        /// <param name="type">Type of the parameter.</param>
+        /// <param name="namingStrategy"><see cref="NamingStrategy"/> instance.</param>
+        /// <returns>Returns <see cref="OpenApiSchema"/> instance.</returns>
+        public OpenApiSchema ParameterVisit(Type type, NamingStrategy namingStrategy)
+        {
+            var schema = default(OpenApiSchema);
+            foreach (var visitor in this.Visitors)
+            {
+                if (!visitor.IsParameterVisitable(type))
+                {
+                    continue;
+                }
+
+                schema = visitor.ParameterVisit(type, namingStrategy);
+                break;
+            }
+
+            return schema;
         }
     }
 }

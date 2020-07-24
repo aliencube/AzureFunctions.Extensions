@@ -123,12 +123,13 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi
         }
 
         /// <inheritdoc />
-        public List<OpenApiParameter> GetOpenApiParameters(MethodInfo element, HttpTriggerAttribute trigger, NamingStrategy namingStrategy = null)
+        public List<OpenApiParameter> GetOpenApiParameters(MethodInfo element, HttpTriggerAttribute trigger, NamingStrategy namingStrategy, VisitorCollection collection)
         {
             var parameters = element.GetCustomAttributes<OpenApiParameterAttribute>(inherit: false)
-                                    .Select(p => p.ToOpenApiParameter(namingStrategy))
+                                    .Select(p => p.ToOpenApiParameter(namingStrategy, collection))
                                     .ToList();
 
+            // TODO: Should this be forcibly provided?
             // This needs to be provided separately.
             if (trigger.AuthLevel != AuthorizationLevel.Anonymous)
             {

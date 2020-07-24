@@ -91,5 +91,27 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Visitors
 
             instance.Schemas[name].Items.Reference = reference;
         }
+
+        /// <inheritdoc />
+        public override bool IsParameterVisitable(Type type)
+        {
+            var isVisitable = this.IsVisitable(type);
+
+            return isVisitable;
+        }
+
+        /// <inheritdoc />
+        public override OpenApiSchema ParameterVisit(Type type, NamingStrategy namingStrategy)
+        {
+            var schema = this.ParameterVisit(dataType: "array", dataFormat: null);
+
+            var underlyingType = type.GetElementType() ?? type.GetGenericArguments()[0];
+            var collection = VisitorCollection.CreateInstance();
+            var items = collection.ParameterVisit(underlyingType, namingStrategy);
+
+            schema.Items = items;
+
+            return schema;
+        }
     }
 }
