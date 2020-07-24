@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 
 namespace Aliencube.AzureFunctions.Extensions.OpenApi.Tests.Fakes
 {
@@ -10,12 +10,13 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Tests.Fakes
         /// <summary>
         /// Gets or sets the value.
         /// </summary>
+        [JsonRequired]
         public string FakeProperty { get; set; }
 
         /// <summary>
         /// Gets or sets the value 2.
         /// </summary>
-        [JsonProperty("anotherFakeProperty")]
+        [JsonProperty("anotherFakeProperty", Required = Required.Always)]
         public string FakeProperty2 { get; set; }
 
         /// <summary>
@@ -29,9 +30,9 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Tests.Fakes
         public FakeSubModel SubProperty { get; set; }
 
         /// <summary>
-        /// Gets or sets the <see cref="FakeEnum"/> value.
+        /// Gets or sets the <see cref="FakeStringEnum"/> value.
         /// </summary>
-        public FakeEnum EnumProperty { get; set; }
+        public FakeStringEnum EnumProperty { get; set; }
 
     }
 }

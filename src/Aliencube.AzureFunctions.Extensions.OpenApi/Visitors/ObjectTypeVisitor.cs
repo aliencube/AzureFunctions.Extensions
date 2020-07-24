@@ -120,12 +120,6 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Visitors
         }
 
         /// <inheritdoc />
-        public override bool IsParameterVisitable(Type type)
-        {
-            return false;
-        }
-
-        /// <inheritdoc />
         public override bool IsPayloadVisitable(Type type)
         {
             var isVisitable = this.IsVisitable(type);

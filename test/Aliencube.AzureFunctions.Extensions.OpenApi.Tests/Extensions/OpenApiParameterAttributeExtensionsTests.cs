@@ -102,10 +102,10 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Tests.Extensions
         public void Given_Value_With_Enum_Type_When_ToOpenApiParameter_Invoked_Then_It_Should_Return_Result()
         {
             var strategy = new CamelCaseNamingStrategy();
-            var names = typeof(FakeEnum).ToOpenApiStringCollection(strategy).Select(p => (p as OpenApiString).Value).ToList();
+            var names = typeof(FakeStringEnum).ToOpenApiStringCollection(strategy).Select(p => (p as OpenApiString).Value).ToList();
             var attribute = new OpenApiParameterAttribute("hello")
             {
-                Type = typeof(FakeEnum),
+                Type = typeof(FakeStringEnum),
                 Description = "hello world",
                 Required = true,
                 In = ParameterLocation.Query
@@ -127,10 +127,10 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Tests.Extensions
         public void Given_Value_With_List_Enum_Type_When_ToOpenApiParameter_Invoked_Then_It_Should_Return_Result()
         {
             var strategy = new CamelCaseNamingStrategy();
-            var names = typeof(FakeEnum).ToOpenApiStringCollection(strategy).Select(p => (p as OpenApiString).Value).ToList();
+            var names = typeof(FakeStringEnum).ToOpenApiStringCollection(strategy).Select(p => (p as OpenApiString).Value).ToList();
             var attribute = new OpenApiParameterAttribute("hello")
             {
-                Type = typeof(List<FakeEnum>),
+                Type = typeof(List<FakeStringEnum>),
                 Description = "hello world",
                 Required = true,
                 In = ParameterLocation.Query

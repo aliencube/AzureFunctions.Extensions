@@ -204,7 +204,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Tests.Extensions
         {
             var type = typeof(FakeModel);
             var subType = typeof(FakeSubModel);
-            var enumType = typeof(FakeEnum);
+            var enumType = typeof(FakeStringEnum);
 
             var strategy = new CamelCaseNamingStrategy();
 

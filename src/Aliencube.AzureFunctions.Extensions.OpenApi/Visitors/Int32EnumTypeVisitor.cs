@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
+using Aliencube.AzureFunctions.Extensions.OpenApi.Attributes;
 using Aliencube.AzureFunctions.Extensions.OpenApi.Extensions;
 
+using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
 
 using Newtonsoft.Json.Converters;
@@ -49,6 +51,18 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Visitors
                 Enum = enums,
                 Default = enums.First()
             };
+
+            // Adds the visibility property.
+            if (attributes.Any())
+            {
+                var visibilityAttribute = attributes.OfType<OpenApiSchemaVisibilityAttribute>().SingleOrDefault();
+                if (!visibilityAttribute.IsNullOrDefault())
+                {
+                    var extension = new OpenApiString(visibilityAttribute.Visibility.ToDisplayName());
+
+                    schema.Extensions.Add("x-ms-visibility", extension);
+                }
+            }
 
             instance.Schemas.Add(name, schema);
         }
