@@ -1,11 +1,11 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Linq;
 using System.Text;
 
 using Aliencube.AzureFunctions.Extensions.Configuration.AppSettings.Extensions;
-using Aliencube.AzureFunctions.Extensions.OpenApi.Configurations;
-using Aliencube.AzureFunctions.Extensions.OpenApi.Extensions;
+using Aliencube.AzureFunctions.Extensions.OpenApi.Core.Configurations;
+using Aliencube.AzureFunctions.Extensions.OpenApi.Core.Extensions;
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.OpenApi.Models;

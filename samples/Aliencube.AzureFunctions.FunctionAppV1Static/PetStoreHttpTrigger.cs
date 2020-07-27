@@ -3,8 +3,8 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-using Aliencube.AzureFunctions.Extensions.OpenApi.Attributes;
-using Aliencube.AzureFunctions.Extensions.OpenApi.Enums;
+using Aliencube.AzureFunctions.Extensions.OpenApi.Core.Attributes;
+using Aliencube.AzureFunctions.Extensions.OpenApi.Core.Enums;
 using Aliencube.AzureFunctions.FunctionApp.Models;
 
 using Microsoft.Azure.WebJobs;

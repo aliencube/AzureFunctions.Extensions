@@ -4,8 +4,8 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
-using Aliencube.AzureFunctions.Extensions.OpenApi.Attributes;
-using Aliencube.AzureFunctions.Extensions.OpenApi.Extensions;
+using Aliencube.AzureFunctions.Extensions.OpenApi.Core.Attributes;
+using Aliencube.AzureFunctions.Extensions.OpenApi.Core.Extensions;
 
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
@@ -34,7 +34,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi
         [FunctionName(nameof(OpenApiHttpTrigger.RenderSwaggerDocumentInJson))]
         [OpenApiIgnore]
         public static async Task<HttpResponseMessage> RenderSwaggerDocumentInJson(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "swagger.json")] HttpRequestMessage req,
+            [HttpTrigger(AuthorizationLevel.Function, "GET", Route = "swagger.json")] HttpRequestMessage req,
             ILogger log)
         {
             log.LogInformation($"swagger.json was requested.");
@@ -43,7 +43,9 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi
                                       .InitialiseDocument()
                                       .AddMetadata(context.OpenApiInfo)
                                       .AddServer(req, context.HttpSettings.RoutePrefix)
-                                      .Build(context.GetExecutingAssembly(), context.NamingStrategy)
+                                      .AddNamingStrategy(context.NamingStrategy)
+                                      .AddVisitors(context.GetVisitorCollection())
+                                      .Build(context.GetExecutingAssembly())
                                       .RenderAsync(context.GetOpenApiSpecVersion(V2), context.GetOpenApiFormat(JSON))
                                       .ConfigureAwait(false);
 
@@ -62,7 +64,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi
         [FunctionName(nameof(OpenApiHttpTrigger.RenderSwaggerDocumentInYml))]
         [OpenApiIgnore]
         public static async Task<HttpResponseMessage> RenderSwaggerDocumentInYml(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "swagger.yml")] HttpRequestMessage req,
+            [HttpTrigger(AuthorizationLevel.Function, "GET", Route = "swagger.yml")] HttpRequestMessage req,
             ILogger log)
         {
             log.LogInformation($"swagger.yaml was requested.");
@@ -71,7 +73,9 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi
                                       .InitialiseDocument()
                                       .AddMetadata(context.OpenApiInfo)
                                       .AddServer(req, context.HttpSettings.RoutePrefix)
-                                      .Build(context.GetExecutingAssembly(), context.NamingStrategy)
+                                      .AddNamingStrategy(context.NamingStrategy)
+                                      .AddVisitors(context.GetVisitorCollection())
+                                      .Build(context.GetExecutingAssembly())
                                       .RenderAsync(context.GetOpenApiSpecVersion(V2), context.GetOpenApiFormat(YAML))
                                       .ConfigureAwait(false);
 
@@ -90,7 +94,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi
         [FunctionName(nameof(OpenApiHttpTrigger.RenderSwaggerDocumentInYaml))]
         [OpenApiIgnore]
         public static async Task<HttpResponseMessage> RenderSwaggerDocumentInYaml(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "swagger.yaml")] HttpRequestMessage req,
+            [HttpTrigger(AuthorizationLevel.Function, "GET", Route = "swagger.yaml")] HttpRequestMessage req,
             ILogger log)
         {
             log.LogInformation($"swagger.yaml was requested.");
@@ -99,7 +103,9 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi
                                       .InitialiseDocument()
                                       .AddMetadata(context.OpenApiInfo)
                                       .AddServer(req, context.HttpSettings.RoutePrefix)
-                                      .Build(context.GetExecutingAssembly(), context.NamingStrategy)
+                                      .AddNamingStrategy(context.NamingStrategy)
+                                      .AddVisitors(context.GetVisitorCollection())
+                                      .Build(context.GetExecutingAssembly())
                                       .RenderAsync(context.GetOpenApiSpecVersion(V2), context.GetOpenApiFormat(YAML))
                                       .ConfigureAwait(false);
 
@@ -118,7 +124,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi
         [FunctionName(nameof(OpenApiHttpTrigger.RenderOpenApiDocumentV2InJson))]
         [OpenApiIgnore]
         public static async Task<HttpResponseMessage> RenderOpenApiDocumentV2InJson(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "openapi/v2.json")] HttpRequestMessage req,
+            [HttpTrigger(AuthorizationLevel.Function, "GET", Route = "openapi/v2.json")] HttpRequestMessage req,
             ILogger log)
         {
             log.LogInformation($"v2.json was requested.");
@@ -127,7 +133,9 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi
                                       .InitialiseDocument()
                                       .AddMetadata(context.OpenApiInfo)
                                       .AddServer(req, context.HttpSettings.RoutePrefix)
-                                      .Build(context.GetExecutingAssembly(), context.NamingStrategy)
+                                      .AddNamingStrategy(context.NamingStrategy)
+                                      .AddVisitors(context.GetVisitorCollection())
+                                      .Build(context.GetExecutingAssembly())
                                       .RenderAsync(context.GetOpenApiSpecVersion(V2), context.GetOpenApiFormat(JSON))
                                       .ConfigureAwait(false);
 
@@ -146,7 +154,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi
         [FunctionName(nameof(OpenApiHttpTrigger.RenderOpenApiDocumentV2InYml))]
         [OpenApiIgnore]
         public static async Task<HttpResponseMessage> RenderOpenApiDocumentV2InYml(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "openapi/v2.yml")] HttpRequestMessage req,
+            [HttpTrigger(AuthorizationLevel.Function, "GET", Route = "openapi/v2.yml")] HttpRequestMessage req,
             ILogger log)
         {
             log.LogInformation($"v2.yaml was requested.");
@@ -155,7 +163,9 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi
                                       .InitialiseDocument()
                                       .AddMetadata(context.OpenApiInfo)
                                       .AddServer(req, context.HttpSettings.RoutePrefix)
-                                      .Build(context.GetExecutingAssembly(), context.NamingStrategy)
+                                      .AddNamingStrategy(context.NamingStrategy)
+                                      .AddVisitors(context.GetVisitorCollection())
+                                      .Build(context.GetExecutingAssembly())
                                       .RenderAsync(context.GetOpenApiSpecVersion(V2), context.GetOpenApiFormat(YAML))
                                       .ConfigureAwait(false);
 
@@ -174,7 +184,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi
         [FunctionName(nameof(OpenApiHttpTrigger.RenderOpenApiDocumentV2InYaml))]
         [OpenApiIgnore]
         public static async Task<HttpResponseMessage> RenderOpenApiDocumentV2InYaml(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "openapi/v2.yaml")] HttpRequestMessage req,
+            [HttpTrigger(AuthorizationLevel.Function, "GET", Route = "openapi/v2.yaml")] HttpRequestMessage req,
             ILogger log)
         {
             log.LogInformation($"v2.yaml was requested.");
@@ -183,7 +193,9 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi
                                       .InitialiseDocument()
                                       .AddMetadata(context.OpenApiInfo)
                                       .AddServer(req, context.HttpSettings.RoutePrefix)
-                                      .Build(context.GetExecutingAssembly(), context.NamingStrategy)
+                                      .AddNamingStrategy(context.NamingStrategy)
+                                      .AddVisitors(context.GetVisitorCollection())
+                                      .Build(context.GetExecutingAssembly())
                                       .RenderAsync(context.GetOpenApiSpecVersion(V2), context.GetOpenApiFormat(YAML))
                                       .ConfigureAwait(false);
 
@@ -202,7 +214,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi
         [FunctionName(nameof(OpenApiHttpTrigger.RenderOpenApiDocumentV3InJson))]
         [OpenApiIgnore]
         public static async Task<HttpResponseMessage> RenderOpenApiDocumentV3InJson(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "openapi/v3.json")] HttpRequestMessage req,
+            [HttpTrigger(AuthorizationLevel.Function, "GET", Route = "openapi/v3.json")] HttpRequestMessage req,
             ILogger log)
         {
             log.LogInformation($"v3.json was requested.");
@@ -211,7 +223,9 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi
                                       .InitialiseDocument()
                                       .AddMetadata(context.OpenApiInfo)
                                       .AddServer(req, context.HttpSettings.RoutePrefix)
-                                      .Build(context.GetExecutingAssembly(), context.NamingStrategy)
+                                      .AddNamingStrategy(context.NamingStrategy)
+                                      .AddVisitors(context.GetVisitorCollection())
+                                      .Build(context.GetExecutingAssembly())
                                       .RenderAsync(context.GetOpenApiSpecVersion(V3), context.GetOpenApiFormat(JSON))
                                       .ConfigureAwait(false);
 
@@ -230,7 +244,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi
         [FunctionName(nameof(OpenApiHttpTrigger.RenderOpenApiDocumentV3InYml))]
         [OpenApiIgnore]
         public static async Task<HttpResponseMessage> RenderOpenApiDocumentV3InYml(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "openapi/v3.yml")] HttpRequestMessage req,
+            [HttpTrigger(AuthorizationLevel.Function, "GET", Route = "openapi/v3.yml")] HttpRequestMessage req,
             ILogger log)
         {
             log.LogInformation($"v3.yaml was requested.");
@@ -239,7 +253,9 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi
                                       .InitialiseDocument()
                                       .AddMetadata(context.OpenApiInfo)
                                       .AddServer(req, context.HttpSettings.RoutePrefix)
-                                      .Build(context.GetExecutingAssembly(), context.NamingStrategy)
+                                      .AddNamingStrategy(context.NamingStrategy)
+                                      .AddVisitors(context.GetVisitorCollection())
+                                      .Build(context.GetExecutingAssembly())
                                       .RenderAsync(context.GetOpenApiSpecVersion(V3), context.GetOpenApiFormat(YAML))
                                       .ConfigureAwait(false);
 
@@ -258,7 +274,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi
         [FunctionName(nameof(OpenApiHttpTrigger.RenderOpenApiDocumentV3InYaml))]
         [OpenApiIgnore]
         public static async Task<HttpResponseMessage> RenderOpenApiDocumentV3InYaml(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "openapi/v3.yaml")] HttpRequestMessage req,
+            [HttpTrigger(AuthorizationLevel.Function, "GET", Route = "openapi/v3.yaml")] HttpRequestMessage req,
             ILogger log)
         {
             log.LogInformation($"v3.yaml was requested.");
@@ -267,7 +283,9 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi
                                       .InitialiseDocument()
                                       .AddMetadata(context.OpenApiInfo)
                                       .AddServer(req, context.HttpSettings.RoutePrefix)
-                                      .Build(context.GetExecutingAssembly(), context.NamingStrategy)
+                                      .AddNamingStrategy(context.NamingStrategy)
+                                      .AddVisitors(context.GetVisitorCollection())
+                                      .Build(context.GetExecutingAssembly())
                                       .RenderAsync(context.GetOpenApiSpecVersion(V3), context.GetOpenApiFormat(YAML))
                                       .ConfigureAwait(false);
 
@@ -286,7 +304,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi
         [FunctionName(nameof(OpenApiHttpTrigger.RenderSwaggerUI))]
         [OpenApiIgnore]
         public static async Task<HttpResponseMessage> RenderSwaggerUI(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "swagger/ui")] HttpRequestMessage req,
+            [HttpTrigger(AuthorizationLevel.Function, "GET", Route = "swagger/ui")] HttpRequestMessage req,
             ILogger log)
         {
             log.LogInformation($"SwaggerUI page was requested.");

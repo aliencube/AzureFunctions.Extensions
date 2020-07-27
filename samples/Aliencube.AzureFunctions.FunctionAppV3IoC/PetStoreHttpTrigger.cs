@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
 
-using Aliencube.AzureFunctions.Extensions.OpenApi.Attributes;
-using Aliencube.AzureFunctions.Extensions.OpenApi.Enums;
+using Aliencube.AzureFunctions.Extensions.OpenApi.Core.Attributes;
+using Aliencube.AzureFunctions.Extensions.OpenApi.Core.Enums;
 using Aliencube.AzureFunctions.FunctionApp.Models;
 using Aliencube.AzureFunctions.FunctionApp.Services;
 
@@ -19,9 +19,9 @@ namespace Aliencube.AzureFunctions.FunctionAppV3IoC
 {
     public class PetStoreHttpTrigger
     {
-        private readonly ISampleHttpService _service;
+        private readonly IDummyHttpService _service;
 
-        public PetStoreHttpTrigger(ISampleHttpService service)
+        public PetStoreHttpTrigger(IDummyHttpService service)
         {
             this._service = service ?? throw new ArgumentNullException(nameof(service));
         }

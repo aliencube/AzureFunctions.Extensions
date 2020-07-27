@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 using Aliencube.AzureFunctions.Extensions.DependencyInjection;
 using Aliencube.AzureFunctions.Extensions.DependencyInjection.Abstractions;
-using Aliencube.AzureFunctions.Extensions.OpenApi.Attributes;
-using Aliencube.AzureFunctions.Extensions.OpenApi.Enums;
+using Aliencube.AzureFunctions.Extensions.OpenApi.Core.Attributes;
+using Aliencube.AzureFunctions.Extensions.OpenApi.Core.Enums;
 using Aliencube.AzureFunctions.FunctionApp.Models;
 
 using Microsoft.Azure.WebJobs;
