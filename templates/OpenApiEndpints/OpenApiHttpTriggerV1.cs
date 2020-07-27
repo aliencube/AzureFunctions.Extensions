@@ -43,7 +43,9 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi
                                       .InitialiseDocument()
                                       .AddMetadata(context.OpenApiInfo)
                                       .AddServer(req, context.HttpSettings.RoutePrefix)
-                                      .Build(context.GetExecutingAssembly(), context.NamingStrategy)
+                                      .AddNamingStrategy(context.NamingStrategy)
+                                      .AddVisitors(context.GetVisitorCollection())
+                                      .Build(context.GetExecutingAssembly())
                                       .RenderAsync(context.GetOpenApiSpecVersion(V2), context.GetOpenApiFormat(JSON))
                                       .ConfigureAwait(false);
 
@@ -71,7 +73,9 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi
                                       .InitialiseDocument()
                                       .AddMetadata(context.OpenApiInfo)
                                       .AddServer(req, context.HttpSettings.RoutePrefix)
-                                      .Build(context.GetExecutingAssembly(), context.NamingStrategy)
+                                      .AddNamingStrategy(context.NamingStrategy)
+                                      .AddVisitors(context.GetVisitorCollection())
+                                      .Build(context.GetExecutingAssembly())
                                       .RenderAsync(context.GetOpenApiSpecVersion(V2), context.GetOpenApiFormat(YAML))
                                       .ConfigureAwait(false);
 
@@ -99,7 +103,9 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi
                                       .InitialiseDocument()
                                       .AddMetadata(context.OpenApiInfo)
                                       .AddServer(req, context.HttpSettings.RoutePrefix)
-                                      .Build(context.GetExecutingAssembly(), context.NamingStrategy)
+                                      .AddNamingStrategy(context.NamingStrategy)
+                                      .AddVisitors(context.GetVisitorCollection())
+                                      .Build(context.GetExecutingAssembly())
                                       .RenderAsync(context.GetOpenApiSpecVersion(V2), context.GetOpenApiFormat(YAML))
                                       .ConfigureAwait(false);
 
@@ -127,7 +133,9 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi
                                       .InitialiseDocument()
                                       .AddMetadata(context.OpenApiInfo)
                                       .AddServer(req, context.HttpSettings.RoutePrefix)
-                                      .Build(context.GetExecutingAssembly(), context.NamingStrategy)
+                                      .AddNamingStrategy(context.NamingStrategy)
+                                      .AddVisitors(context.GetVisitorCollection())
+                                      .Build(context.GetExecutingAssembly())
                                       .RenderAsync(context.GetOpenApiSpecVersion(V2), context.GetOpenApiFormat(JSON))
                                       .ConfigureAwait(false);
 
@@ -155,7 +163,9 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi
                                       .InitialiseDocument()
                                       .AddMetadata(context.OpenApiInfo)
                                       .AddServer(req, context.HttpSettings.RoutePrefix)
-                                      .Build(context.GetExecutingAssembly(), context.NamingStrategy)
+                                      .AddNamingStrategy(context.NamingStrategy)
+                                      .AddVisitors(context.GetVisitorCollection())
+                                      .Build(context.GetExecutingAssembly())
                                       .RenderAsync(context.GetOpenApiSpecVersion(V2), context.GetOpenApiFormat(YAML))
                                       .ConfigureAwait(false);
 
@@ -183,7 +193,9 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi
                                       .InitialiseDocument()
                                       .AddMetadata(context.OpenApiInfo)
                                       .AddServer(req, context.HttpSettings.RoutePrefix)
-                                      .Build(context.GetExecutingAssembly(), context.NamingStrategy)
+                                      .AddNamingStrategy(context.NamingStrategy)
+                                      .AddVisitors(context.GetVisitorCollection())
+                                      .Build(context.GetExecutingAssembly())
                                       .RenderAsync(context.GetOpenApiSpecVersion(V2), context.GetOpenApiFormat(YAML))
                                       .ConfigureAwait(false);
 
@@ -211,7 +223,9 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi
                                       .InitialiseDocument()
                                       .AddMetadata(context.OpenApiInfo)
                                       .AddServer(req, context.HttpSettings.RoutePrefix)
-                                      .Build(context.GetExecutingAssembly(), context.NamingStrategy)
+                                      .AddNamingStrategy(context.NamingStrategy)
+                                      .AddVisitors(context.GetVisitorCollection())
+                                      .Build(context.GetExecutingAssembly())
                                       .RenderAsync(context.GetOpenApiSpecVersion(V3), context.GetOpenApiFormat(JSON))
                                       .ConfigureAwait(false);
 
@@ -239,7 +253,9 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi
                                       .InitialiseDocument()
                                       .AddMetadata(context.OpenApiInfo)
                                       .AddServer(req, context.HttpSettings.RoutePrefix)
-                                      .Build(context.GetExecutingAssembly(), context.NamingStrategy)
+                                      .AddNamingStrategy(context.NamingStrategy)
+                                      .AddVisitors(context.GetVisitorCollection())
+                                      .Build(context.GetExecutingAssembly())
                                       .RenderAsync(context.GetOpenApiSpecVersion(V3), context.GetOpenApiFormat(YAML))
                                       .ConfigureAwait(false);
 
@@ -267,7 +283,9 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi
                                       .InitialiseDocument()
                                       .AddMetadata(context.OpenApiInfo)
                                       .AddServer(req, context.HttpSettings.RoutePrefix)
-                                      .Build(context.GetExecutingAssembly(), context.NamingStrategy)
+                                      .AddNamingStrategy(context.NamingStrategy)
+                                      .AddVisitors(context.GetVisitorCollection())
+                                      .Build(context.GetExecutingAssembly())
                                       .RenderAsync(context.GetOpenApiSpecVersion(V3), context.GetOpenApiFormat(YAML))
                                       .ConfigureAwait(false);
 

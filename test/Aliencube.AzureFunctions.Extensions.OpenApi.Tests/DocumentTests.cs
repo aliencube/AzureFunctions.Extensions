@@ -1,16 +1,21 @@
 using System;
+
 #if NET461
 using System.Net.Http;
 #endif
+
+using System.Reflection;
 using System.Threading.Tasks;
 
 using Aliencube.AzureFunctions.Extensions.OpenApi.Abstractions;
+using Aliencube.AzureFunctions.Extensions.OpenApi.Visitors;
 
 using FluentAssertions;
 
 #if !NET461
 using Microsoft.AspNetCore.Http;
 #endif
+
 using Microsoft.OpenApi;
 using Microsoft.OpenApi.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -18,6 +23,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
 using Newtonsoft.Json.Linq;
+using Newtonsoft.Json.Serialization;
 
 namespace Aliencube.AzureFunctions.Extensions.OpenApi.Tests
 {
@@ -30,6 +36,47 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Tests
             Action action = () => new Document(null);
 
             action.Should().Throw<ArgumentNullException>();
+        }
+
+        [TestMethod]
+        public void Given_That_When_InitialiseDocument_Invoked_Then_It_Should_Return_Result()
+        {
+            var field = typeof(Document).GetField("_document", BindingFlags.Instance | BindingFlags.NonPublic);
+            var helper = new Mock<IDocumentHelper>();
+            var doc = new Document(helper.Object);
+
+            var result = doc.InitialiseDocument();
+
+            field.GetValue(result).Should().NotBeNull();
+            field.GetValue(result).Should().BeOfType<OpenApiDocument>();
+        }
+
+        [TestMethod]
+        public void Given_That_When_AddNamingStrategy_Invoked_Then_It_Should_Return_Result()
+        {
+            var field = typeof(Document).GetField("_strategy", BindingFlags.Instance | BindingFlags.NonPublic);
+            var strategy = new DefaultNamingStrategy();
+            var helper = new Mock<IDocumentHelper>();
+            var doc = new Document(helper.Object);
+
+            var result = doc.AddNamingStrategy(strategy);
+
+            field.GetValue(result).Should().NotBeNull();
+            field.GetValue(result).Should().BeOfType<DefaultNamingStrategy>();
+        }
+
+        [TestMethod]
+        public void Given_That_When_AddVisitors_Invoked_Then_It_Should_Return_Result()
+        {
+            var field = typeof(Document).GetField("_collection", BindingFlags.Instance | BindingFlags.NonPublic);
+            var collection = new VisitorCollection();
+            var helper = new Mock<IDocumentHelper>();
+            var doc = new Document(helper.Object);
+
+            var result = doc.AddVisitors(collection);
+
+            field.GetValue(result).Should().NotBeNull();
+            field.GetValue(result).Should().BeOfType<VisitorCollection>();
         }
 
         [TestMethod]

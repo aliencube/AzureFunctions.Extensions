@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 
 using Aliencube.AzureFunctions.Extensions.OpenApi.Attributes;
+using Aliencube.AzureFunctions.Extensions.OpenApi.Visitors;
 
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
@@ -19,15 +20,16 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
         /// </summary>
         /// <param name="attribute"><see cref="OpenApiResponseWithBodyAttribute"/> instance.</param>
         /// <param name="namingStrategy"><see cref="NamingStrategy"/> instance to create the JSON schema from .NET Types.</param>
+        /// <param name="collection"><see cref="VisitorCollection"/> instance.</param>
         /// <returns><see cref="OpenApiResponse"/> instance.</returns>
-        public static OpenApiResponse ToOpenApiResponse(this OpenApiResponseWithBodyAttribute attribute, NamingStrategy namingStrategy = null)
+        public static OpenApiResponse ToOpenApiResponse(this OpenApiResponseWithBodyAttribute attribute, NamingStrategy namingStrategy = null, VisitorCollection collection = null)
         {
             attribute.ThrowIfNullOrDefault();
 
             var description = string.IsNullOrWhiteSpace(attribute.Description)
                                   ? $"Payload of {attribute.BodyType.GetOpenApiDescription()}"
                                   : attribute.Description;
-            var mediaType = attribute.ToOpenApiMediaType<OpenApiResponseWithBodyAttribute>(namingStrategy);
+            var mediaType = attribute.ToOpenApiMediaType<OpenApiResponseWithBodyAttribute>(namingStrategy, collection);
             var content = new Dictionary<string, OpenApiMediaType>()
                               {
                                   { attribute.ContentType, mediaType }

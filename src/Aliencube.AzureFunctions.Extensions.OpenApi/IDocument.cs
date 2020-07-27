@@ -1,9 +1,11 @@
-﻿#if NET461
+#if NET461
 using System.Net.Http;
 #endif
 
 using System.Reflection;
 using System.Threading.Tasks;
+
+using Aliencube.AzureFunctions.Extensions.OpenApi.Visitors;
 
 #if NETSTANDARD2_0
 using Microsoft.AspNetCore.Http;
@@ -52,12 +54,32 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Abstractions
         IDocument AddServer(HttpRequest req, string routePrefix);
 #endif
         /// <summary>
+        /// Adds the naming strategy.
+        /// </summary>
+        /// <param name="strategy"><see cref="NamingStrategy"/> instance to create the JSON schema from .NET Types.</param>
+        /// <returns><see cref="IDocument"/> instance.</returns>
+        IDocument AddNamingStrategy(NamingStrategy strategy);
+
+        /// <summary>
+        /// Adds the visitor collection.
+        /// </summary>
+        /// <param name="collection"><see cref="VisitorCollection"/> instance.</param>
+        /// <returns><see cref="IDocument"/> instance.</returns>
+        IDocument AddVisitors(VisitorCollection collection);
+
+        /// <summary>
+        /// Builds Open API document.
+        /// </summary>
+        /// <param name="assemblyPath">Assembly file path.</param>
+        /// <returns><see cref="IDocument"/> instance.</returns>
+        IDocument Build(string assemblyPath);
+
+        /// <summary>
         /// Builds Open API document.
         /// </summary>
         /// <param name="assembly"><see cref="Assembly"/> instance.</param>
-        /// <param name="namingStrategy"><see cref="NamingStrategy"/> instance to create the JSON schema from .NET Types.</param>
         /// <returns><see cref="IDocument"/> instance.</returns>
-        IDocument Build(Assembly assembly, NamingStrategy namingStrategy = null);
+        IDocument Build(Assembly assembly);
 
         /// <summary>
         /// Renders Open API document.

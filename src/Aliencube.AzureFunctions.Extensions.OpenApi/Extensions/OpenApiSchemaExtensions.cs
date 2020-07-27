@@ -17,6 +17,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
     /// <summary>
     /// This represents the extension entity for <see cref="OpenApiSchema"/>.
     /// </summary>
+    [Obsolete("This extension class is now obsolete", error: true)]
     public static class OpenApiSchemaExtensions
     {
         /// <summary>
@@ -29,6 +30,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
         /// <remarks>
         /// It runs recursively to build the entire object type. It only takes properties without <see cref="JsonIgnoreAttribute"/>.
         /// </remarks>
+        [Obsolete("This method is now obsolete", error: true)]
         public static OpenApiSchema ToOpenApiSchema(this Type type, NamingStrategy namingStrategy, OpenApiSchemaVisibilityAttribute attribute = null)
         {
             return ToOpenApiSchemas(type, namingStrategy, attribute, true).Single().Value;
@@ -43,12 +45,13 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
         /// <param name="returnSingleSchema">Value indicating whether to return single schema or not.</param>
         /// <param name="depth">Recurring depth.</param>
         /// <returns>Returns <see cref="Dictionary{String, OpenApiSchema}"/> instance.</returns>
+        [Obsolete("This method is now obsolete", error: true)]
         public static Dictionary<string, OpenApiSchema> ToOpenApiSchemas(this Type type, NamingStrategy namingStrategy, OpenApiSchemaVisibilityAttribute attribute = null, bool returnSingleSchema = false, int depth = 0)
         {
             type.ThrowIfNullOrDefault();
 
             var schema = (OpenApiSchema)null;
-            var schemeName = type.IsGenericType ? type.GetOpenApiGenericRootName() : type.Name;
+            var schemeName = type.GetOpenApiTypeName(namingStrategy);
 
             if (depth == 8)
             {
@@ -70,8 +73,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
                 return new Dictionary<string, OpenApiSchema>() { { schemeName, schema } };
             }
 
-            var unwrappedValueType = Nullable.GetUnderlyingType(type);
-            if (!unwrappedValueType.IsNullOrDefault())
+            if (type.IsOpenApiNullable(out var unwrappedValueType))
             {
                 schema = unwrappedValueType.ToOpenApiSchemas(namingStrategy, null, true, depth).Single().Value;
                 schema.Nullable = true;
@@ -143,7 +145,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
             foreach (var property in properties)
             {
                 var visiblity = property.GetCustomAttribute<OpenApiSchemaVisibilityAttribute>(inherit: false);
-                var propertyName = property.GetJsonPropertyName();
+                var propertyName = property.GetJsonPropertyName(namingStrategy);
 
                 var ts = property.DeclaringType.GetGenericArguments();
                 if (!ts.Any())

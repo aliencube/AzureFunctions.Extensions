@@ -1,10 +1,12 @@
-﻿using System.Reflection;
+using System.Reflection;
 
 using Aliencube.AzureFunctions.Extensions.OpenApi.Tests.Fakes;
 
 using FluentAssertions;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+using Newtonsoft.Json.Serialization;
 
 using PropertyInfoExtensions = Aliencube.AzureFunctions.Extensions.OpenApi.Extensions.PropertyInfoExtensions;
 
@@ -19,8 +21,9 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Tests.Extensions
             var name = "FakeProperty";
             var jsonPropertyName = "FakeProperty";
             var property = typeof(FakeModel).GetProperty(name, BindingFlags.Public | BindingFlags.Instance);
+            var namingStrategy = new DefaultNamingStrategy();
 
-            var result = PropertyInfoExtensions.GetJsonPropertyName(property);
+            var result = PropertyInfoExtensions.GetJsonPropertyName(property, namingStrategy);
 
             result.Should().Be(jsonPropertyName);
         }
@@ -31,8 +34,9 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Tests.Extensions
             var name = "FakeProperty2";
             var jsonPropertyName = "anotherFakeProperty";
             var property = typeof(FakeModel).GetProperty(name, BindingFlags.Public | BindingFlags.Instance);
+            var namingStrategy = new DefaultNamingStrategy();
 
-            var result = PropertyInfoExtensions.GetJsonPropertyName(property);
+            var result = PropertyInfoExtensions.GetJsonPropertyName(property, namingStrategy);
 
             result.Should().Be(jsonPropertyName);
         }

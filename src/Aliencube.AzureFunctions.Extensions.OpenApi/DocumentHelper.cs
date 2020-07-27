@@ -8,6 +8,7 @@ using Aliencube.AzureFunctions.Extensions.OpenApi.Attributes;
 using Aliencube.AzureFunctions.Extensions.OpenApi.Configurations;
 using Aliencube.AzureFunctions.Extensions.OpenApi.Enums;
 using Aliencube.AzureFunctions.Extensions.OpenApi.Extensions;
+using Aliencube.AzureFunctions.Extensions.OpenApi.Visitors;
 
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
@@ -25,14 +26,17 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi
     public class DocumentHelper : IDocumentHelper
     {
         private readonly RouteConstraintFilter _filter;
+        private readonly IOpenApiSchemaAcceptor _acceptor;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DocumentHelper"/> class.
         /// </summary>
         /// <param name="filter"><see cref="RouteConstraintFilter"/> instance.</param>
-        public DocumentHelper(RouteConstraintFilter filter)
+        /// <param name="acceptor"><see cref="IAcceptor"/> instance.</param>
+        public DocumentHelper(RouteConstraintFilter filter, IOpenApiSchemaAcceptor acceptor)
         {
             this._filter = filter.ThrowIfNullOrDefault();
+            this._acceptor = acceptor.ThrowIfNullOrDefault();
         }
 
         /// <inheritdoc />
@@ -119,12 +123,13 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi
         }
 
         /// <inheritdoc />
-        public List<OpenApiParameter> GetOpenApiParameters(MethodInfo element, HttpTriggerAttribute trigger, NamingStrategy namingStrategy = null)
+        public List<OpenApiParameter> GetOpenApiParameters(MethodInfo element, HttpTriggerAttribute trigger, NamingStrategy namingStrategy, VisitorCollection collection)
         {
             var parameters = element.GetCustomAttributes<OpenApiParameterAttribute>(inherit: false)
-                                    .Select(p => p.ToOpenApiParameter(namingStrategy))
+                                    .Select(p => p.ToOpenApiParameter(namingStrategy, collection))
                                     .ToList();
 
+            // TODO: Should this be forcibly provided?
             // This needs to be provided separately.
             if (trigger.AuthLevel != AuthorizationLevel.Anonymous)
             {
@@ -135,7 +140,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi
         }
 
         /// <inheritdoc />
-        public OpenApiRequestBody GetOpenApiRequestBody(MethodInfo element, NamingStrategy namingStrategy = null)
+        public OpenApiRequestBody GetOpenApiRequestBody(MethodInfo element, NamingStrategy namingStrategy, VisitorCollection collection)
         {
             var attributes = element.GetCustomAttributes<OpenApiRequestBodyAttribute>(inherit: false);
             if (!attributes.Any())
@@ -143,7 +148,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi
                 return null;
             }
 
-            var contents = attributes.ToDictionary(p => p.ContentType, p => p.ToOpenApiMediaType(namingStrategy));
+            var contents = attributes.ToDictionary(p => p.ContentType, p => p.ToOpenApiMediaType(namingStrategy, collection));
 
             if (contents.Any())
             {
@@ -161,7 +166,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi
         [Obsolete("This method is obsolete from 2.0.0. Use GetOpenApiResponses instead", error: true)]
         public OpenApiResponses GetOpenApiResponseBody(MethodInfo element, NamingStrategy namingStrategy = null)
         {
-            return this.GetOpenApiResponses(element, namingStrategy);
+            return this.GetOpenApiResponses(element, namingStrategy, null);
 
             //var responses = element.GetCustomAttributes<OpenApiResponseBodyAttribute>(inherit: false)
             //                       .ToDictionary(p => ((int)p.StatusCode).ToString(), p => p.ToOpenApiResponse(namingStrategy))
@@ -171,7 +176,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi
         }
 
         /// <inheritdoc />
-        public OpenApiResponses GetOpenApiResponses(MethodInfo element, NamingStrategy namingStrategy = null)
+        public OpenApiResponses GetOpenApiResponses(MethodInfo element, NamingStrategy namingStrategy, VisitorCollection collection)
         {
             var responsesWithBody = element.GetCustomAttributes<OpenApiResponseWithBodyAttribute>(inherit: false)
                                     .Select(p => new { StatusCode = p.StatusCode, Response = p.ToOpenApiResponse(namingStrategy) });
@@ -187,7 +192,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi
         }
 
         /// <inheritdoc />
-        public Dictionary<string, OpenApiSchema> GetOpenApiSchemas(List<MethodInfo> elements, NamingStrategy namingStrategy)
+        public Dictionary<string, OpenApiSchema> GetOpenApiSchemas(List<MethodInfo> elements, NamingStrategy namingStrategy, VisitorCollection collection)
         {
             var requests = elements.SelectMany(p => p.GetCustomAttributes<OpenApiRequestBodyAttribute>(inherit: false))
                                    .Select(p => p.BodyType);
@@ -202,10 +207,30 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi
                                 .Where(p => !typeof(Array).IsAssignableFrom(p))
                                 .ToList();
 
+            var rootSchemas = new Dictionary<string, OpenApiSchema>();
             var schemas = new Dictionary<string, OpenApiSchema>();
-            types.ForEach(p => schemas.AddRange(p.ToOpenApiSchemas(namingStrategy)));
 
-            return schemas;
+            this._acceptor.Types = types.ToDictionary(p => p.GetOpenApiTypeName(namingStrategy), p => p);
+            this._acceptor.RootSchemas = rootSchemas;
+            this._acceptor.Schemas = schemas;
+
+            this._acceptor.Accept(collection, namingStrategy);
+            //types.ForEach(p => schemas.AddRange(p.ToOpenApiSchemas(namingStrategy)));
+
+            var union = schemas.Union(rootSchemas)
+                               .Distinct()
+                               .OrderBy(p => p.Key)
+                               .ToDictionary(p => p.Key,
+                                             p =>
+                                             {
+                                                 // Title was intentionally added for schema key.
+                                                 // It's not necessary when it's added to the root schema.
+                                                 // Therefore, it's removed.
+                                                 p.Value.Title = null;
+                                                 return p.Value;
+                                             });
+
+            return union;
         }
 
         /// <inheritdoc />

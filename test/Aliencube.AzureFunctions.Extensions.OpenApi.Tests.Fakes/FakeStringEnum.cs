@@ -6,14 +6,15 @@ using Newtonsoft.Json.Converters;
 namespace Aliencube.AzureFunctions.Extensions.OpenApi.Tests.Fakes
 {
     /// <summary>
-    /// This specifies fake enum values.
+    /// This specifies fake enum values as string.
     /// </summary>
     [JsonConverter(typeof(StringEnumConverter))]
-    public enum FakeEnum
+    public enum FakeStringEnum
     {
-        Value1,
-
         [Display("lorem")]
-        Value2
+        StringValue1,
+
+        [Display("ipsum")]
+        StringValue2
     }
 }

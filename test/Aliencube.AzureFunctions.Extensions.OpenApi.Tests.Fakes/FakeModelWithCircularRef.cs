@@ -1,4 +1,4 @@
-﻿namespace Aliencube.AzureFunctions.Extensions.OpenApi.Tests.Fakes
+namespace Aliencube.AzureFunctions.Extensions.OpenApi.Tests.Fakes
 {
     /// <summary>
     /// This represents the fake model entity.
