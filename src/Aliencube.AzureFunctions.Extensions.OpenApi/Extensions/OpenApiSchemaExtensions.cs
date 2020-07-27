@@ -17,6 +17,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
     /// <summary>
     /// This represents the extension entity for <see cref="OpenApiSchema"/>.
     /// </summary>
+    [Obsolete("This extension class is now obsolete", error: true)]
     public static class OpenApiSchemaExtensions
     {
         /// <summary>
@@ -29,6 +30,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
         /// <remarks>
         /// It runs recursively to build the entire object type. It only takes properties without <see cref="JsonIgnoreAttribute"/>.
         /// </remarks>
+        [Obsolete("This method is now obsolete", error: true)]
         public static OpenApiSchema ToOpenApiSchema(this Type type, NamingStrategy namingStrategy, OpenApiSchemaVisibilityAttribute attribute = null)
         {
             return ToOpenApiSchemas(type, namingStrategy, attribute, true).Single().Value;
@@ -43,6 +45,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Extensions
         /// <param name="returnSingleSchema">Value indicating whether to return single schema or not.</param>
         /// <param name="depth">Recurring depth.</param>
         /// <returns>Returns <see cref="Dictionary{String, OpenApiSchema}"/> instance.</returns>
+        [Obsolete("This method is now obsolete", error: true)]
         public static Dictionary<string, OpenApiSchema> ToOpenApiSchemas(this Type type, NamingStrategy namingStrategy, OpenApiSchemaVisibilityAttribute attribute = null, bool returnSingleSchema = false, int depth = 0)
         {
             type.ThrowIfNullOrDefault();
