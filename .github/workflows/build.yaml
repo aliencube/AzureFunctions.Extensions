@@ -5,6 +5,7 @@ on:
     branches:
     - master
     - dev
+    - v3
     - feature/*
 
 jobs:
