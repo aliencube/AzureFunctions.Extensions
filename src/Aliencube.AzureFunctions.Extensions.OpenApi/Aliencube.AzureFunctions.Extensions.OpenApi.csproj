@@ -4,7 +4,7 @@
     <TargetFrameworks>net461;netstandard2.0</TargetFrameworks>
     <IsPackable>true</IsPackable>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
+    <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <PackageId>Aliencube.AzureFunctions.Extensions.OpenApi</PackageId>
     <Owners>Aliencube</Owners>
@@ -34,19 +34,8 @@
     <DocumentationFile>bin\Release\netstandard2.0\Aliencube.AzureFunctions.Extensions.OpenApi.xml</DocumentationFile>
   </PropertyGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)'=='net461'">
-    <PackageReference Include="Aliencube.AzureFunctions.Extensions.Configuration.Json" Version="2.1.1.1" />
-    <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.Http" Version="1.1.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
-  </ItemGroup>
-
-  <ItemGroup Condition="'$(TargetFramework)'=='netstandard2.0'">
-    <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.Http" Version="3.0.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
-  </ItemGroup>
-
   <ItemGroup Condition="'$(Configuration)'=='Release'">
-    <PackageReference Include="Aliencube.AzureFunctions.Extensions.Configuration.AppSettings" Version="1.2.0" />
+    <PackageReference Include="Aliencube.AzureFunctions.Extensions.OpenApi.Core" Version="3.0.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -55,22 +44,8 @@
     <None Remove="Lists\**" />
   </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.OpenApi" Version="1.1.2" />
-    <PackageReference Include="System.IO.FileSystem.Primitives" Version="4.3.0" />
-    <PackageReference Include="System.Runtime.Handles" Version="4.3.0" />
-    <PackageReference Include="System.Runtime.InteropServices" Version="4.3.0" />
-  </ItemGroup>
-
   <ItemGroup Condition="'$(Configuration)'=='Debug'">
-    <ProjectReference Include="..\Aliencube.AzureFunctions.Extensions.Configuration.AppSettings\Aliencube.AzureFunctions.Extensions.Configuration.AppSettings.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Include="dist/index.html" />
-    <EmbeddedResource Include="dist/swagger-ui.css" />
-    <EmbeddedResource Include="dist/swagger-ui-bundle.js" />
-    <EmbeddedResource Include="dist/swagger-ui-standalone-preset.js" />
+    <ProjectReference Include="..\Aliencube.AzureFunctions.Extensions.OpenApi.Core\Aliencube.AzureFunctions.Extensions.OpenApi.Core.csproj" />
   </ItemGroup>
 
   <ItemGroup>

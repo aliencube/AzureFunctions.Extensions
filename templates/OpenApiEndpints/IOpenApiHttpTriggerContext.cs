@@ -1,9 +1,9 @@
 using System.Reflection;
 
-using Aliencube.AzureFunctions.Extensions.OpenApi.Abstractions;
-using Aliencube.AzureFunctions.Extensions.OpenApi.Configurations;
-using Aliencube.AzureFunctions.Extensions.OpenApi.Enums;
-using Aliencube.AzureFunctions.Extensions.OpenApi.Visitors;
+using Aliencube.AzureFunctions.Extensions.OpenApi.Core.Abstractions;
+using Aliencube.AzureFunctions.Extensions.OpenApi.Core.Configurations;
+using Aliencube.AzureFunctions.Extensions.OpenApi.Core.Enums;
+using Aliencube.AzureFunctions.Extensions.OpenApi.Core.Visitors;
 
 using Microsoft.OpenApi;
 using Microsoft.OpenApi.Models;

@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
 
-using Aliencube.AzureFunctions.Extensions.OpenApi.Attributes;
-using Aliencube.AzureFunctions.Extensions.OpenApi.Enums;
+using Aliencube.AzureFunctions.Extensions.OpenApi.Core.Attributes;
+using Aliencube.AzureFunctions.Extensions.OpenApi.Core.Enums;
 
 using Newtonsoft.Json;
 
