@@ -72,9 +72,9 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Core.Tests.Visitors
         }
 
         [DataTestMethod]
-        [DataRow(typeof(List<string>), "array", null, "string", "string", 0)]
-        [DataRow(typeof(List<FakeModel>), "array", null, "object", "fakeModel", 1)]
-        public void Given_Type_When_Visit_Invoked_Then_It_Should_Return_Result(Type listType, string dataType, string dataFormat, string itemType, string referenceId, int expected)
+        [DataRow(typeof(List<string>), "array", null, "string", false, "string", 0)]
+        [DataRow(typeof(List<FakeModel>), "array", null, "object", true, "fakeModel", 1)]
+        public void Given_Type_When_Visit_Invoked_Then_It_Should_Return_Result(Type listType, string dataType, string dataFormat, string itemType, bool isReferential, string referenceId, int expected)
         {
             var name = "hello";
             var acceptor = new OpenApiSchemaAcceptor();
@@ -89,8 +89,11 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Core.Tests.Visitors
             acceptor.Schemas[name].Items.Should().NotBeNull();
             acceptor.Schemas[name].Items.Type.Should().Be(itemType);
 
-            acceptor.Schemas[name].Items.Reference.Type.Should().Be(ReferenceType.Schema);
-            acceptor.Schemas[name].Items.Reference.Id.Should().Be(referenceId);
+            if (isReferential)
+            {
+                acceptor.Schemas[name].Items.Reference.Type.Should().Be(ReferenceType.Schema);
+                acceptor.Schemas[name].Items.Reference.Id.Should().Be(referenceId);
+            }
 
             acceptor.RootSchemas.Count(p => p.Key == referenceId).Should().Be(expected);
         }

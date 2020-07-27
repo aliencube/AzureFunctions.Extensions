@@ -72,9 +72,9 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Core.Tests.Visitors
         }
 
         [DataTestMethod]
-        [DataRow(typeof(Dictionary<string, string>), "object", null, "string", "string", 0)]
-        [DataRow(typeof(Dictionary<string, FakeModel>), "object", null, "object", "fakeModel", 1)]
-        public void Given_Type_When_Visit_Invoked_Then_It_Should_Return_Result(Type dictionaryType, string dataType, string dataFormat, string additionalPropertyType, string referenceId, int expected)
+        [DataRow(typeof(Dictionary<string, string>), "object", null, "string", false, "string", 0)]
+        [DataRow(typeof(Dictionary<string, FakeModel>), "object", null, "object", true, "fakeModel", 1)]
+        public void Given_Type_When_Visit_Invoked_Then_It_Should_Return_Result(Type dictionaryType, string dataType, string dataFormat, string additionalPropertyType, bool isReferential, string referenceId, int expected)
         {
             var name = "hello";
             var acceptor = new OpenApiSchemaAcceptor();
@@ -89,8 +89,11 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Core.Tests.Visitors
             acceptor.Schemas[name].AdditionalProperties.Should().NotBeNull();
             acceptor.Schemas[name].AdditionalProperties.Type.Should().Be(additionalPropertyType);
 
-            acceptor.Schemas[name].AdditionalProperties.Reference.Type.Should().Be(ReferenceType.Schema);
-            acceptor.Schemas[name].AdditionalProperties.Reference.Id.Should().Be(referenceId);
+            if (isReferential)
+            {
+                acceptor.Schemas[name].AdditionalProperties.Reference.Type.Should().Be(ReferenceType.Schema);
+                acceptor.Schemas[name].AdditionalProperties.Reference.Id.Should().Be(referenceId);
+            }
 
             acceptor.RootSchemas.Count(p => p.Key == referenceId).Should().Be(expected);
         }

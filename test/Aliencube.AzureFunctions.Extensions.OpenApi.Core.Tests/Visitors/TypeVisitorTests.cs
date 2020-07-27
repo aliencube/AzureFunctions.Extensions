@@ -66,6 +66,16 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Core.Tests.Visitors
         }
 
         [DataTestMethod]
+        [DataRow(typeof(FakeModel), true)]
+        [DataRow(typeof(int), false)]
+        public void Given_Type_When_IsReferential_Invoked_Then_It_Should_Return_Result(Type type, bool expected)
+        {
+            var result = (this._visitor as FakeTypeVisitor).IsTypeReferential(type);
+
+            result.Should().Be(expected);
+        }
+
+        [DataTestMethod]
         [DataRow(typeof(string), default(OpenApiSchema))]
         public void Given_Type_When_ParameterVisit_Invoked_Then_It_Should_Return_Result(Type type, OpenApiSchema expected)
         {

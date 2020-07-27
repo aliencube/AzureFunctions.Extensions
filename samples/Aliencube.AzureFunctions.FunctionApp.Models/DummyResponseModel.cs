@@ -39,10 +39,10 @@ namespace Aliencube.AzureFunctions.FunctionApp.Models
         public string JsonIgnoreValue { get; set; }
 
         [JsonProperty("CapitalisedJsonPropertyRequiredValue", Required = Required.DisallowNull)]
-        public string JsonPropertyRequiredValue { get; set; }
+        public string JsonPropertyRequiredValue { get; set; } = "hello world";
 
         [JsonRequired]
-        public string JsonRequiredValue { get; set; }
+        public string JsonRequiredValue { get; set; } = "lorem ipsum";
 
         [OpenApiSchemaVisibility(OpenApiVisibilityType.Advanced)]
         public string OpenApiSchemaVisibilityValue { get; set; }
