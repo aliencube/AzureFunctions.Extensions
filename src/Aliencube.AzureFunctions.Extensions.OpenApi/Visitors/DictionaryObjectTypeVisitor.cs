@@ -60,13 +60,16 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Visitors
             var properties = subAcceptor.Schemas.First().Value;
 
             // Adds the reference to the schema for the underlying type.
-            var reference = new OpenApiReference()
+            if (this.IsReferential(underlyingType))
             {
-                Type = ReferenceType.Schema,
-                Id = underlyingType.GetOpenApiReferenceId(isDictionary: false, isList: false, namingStrategy)
-            };
+                var reference = new OpenApiReference()
+                {
+                    Type = ReferenceType.Schema,
+                    Id = underlyingType.GetOpenApiReferenceId(isDictionary: false, isList: false, namingStrategy)
+                };
 
-            properties.Reference = reference;
+                properties.Reference = reference;
+            }
 
             instance.Schemas[name].AdditionalProperties = properties;
 
