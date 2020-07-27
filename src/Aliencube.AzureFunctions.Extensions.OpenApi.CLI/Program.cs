@@ -8,10 +8,12 @@ using System.Net.Http;
 
 using System.Text;
 
-using Aliencube.AzureFunctions.Extensions.OpenApi.Configurations;
-using Aliencube.AzureFunctions.Extensions.OpenApi.Enums;
-using Aliencube.AzureFunctions.Extensions.OpenApi.Extensions;
-using Aliencube.AzureFunctions.Extensions.OpenApi.Visitors;
+using Aliencube.AzureFunctions.Extensions.OpenApi.Core;
+using Aliencube.AzureFunctions.Extensions.OpenApi.Core.Abstractions;
+using Aliencube.AzureFunctions.Extensions.OpenApi.Core.Configurations;
+using Aliencube.AzureFunctions.Extensions.OpenApi.Core.Enums;
+using Aliencube.AzureFunctions.Extensions.OpenApi.Core.Extensions;
+using Aliencube.AzureFunctions.Extensions.OpenApi.Core.Visitors;
 
 using Cocona;
 

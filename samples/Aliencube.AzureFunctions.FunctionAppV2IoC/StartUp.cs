@@ -14,7 +14,7 @@ namespace Aliencube.AzureFunctions.FunctionAppV2IoC
         /// <inheritdoc />
         public override void Configure(IFunctionsHostBuilder builder)
         {
-            builder.Services.AddTransient<ISampleHttpService, SampleHttpService>();
+            builder.Services.AddTransient<IDummyHttpService, DummyHttpService>();
         }
     }
 }
