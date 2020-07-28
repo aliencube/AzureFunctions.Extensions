@@ -269,7 +269,7 @@ This decorator implements the [Response object](https://github.com/OAI/OpenAPI-S
 
 ```csharp
 [FunctionName(nameof(PostSample))]
-[OpenApiResponseWithoutBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(SampleResponseModel))]
+[OpenApiResponseWithoutBody(statusCode: HttpStatusCode.OK)]
 ...
 public static async Task<IActionResult> PostSample(
     [HttpTrigger(AuthorizationLevel.Function, "post", Route = "samples")] HttpRequest req,
