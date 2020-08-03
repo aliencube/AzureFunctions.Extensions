@@ -1,4 +1,4 @@
-﻿using Aliencube.AzureFunctions.Extensions.DependencyInjection.Abstractions;
+using Aliencube.AzureFunctions.Extensions.DependencyInjection.Abstractions;
 using Aliencube.AzureFunctions.FunctionApp.Functions;
 using Aliencube.AzureFunctions.FunctionApp.Services;
 
@@ -14,9 +14,10 @@ namespace Aliencube.AzureFunctions.FunctionAppV1IoC
         /// <inheritdoc />
         public override void Load(IServiceCollection services)
         {
-            services.AddTransient<ISampleHttpService, SampleHttpService>();
+            services.AddTransient<IDummyHttpService, DummyHttpService>();
 
-            services.AddTransient<IGetSamplesFunction, GetSamplesFunction>();
+            services.AddTransient<IGetDummiesFunction, GetDummiesFunction>();
+            services.AddTransient<IAddDummyFunction, AddDummyFunction>();
         }
     }
 }

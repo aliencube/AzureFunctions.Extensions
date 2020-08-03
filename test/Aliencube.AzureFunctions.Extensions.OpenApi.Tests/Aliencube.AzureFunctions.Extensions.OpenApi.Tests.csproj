@@ -15,11 +15,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Aliencube.AzureFunctions.Extensions.OpenApi.Tests.Fakes\Aliencube.AzureFunctions.Extensions.OpenApi.Tests.Fakes.csproj" />
-  </ItemGroup>
-
-  <ItemGroup Condition="'$(TargetFramework)'!='netcoreapp3.1'">
-    <Reference Include="Microsoft.CSharp" />
+    <ProjectReference Include="..\..\src\Aliencube.AzureFunctions.Extensions.OpenApi\Aliencube.AzureFunctions.Extensions.OpenApi.csproj" />
+    <ProjectReference Include="..\Aliencube.AzureFunctions.Extensions.OpenApi.Core.Tests.Fakes\Aliencube.AzureFunctions.Extensions.OpenApi.Core.Tests.Fakes.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -32,6 +29,13 @@
     <None Update="openapisettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(Configuration)'=='Debug'">
+    <Compile Include="..\..\templates\OpenApiEndpints\IOpenApiHttpTriggerContext.cs" />
+    <Compile Include="..\..\templates\OpenApiEndpints\OpenApiHttpTriggerContext.cs" />
+    <Compile Include="..\..\templates\OpenApiEndpints\OpenApiHttpTrigger.cs" />
+    <Compile Include="..\..\templates\OpenApiEndpints\OpenApiHttpTriggerV1.cs" />
   </ItemGroup>
 
 </Project>

@@ -7,6 +7,7 @@ on:
     - release/configjson-*
     - release/di-*
     - release/swagger-*
+    - release/swaggercore-*
 
 jobs:
   build_test_package_release:
@@ -14,7 +15,7 @@ jobs:
     strategy:
       matrix:
         os: [ 'windows-latest' ]
-        dotnet: [ '3.1.301' ]
+        dotnet: [ '3.1.302' ]
 
     runs-on: ${{ matrix.os }}
 
@@ -89,12 +90,21 @@ jobs:
         dotnet build ./src/Aliencube.AzureFunctions.Extensions.DependencyInjection -c Release -p:Version=${{ steps.release.outputs.version }} -v minimal
         dotnet build ./test/Aliencube.AzureFunctions.Extensions.DependencyInjection.Tests -c Release
 
+    - name: Build solution for OpenApi Core
+      if: steps.release.outputs.module == 'swaggercore'
+      shell: pwsh
+      run: |
+        dir
+        dotnet build ./src/Aliencube.AzureFunctions.Extensions.OpenApi.Core -c Release -p:Version=${{ steps.release.outputs.version }} -v minimal
+        dotnet build ./test/Aliencube.AzureFunctions.Extensions.OpenApi.Core.Tests -c Release
+
     - name: Build solution for OpenApi
       if: steps.release.outputs.module == 'swagger'
       shell: pwsh
       run: |
         dir
-        dotnet build . -c Release -p:Version=${{ steps.release.outputs.version }} -v minimal
+        dotnet build ./src/Aliencube.AzureFunctions.Extensions.OpenApi -c Release -p:Version=${{ steps.release.outputs.version }} -v minimal
+        dotnet build ./test/Aliencube.AzureFunctions.Extensions.OpenApi.Tests -c Release
 
     - name: Test solution for AppSettings
       if: steps.release.outputs.module == 'appsettings'
@@ -117,12 +127,19 @@ jobs:
         dir
         dotnet test ./test/Aliencube.AzureFunctions.Extensions.DependencyInjection.Tests -c Release
 
+    - name: Test solution for OpenApi Core
+      if: steps.release.outputs.module == 'swaggercore'
+      shell: pwsh
+      run: |
+        dir
+        dotnet test ./test/Aliencube.AzureFunctions.Extensions.OpenApi.Core.Tests -c Release
+
     - name: Test solution for OpenApi
       if: steps.release.outputs.module == 'swagger'
       shell: pwsh
       run: |
         dir
-        dotnet test . -c Release
+        dotnet test ./test/Aliencube.AzureFunctions.Extensions.OpenApi.Tests -c Release
 
     - name: List Package for AppSettings
       if: steps.release.outputs.module == 'appsettings'
@@ -151,6 +168,17 @@ jobs:
       shell: pwsh
       run: |
         $package = Get-ChildItem -Path ./src/*.DependencyInjection -Include *.nupkg -Recurse | Where-Object { $_.FullName -like "*${{ steps.release.outputs.version }}*" }
+        $path = $package[0].FullName
+        $name = $package[0].Name
+
+        echo "::set-env name=PACKAGE_PATH::$path"
+        echo "::set-env name=PACKAGE_NAME::$name"
+
+    - name: List Package for OpenApi Core
+      if: steps.release.outputs.module == 'swaggercore'
+      shell: pwsh
+      run: |
+        $package = Get-ChildItem -Path ./src/*.OpenApi.Core -Include *.nupkg -Recurse | Where-Object { $_.FullName -like "*${{ steps.release.outputs.version }}*" }
         $path = $package[0].FullName
         $name = $package[0].Name
 
