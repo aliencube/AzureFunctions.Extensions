@@ -1,4 +1,4 @@
-using Aliencube.AzureFunctions.Extensions.OpenApi.Attributes;
+using Aliencube.AzureFunctions.Extensions.OpenApi.Core.Attributes;
 
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;

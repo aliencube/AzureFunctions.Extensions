@@ -28,7 +28,7 @@
   </ItemGroup>
 
   <ItemGroup Condition="'$(Configuration)'=='Debug'">
-    <ProjectReference Include="..\Aliencube.AzureFunctions.Extensions.OpenApi\Aliencube.AzureFunctions.Extensions.OpenApi.csproj" />
+    <ProjectReference Include="..\Aliencube.AzureFunctions.Extensions.OpenApi.Core\Aliencube.AzureFunctions.Extensions.OpenApi.Core.csproj" />
   </ItemGroup>
 
 </Project>

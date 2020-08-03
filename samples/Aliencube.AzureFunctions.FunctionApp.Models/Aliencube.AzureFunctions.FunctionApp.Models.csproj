@@ -1,11 +1,11 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFrameworks>net461;netstandard2.0</TargetFrameworks>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Aliencube.AzureFunctions.Extensions.OpenApi\Aliencube.AzureFunctions.Extensions.OpenApi.csproj" />
+    <ProjectReference Include="..\..\src\Aliencube.AzureFunctions.Extensions.OpenApi.Core\Aliencube.AzureFunctions.Extensions.OpenApi.Core.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,24 +1,29 @@
-﻿using System;
+using System;
 using System.IO;
+using System.Linq;
 
 #if NET461
 using System.Net.Http;
 #endif
 
-using System.Reflection;
 using System.Text;
 
-using Aliencube.AzureFunctions.Extensions.OpenApi.Configurations;
-using Aliencube.AzureFunctions.Extensions.OpenApi.Enums;
-using Aliencube.AzureFunctions.Extensions.OpenApi.Extensions;
+using Aliencube.AzureFunctions.Extensions.OpenApi.Core;
+using Aliencube.AzureFunctions.Extensions.OpenApi.Core.Abstractions;
+using Aliencube.AzureFunctions.Extensions.OpenApi.Core.Configurations;
+using Aliencube.AzureFunctions.Extensions.OpenApi.Core.Enums;
+using Aliencube.AzureFunctions.Extensions.OpenApi.Core.Extensions;
+using Aliencube.AzureFunctions.Extensions.OpenApi.Core.Visitors;
 
 using Cocona;
 
 #if !NET461
 using Microsoft.AspNetCore.Http;
-#endif
 
 using Moq;
+#endif
+
+using Newtonsoft.Json.Serialization;
 
 namespace Aliencube.AzureFunctions.Extensions.OpenApi.CLI
 {
@@ -65,19 +70,22 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.CLI
             {
                 return;
             }
-
-            var assembly = Assembly.LoadFrom(pi.CompiledDllPath);
 #if NET461
-            var req = new HttpRequestMessage();
-            req.RequestUri = new Uri("http://localhost:7071");
+            var requestUri = new Uri("http://localhost:7071");
+            var req = new HttpRequestMessage()
+            {
+                RequestUri = requestUri,
+            };
 #else
             var req = new Mock<HttpRequest>();
             req.SetupGet(p => p.Scheme).Returns("http");
             req.SetupGet(p => p.Host).Returns(new HostString("localhost", 7071));
 #endif
-
             var filter = new RouteConstraintFilter();
-            var helper = new DocumentHelper(filter);
+            var acceptor = new OpenApiSchemaAcceptor();
+            var namingStrategy = new CamelCaseNamingStrategy();
+            var collection = this.GetVisitorCollection();
+            var helper = new DocumentHelper(filter, acceptor);
             var document = new Document(helper);
 
             var swagger = default(string);
@@ -90,7 +98,9 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.CLI
 #else
                                   .AddServer(req.Object, pi.HostJsonHttpSettings.RoutePrefix)
 #endif
-                                  .Build(assembly)
+                                  .AddNamingStrategy(namingStrategy)
+                                  .AddVisitors(collection)
+                                  .Build(pi.CompiledDllPath)
                                   .RenderAsync(version.ToOpenApiSpecVersion(), format.ToOpenApiFormat())
                                   .Result;
             }
@@ -125,6 +135,18 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.CLI
             }
 
             File.WriteAllText($"{outputpath}{directorySeparator}swagger.{format.ToDisplayName()}", swagger, Encoding.UTF8);
+        }
+
+        private VisitorCollection GetVisitorCollection()
+        {
+            var visitors = typeof(IVisitor).Assembly
+                                           .GetTypes()
+                                           .Where(p => p.Name.EndsWith("Visitor") && p.IsClass && !p.IsAbstract)
+                                           .Select(p => (IVisitor)Activator.CreateInstance(p))
+                                           .ToList();
+            var collection = new VisitorCollection(visitors);
+
+            return collection;
         }
     }
 }
