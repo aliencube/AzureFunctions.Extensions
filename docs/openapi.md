@@ -29,17 +29,70 @@ dotnet add <PROJECT> package Aliencube.AzureFunctions.Extensions.OpenApi
 ```
 
 
-### Expose Endpoints to Open API Document ###
+### Change Authorization Level ###
 
-In order to include HTTP endpoints into the Open API document, use attribute classes (decorators) like:
+As a default, all endpoints to render Swagger UI and Open API documents have the authorisation level of `AuthorizationLevel.Function`, which requires the API key to render them.
 
 ```csharp
-[FunctionName(nameof(PostSample))]
-[OpenApiOperation("postSample", "sample")]
-[OpenApiRequestBody("application/json", typeof(SampleRequestModel))]
-[OpenApiResponseBody(HttpStatusCode.OK, "application/json", typeof(SampleResponseModel))]
-public static async Task<IActionResult> PostSample(
-    [HttpTrigger(AuthorizationLevel.Function, "post", Route = "samples")] HttpRequest req,
+[FunctionName(nameof(OpenApiHttpTrigger.RenderSwaggerDocument))]
+[OpenApiIgnore]
+public static async Task<IActionResult> RenderSwaggerDocument(
+    [HttpTrigger(AuthorizationLevel.Function, "GET", Route = "swagger.{extension}")] HttpRequest req,
+    string extension,
+    ILogger log)
+{
+    ...
+}
+
+[FunctionName(nameof(OpenApiHttpTrigger.RenderOpenApiDocument))]
+[OpenApiIgnore]
+public static async Task<IActionResult> RenderOpenApiDocument(
+    [HttpTrigger(AuthorizationLevel.Function, "GET", Route = "openapi/{version}.{extension}")] HttpRequest req,
+    string version,
+    string extension,
+    ILogger log)
+{
+    ...
+}
+
+[FunctionName(nameof(OpenApiHttpTrigger.RenderSwaggerUI))]
+[OpenApiIgnore]
+public static async Task<IActionResult> RenderSwaggerUI(
+    [HttpTrigger(AuthorizationLevel.Function, "GET", Route = "swagger/ui")] HttpRequest req,
+    ILogger log)
+{
+    ...
+}
+```
+
+However, if you don't want to use the API key for them, change their authorisation level to `AuthorizationLevel.Anonymous`.
+
+```csharp
+[FunctionName(nameof(OpenApiHttpTrigger.RenderSwaggerDocument))]
+[OpenApiIgnore]
+public static async Task<IActionResult> RenderSwaggerDocument(
+    [HttpTrigger(AuthorizationLevel.Anonymous, "GET", Route = "swagger.{extension}")] HttpRequest req,
+    string extension,
+    ILogger log)
+{
+    ...
+}
+
+[FunctionName(nameof(OpenApiHttpTrigger.RenderOpenApiDocument))]
+[OpenApiIgnore]
+public static async Task<IActionResult> RenderOpenApiDocument(
+    [HttpTrigger(AuthorizationLevel.Anonymous, "GET", Route = "openapi/{version}.{extension}")] HttpRequest req,
+    string version,
+    string extension,
+    ILogger log)
+{
+    ...
+}
+
+[FunctionName(nameof(OpenApiHttpTrigger.RenderSwaggerUI))]
+[OpenApiIgnore]
+public static async Task<IActionResult> RenderSwaggerUI(
+    [HttpTrigger(AuthorizationLevel.Anonymous, "GET", Route = "swagger/ui")] HttpRequest req,
     ILogger log)
 {
     ...
@@ -141,164 +194,3 @@ On either your `local.settings.json` or App Settings on Azure Functions instance
 * `OpenApi__Info__License__Url`: License URL. eg. http://opensource.org/licenses/MIT
 
 > **NOTE**: In order to deploy Azure Functions v1 to Azure, the `AzureWebJobsScriptRoot` **MUST** be specified in the app settings section; otherwise it will throw an error that can't find `host.json`. Local debugging is fine, though. For more details, please visit [this page](https://docs.microsoft.com/azure/azure-functions/functions-app-settings#azurewebjobsscriptroot?WT.mc_id=azfuncextension-github-juyoo).
-
-
-## Decorators ##
-
-In order to render Open API document, this uses attribute classes (decorators).
-
-> **NOTE**: Not all Open API specs have been implemented.
-
-
-### `OpenApiIgnoreAttribute` ###
-
-If there is any HTTP trigger that you want to exclude from the Open API document, use this decorator. Typically this is used for the endpoints that render Open API document and Swagger UI.
-
-```csharp
-[FunctionName(nameof(RenderSwaggerDocument))]
-[OpenApiIgnore] // This HTTP endpoint is excluded from the Open API document.
-public static async Task<IActionResult> RenderSwaggerDocument(
-    [HttpTrigger(AuthorizationLevel.Function, "get", Route = "swagger.{extension}")] HttpRequest req,
-    string extension,
-    ILogger log)
-{
-    ...
-}
-```
-
-
-### `OpenApiOperationAttribute` ###
-
-This decorator implements a part of [Operation object](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#operationObject) spec.
-
-```csharp
-[FunctionName(nameof(GetSample))]
-[OpenApiOperation(operationId: "list", tags: new[] { "sample" })]
-...
-public static async Task<IActionResult> GetSample(
-    [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "samples")] HttpRequest req,
-    ILogger log)
-{
-    ...
-}
-```
-
-* `OperationId`: is the ID of the operation. If this is omitted, a combination of function name and verb is considered as the operation ID. eg) `Get_GetSample`
-* `Tags`: are the list of tags of operation.
-* `Summary`: is the summary of the operation.
-* `Description`: is the description of the operation.
-* `Visibility`: indicates how the operation is visible in Azure Logic Apps &ndash; `important`, `advanced` or `internal`. Default value is `undefined`.
-
-
-### `OpenApiParameterAttribute` ###
-
-This decorator implements the [Parameter object](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#parameterObject) spec.
-
-```csharp
-[FunctionName(nameof(GetSample))]
-[OpenApiParameter(name: "name", In = ParameterLocation.Query, Required = true, Type = typeof(string))]
-...
-public static async Task<IActionResult> GetSample(
-    [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "samples")] HttpRequest req,
-    ILogger log)
-{
-    ...
-}
-```
-
-* `Name`: is the name of the parameter.
-* `Summary`: is the summary of the parameter.
-* `Description`: is the description of the parameter.
-* `Type`: defines the parameter type. Default value is `typeof(string)`.
-* `In`: identifies where the parameter is located &ndash; `header`, `path`, `query` or `cookie`. Default value is `path`.
-* `CollectionDelimiter`: identifies the delimiter when a query parameter accepts multiple values &ndash; `comma`, `space` or `pipe`. Default value is `comma`.
-* `Explode`: indicates whether a query parameter is used multiple times (eg. `foo=bar1&foo=bar2&foo=bar3`) or not (eg. `foo=bar1,bar2,bar3`). Default value is `false`.
-* `Required`: indicates whether the parameter is required or not. Default value is `false`.
-* `Visibility`: indicates how the parameter is visible in Azure Logic Apps &ndash; `important`, `advanced` or `internal`. Default value is `undefined`.
-
-
-### `OpenApiRequestBodyAttribute` ###
-
-This decorator implements the [Request Body object](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#requestBodyObject) spec.
-
-```csharp
-[FunctionName(nameof(PostSample))]
-[OpenApiRequestBody(contentType: "application/json", bodyType: typeof(SampleRequestModel))]
-...
-public static async Task<IActionResult> PostSample(
-    [HttpTrigger(AuthorizationLevel.Function, "post", Route = "samples")] HttpRequest req,
-    ILogger log)
-{
-    ...
-}
-```
-
-* `ContentType`: defines the content type of the request body payload. eg) `application/json` or `text/xml`
-* `BodyType`: defines the type of the request payload.
-* `Summary`: is the summary of the request payload.
-* `Description`: is the description of the request payload.
-* `Required`: indicates whether the request payload is mandatory or not.
-
-
-### `OpenApiResponseWithBodyAttribute` ###
-
-This decorator implements the [Response object](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#responseObject) spec.
-
-```csharp
-[FunctionName(nameof(PostSample))]
-[OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(SampleResponseModel))]
-...
-public static async Task<IActionResult> PostSample(
-    [HttpTrigger(AuthorizationLevel.Function, "post", Route = "samples")] HttpRequest req,
-    ILogger log)
-{
-    ...
-}
-```
-
-* `StatusCode`: defines the HTTP status code. eg) `HttpStatusCode.OK`
-* `ContentType`: defines the content type of the response payload. eg) `application/json` or `text/xml`
-* `BodyType`: defines the type of the response payload.
-* `Summary`: is the summary of the response.
-* `Description`: is the description of the response.
-
-
-### `OpenApiResponseWithoutBodyAttribute` ###
-
-This decorator implements the [Response object](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.1.md#responseObject) spec.
-
-```csharp
-[FunctionName(nameof(PostSample))]
-[OpenApiResponseWithoutBody(statusCode: HttpStatusCode.OK)]
-...
-public static async Task<IActionResult> PostSample(
-    [HttpTrigger(AuthorizationLevel.Function, "post", Route = "samples")] HttpRequest req,
-    ILogger log)
-{
-    ...
-}
-```
-
-* `StatusCode`: defines the HTTP status code. eg) `HttpStatusCode.OK`
-* `Summary`: is the summary of the response.
-* `Description`: is the description of the response.
-
-
-## Supported Json.NET Decorators ##
-
-Those attribute classes from [Json.NET](https://www.newtonsoft.com/json) are supported for payload definitions.
-
-
-### `JsonIgnore` ###
-
-Properties decorated with the `JsonIgnore` attribute class will not be included in the response.
-
-
-### `JsonProperty` ###
-
-Properties decorated with `JsonProperty` attribute class will use `JsonProperty.Name` value instead of their property names.
-
-
-### `JsonConverter` ###
-
-Enums types decorated with `[JsonConverter(typeof(StringEnumConverter))]` will appear in the document with their string names (names mangled based on default property naming standard).
