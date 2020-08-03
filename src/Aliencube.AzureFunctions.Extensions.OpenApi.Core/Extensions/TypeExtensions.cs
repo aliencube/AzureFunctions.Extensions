@@ -536,7 +536,22 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Core.Extensions
                 return true;
             }
 
+            if (type.IsGenericTypeOf(typeof(ICollection<>)))
+            {
+                return true;
+            }
+
             if (type.IsGenericTypeOf(typeof(IEnumerable<>)))
+            {
+                return true;
+            }
+
+            if (type.IsGenericTypeOf(typeof(IReadOnlyList<>)))
+            {
+                return true;
+            }
+
+            if (type.IsGenericTypeOf(typeof(IReadOnlyCollection<>)))
             {
                 return true;
             }
@@ -557,6 +572,16 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Core.Extensions
             }
 
             if (type.Name.Equals("IDictionary`2", StringComparison.CurrentCultureIgnoreCase))
+            {
+                return true;
+            }
+
+            if (type.Name.Equals("IReadOnlyDictionary`2", StringComparison.CurrentCultureIgnoreCase))
+            {
+                return true;
+            }
+
+            if (type.Name.Equals("KeyValuePair`2", StringComparison.CurrentCultureIgnoreCase))
             {
                 return true;
             }

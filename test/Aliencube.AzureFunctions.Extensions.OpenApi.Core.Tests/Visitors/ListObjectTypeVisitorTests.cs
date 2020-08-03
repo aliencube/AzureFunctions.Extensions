@@ -43,6 +43,11 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Core.Tests.Visitors
 
         [DataTestMethod]
         [DataRow(typeof(List<string>), true)]
+        [DataRow(typeof(IList<string>), true)]
+        [DataRow(typeof(ICollection<string>), true)]
+        [DataRow(typeof(IEnumerable<string>), true)]
+        [DataRow(typeof(IReadOnlyList<string>), true)]
+        [DataRow(typeof(IReadOnlyCollection<string>), true)]
         [DataRow(typeof(int), false)]
         public void Given_Type_When_IsVisitable_Invoked_Then_It_Should_Return_Result(Type type, bool expected)
         {
@@ -53,6 +58,11 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Core.Tests.Visitors
 
         [DataTestMethod]
         [DataRow(typeof(List<string>), true)]
+        [DataRow(typeof(IList<string>), true)]
+        [DataRow(typeof(ICollection<string>), true)]
+        [DataRow(typeof(IEnumerable<string>), true)]
+        [DataRow(typeof(IReadOnlyList<string>), true)]
+        [DataRow(typeof(IReadOnlyCollection<string>), true)]
         [DataRow(typeof(int), false)]
         public void Given_Type_When_IsParameterVisitable_Invoked_Then_It_Should_Return_Result(Type type, bool expected)
         {
@@ -63,6 +73,11 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Core.Tests.Visitors
 
         [DataTestMethod]
         [DataRow(typeof(List<string>), true)]
+        [DataRow(typeof(IList<string>), true)]
+        [DataRow(typeof(ICollection<string>), true)]
+        [DataRow(typeof(IEnumerable<string>), true)]
+        [DataRow(typeof(IReadOnlyList<string>), true)]
+        [DataRow(typeof(IReadOnlyCollection<string>), true)]
         [DataRow(typeof(int), false)]
         public void Given_Type_When_IsPayloadVisitable_Invoked_Then_It_Should_Return_Result(Type type, bool expected)
         {
@@ -73,7 +88,17 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Core.Tests.Visitors
 
         [DataTestMethod]
         [DataRow(typeof(List<string>), "array", null, "string", false, "string", 0)]
+        [DataRow(typeof(IList<string>), "array", null, "string", false, "string", 0)]
+        [DataRow(typeof(ICollection<string>), "array", null, "string", false, "string", 0)]
+        [DataRow(typeof(IEnumerable<string>), "array", null, "string", false, "string", 0)]
+        [DataRow(typeof(IReadOnlyList<string>), "array", null, "string", false, "string", 0)]
+        [DataRow(typeof(IReadOnlyCollection<string>), "array", null, "string", false, "string", 0)]
         [DataRow(typeof(List<FakeModel>), "array", null, "object", true, "fakeModel", 1)]
+        [DataRow(typeof(IList<FakeModel>), "array", null, "object", true, "fakeModel", 1)]
+        [DataRow(typeof(ICollection<FakeModel>), "array", null, "object", true, "fakeModel", 1)]
+        [DataRow(typeof(IEnumerable<FakeModel>), "array", null, "object", true, "fakeModel", 1)]
+        [DataRow(typeof(IReadOnlyList<FakeModel>), "array", null, "object", true, "fakeModel", 1)]
+        [DataRow(typeof(IReadOnlyCollection<FakeModel>), "array", null, "object", true, "fakeModel", 1)]
         public void Given_Type_When_Visit_Invoked_Then_It_Should_Return_Result(Type listType, string dataType, string dataFormat, string itemType, bool isReferential, string referenceId, int expected)
         {
             var name = "hello";
@@ -118,7 +143,17 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Core.Tests.Visitors
 
         [DataTestMethod]
         [DataRow(typeof(List<string>), "array", null, "string", false)]
+        [DataRow(typeof(IList<string>), "array", null, "string", false)]
+        [DataRow(typeof(ICollection<string>), "array", null, "string", false)]
+        [DataRow(typeof(IEnumerable<string>), "array", null, "string", false)]
+        [DataRow(typeof(IReadOnlyList<string>), "array", null, "string", false)]
+        [DataRow(typeof(IReadOnlyCollection<string>), "array", null, "string", false)]
         [DataRow(typeof(List<FakeModel>), "array", null, "object", true)]
+        [DataRow(typeof(IList<FakeModel>), "array", null, "object", true)]
+        [DataRow(typeof(ICollection<FakeModel>), "array", null, "object", true)]
+        [DataRow(typeof(IEnumerable<FakeModel>), "array", null, "object", true)]
+        [DataRow(typeof(IReadOnlyList<FakeModel>), "array", null, "object", true)]
+        [DataRow(typeof(IReadOnlyCollection<FakeModel>), "array", null, "object", true)]
         public void Given_Type_When_ParameterVisit_Invoked_Then_It_Should_Return_Result(Type listType, string dataType, string dataFormat, string itemType, bool isItemToBeNull)
         {
             var result = this._visitor.ParameterVisit(listType, this._strategy);
@@ -135,7 +170,17 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Core.Tests.Visitors
 
         [DataTestMethod]
         [DataRow(typeof(List<string>), "array", null, "string", "string")]
+        [DataRow(typeof(IList<string>), "array", null, "string", "string")]
+        [DataRow(typeof(ICollection<string>), "array", null, "string", "string")]
+        [DataRow(typeof(IEnumerable<string>), "array", null, "string", "string")]
+        [DataRow(typeof(IReadOnlyList<string>), "array", null, "string", "string")]
+        [DataRow(typeof(IReadOnlyCollection<string>), "array", null, "string", "string")]
         [DataRow(typeof(List<FakeModel>), "array", null, "object", "fakeModel")]
+        [DataRow(typeof(IList<FakeModel>), "array", null, "object", "fakeModel")]
+        [DataRow(typeof(ICollection<FakeModel>), "array", null, "object", "fakeModel")]
+        [DataRow(typeof(IEnumerable<FakeModel>), "array", null, "object", "fakeModel")]
+        [DataRow(typeof(IReadOnlyList<FakeModel>), "array", null, "object", "fakeModel")]
+        [DataRow(typeof(IReadOnlyCollection<FakeModel>), "array", null, "object", "fakeModel")]
         public void Given_Type_When_PayloadVisit_Invoked_Then_It_Should_Return_Result(Type listType, string dataType, string dataFormat, string itemType, string referenceId)
         {
             var result = this._visitor.PayloadVisit(listType, this._strategy);

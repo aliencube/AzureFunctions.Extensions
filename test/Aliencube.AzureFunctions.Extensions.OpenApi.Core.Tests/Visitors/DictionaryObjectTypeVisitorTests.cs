@@ -43,6 +43,9 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Core.Tests.Visitors
 
         [DataTestMethod]
         [DataRow(typeof(Dictionary<string, string>), true)]
+        [DataRow(typeof(IDictionary<string, string>), true)]
+        [DataRow(typeof(IReadOnlyDictionary<string, string>), true)]
+        [DataRow(typeof(KeyValuePair<string, string>), true)]
         [DataRow(typeof(int), false)]
         public void Given_Type_When_IsVisitable_Invoked_Then_It_Should_Return_Result(Type type, bool expected)
         {
@@ -53,6 +56,9 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Core.Tests.Visitors
 
         [DataTestMethod]
         [DataRow(typeof(Dictionary<string, string>), false)]
+        [DataRow(typeof(IDictionary<string, string>), false)]
+        [DataRow(typeof(IReadOnlyDictionary<string, string>), false)]
+        [DataRow(typeof(KeyValuePair<string, string>), false)]
         [DataRow(typeof(int), false)]
         public void Given_Type_When_IsParameterVisitable_Invoked_Then_It_Should_Return_Result(Type type, bool expected)
         {
@@ -63,6 +69,9 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Core.Tests.Visitors
 
         [DataTestMethod]
         [DataRow(typeof(Dictionary<string, string>), true)]
+        [DataRow(typeof(IDictionary<string, string>), true)]
+        [DataRow(typeof(IReadOnlyDictionary<string, string>), true)]
+        [DataRow(typeof(KeyValuePair<string, string>), true)]
         [DataRow(typeof(int), false)]
         public void Given_Type_When_IsPayloadVisitable_Invoked_Then_It_Should_Return_Result(Type type, bool expected)
         {
@@ -73,7 +82,13 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Core.Tests.Visitors
 
         [DataTestMethod]
         [DataRow(typeof(Dictionary<string, string>), "object", null, "string", false, "string", 0)]
+        [DataRow(typeof(IDictionary<string, string>), "object", null, "string", false, "string", 0)]
+        [DataRow(typeof(IReadOnlyDictionary<string, string>), "object", null, "string", false, "string", 0)]
+        [DataRow(typeof(KeyValuePair<string, string>), "object", null, "string", false, "string", 0)]
         [DataRow(typeof(Dictionary<string, FakeModel>), "object", null, "object", true, "fakeModel", 1)]
+        [DataRow(typeof(IDictionary<string, FakeModel>), "object", null, "object", true, "fakeModel", 1)]
+        [DataRow(typeof(IReadOnlyDictionary<string, FakeModel>), "object", null, "object", true, "fakeModel", 1)]
+        [DataRow(typeof(KeyValuePair<string, FakeModel>), "object", null, "object", true, "fakeModel", 1)]
         public void Given_Type_When_Visit_Invoked_Then_It_Should_Return_Result(Type dictionaryType, string dataType, string dataFormat, string additionalPropertyType, bool isReferential, string referenceId, int expected)
         {
             var name = "hello";
@@ -118,6 +133,9 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Core.Tests.Visitors
 
         [DataTestMethod]
         [DataRow(typeof(Dictionary<string, string>), "object", null, null)]
+        [DataRow(typeof(IDictionary<string, string>), "object", null, null)]
+        [DataRow(typeof(IReadOnlyDictionary<string, string>), "object", null, null)]
+        [DataRow(typeof(KeyValuePair<string, string>), "object", null, null)]
         public void Given_Type_When_ParameterVisit_Invoked_Then_It_Should_Return_Result(Type dictionaryType, string dataType, string dataFormat, OpenApiSchema expected)
         {
             var result = this._visitor.ParameterVisit(dictionaryType, this._strategy);
@@ -127,7 +145,13 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Core.Tests.Visitors
 
         [DataTestMethod]
         [DataRow(typeof(Dictionary<string, string>), "object", null, "string", "string")]
+        [DataRow(typeof(IDictionary<string, string>), "object", null, "string", "string")]
+        [DataRow(typeof(IReadOnlyDictionary<string, string>), "object", null, "string", "string")]
+        [DataRow(typeof(KeyValuePair<string, string>), "object", null, "string", "string")]
         [DataRow(typeof(Dictionary<string, FakeModel>), "object", null, "object", "fakeModel")]
+        [DataRow(typeof(IDictionary<string, FakeModel>), "object", null, "object", "fakeModel")]
+        [DataRow(typeof(IReadOnlyDictionary<string, FakeModel>), "object", null, "object", "fakeModel")]
+        [DataRow(typeof(KeyValuePair<string, FakeModel>), "object", null, "object", "fakeModel")]
         public void Given_Type_When_PayloadVisit_Invoked_Then_It_Should_Return_Result(Type dictionaryType, string dataType, string dataFormat, string additionalPropertyType, string referenceId)
         {
             var result = this._visitor.PayloadVisit(dictionaryType, this._strategy);
