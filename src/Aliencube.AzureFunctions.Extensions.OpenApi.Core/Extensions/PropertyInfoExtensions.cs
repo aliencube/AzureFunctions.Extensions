@@ -37,7 +37,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Core.Extensions
 
             if (element.HasJsonPropertyAttribute())
             {
-                var name = element.GetCustomAttribute<JsonPropertyAttribute>().PropertyName;
+                var name = element.GetCustomAttribute<JsonPropertyAttribute>().PropertyName ?? element.Name;
 
                 return name;
 
