@@ -17,6 +17,12 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Core.Visitors
     public class DictionaryObjectTypeVisitor : TypeVisitor
     {
         /// <inheritdoc />
+        public DictionaryObjectTypeVisitor(VisitorCollection visitorCollection)
+            : base(visitorCollection)
+        {
+        }
+
+        /// <inheritdoc />
         public override bool IsVisitable(Type type)
         {
             var isVisitable = this.IsVisitable(type, TypeCode.Object) && type.IsOpenApiDictionary();
@@ -55,8 +61,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Core.Visitors
                 Schemas = schemas,
             };
 
-            var collection = VisitorCollection.CreateInstance();
-            subAcceptor.Accept(collection, namingStrategy);
+            subAcceptor.Accept(this.VisitorCollection, namingStrategy);
 
             var properties = subAcceptor.Schemas.First().Value;
 
@@ -120,8 +125,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Core.Visitors
 
             // Gets the schema for the underlying type.
             var underlyingType = type.GetGenericArguments()[1];
-            var collection = VisitorCollection.CreateInstance();
-            var properties = collection.PayloadVisit(underlyingType, namingStrategy);
+            var properties = this.VisitorCollection.PayloadVisit(underlyingType, namingStrategy);
 
             // Adds the reference to the schema for the underlying type.
             var reference = new OpenApiReference()

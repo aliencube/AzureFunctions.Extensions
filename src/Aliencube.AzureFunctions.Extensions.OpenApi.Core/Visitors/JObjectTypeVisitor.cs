@@ -17,6 +17,12 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Core.Visitors
     public class JObjectTypeVisitor : TypeVisitor
     {
         /// <inheritdoc />
+        public JObjectTypeVisitor(VisitorCollection visitorCollection)
+            : base(visitorCollection)
+        {
+        }
+
+        /// <inheritdoc />
         public override bool IsVisitable(Type type)
         {
             var isVisitable = this.IsVisitable(type, TypeCode.Object) && type.IsJObjectType();

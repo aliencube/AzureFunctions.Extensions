@@ -36,21 +36,22 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Core.Visitors
         /// <summary>
         /// Gets the list of <see cref="IVisitor"/> instances.
         /// </summary>
-        public List<IVisitor> Visitors { get; }
+        public List<IVisitor> Visitors { get; private set; }
 
         /// <summary>
-        /// Creates a new instance of the <see cref="VisitorCollection"/> class.
+        /// Creates a new instance of the <see cref="VisitorCollection"/> class by scanning the current assembly for <see cref="IVisitor"/>.
         /// </summary>
+        /// <remarks>
+        /// There is an expectation that the <see cref="IVisitor"/> implementation has a constructor that takes a <see cref="VisitorCollection"/> as the only parameter.
+        /// </remarks>
         /// <returns>Returns the <see cref="VisitorCollection"/> instance.</returns>
         public static VisitorCollection CreateInstance()
         {
-            var visitors = typeof(IVisitor).Assembly
+            var collection = new VisitorCollection();
+            collection.Visitors = typeof(IVisitor).Assembly
                                            .GetTypes()
                                            .Where(p => p.Name.EndsWith("Visitor") && p.IsClass && !p.IsAbstract)
-                                           .Select(p => (IVisitor)Activator.CreateInstance(p))
-                                           .ToList();
-            var collection = new VisitorCollection(visitors);
-
+                                           .Select(p => (IVisitor)Activator.CreateInstance(p, collection)).ToList(); // NOTE: there is no direct enforcement on the constructor arguments of the visitors
             return collection;
         }
 
