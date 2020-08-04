@@ -1,21 +1,18 @@
 using System;
 using System.Collections.Generic;
-
 using Aliencube.AzureFunctions.Extensions.OpenApi.Core.Abstractions;
-
 using Microsoft.OpenApi.Models;
-
 using Newtonsoft.Json.Serialization;
 
 namespace Aliencube.AzureFunctions.Extensions.OpenApi.Core.Visitors
 {
     /// <summary>
-    /// This represents the type visitor for <see cref="DateTime"/>.
+    /// This represents the type visitor for <see cref="Uri"/>.
     /// </summary>
-    public class DateTimeTypeVisitor : TypeVisitor
+    public class UriTypeVisitor : TypeVisitor
     {
         /// <inheritdoc />
-        public DateTimeTypeVisitor(VisitorCollection visitorCollection)
+        public UriTypeVisitor(VisitorCollection visitorCollection)
             : base(visitorCollection)
         {
         }
@@ -23,15 +20,13 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Core.Visitors
         /// <inheritdoc />
         public override bool IsVisitable(Type type)
         {
-            var isVisitable = this.IsVisitable(type, TypeCode.DateTime);
-
-            return isVisitable;
+            return type.IsAssignableFrom(typeof(Uri));
         }
 
         /// <inheritdoc />
         public override void Visit(IAcceptor acceptor, KeyValuePair<string, Type> type, NamingStrategy namingStrategy, params Attribute[] attributes)
         {
-            this.Visit(acceptor, name: type.Key, title: null, dataType: "string", dataFormat: "date-time", attributes: attributes);
+            this.Visit(acceptor, name: type.Key, title: null, dataType: "string", dataFormat: "uri", attributes: attributes);
         }
 
         /// <inheritdoc />
@@ -45,7 +40,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Core.Visitors
         /// <inheritdoc />
         public override OpenApiSchema ParameterVisit(Type type, NamingStrategy namingStrategy)
         {
-            return this.ParameterVisit(dataType: "string", dataFormat: "date-time");
+            return this.ParameterVisit(dataType: "string", dataFormat: "uri");
         }
 
         /// <inheritdoc />
@@ -59,7 +54,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Core.Visitors
         /// <inheritdoc />
         public override OpenApiSchema PayloadVisit(Type type, NamingStrategy namingStrategy)
         {
-            return this.PayloadVisit(dataType: "string", dataFormat: "date-time");
+            return this.PayloadVisit(dataType: "string", dataFormat: "uri");
         }
     }
 }

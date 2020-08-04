@@ -20,6 +20,12 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Core.Visitors
     public class Int64EnumTypeVisitor : TypeVisitor
     {
         /// <inheritdoc />
+        public Int64EnumTypeVisitor(VisitorCollection visitorCollection)
+            : base(visitorCollection)
+        {
+        }
+
+        /// <inheritdoc />
         public override bool IsVisitable(Type type)
         {
             var isVisitable = this.IsVisitable(type, TypeCode.Int64) &&

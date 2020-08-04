@@ -19,6 +19,12 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Core.Visitors
     public class NullableObjectTypeVisitor : TypeVisitor
     {
         /// <inheritdoc />
+        public NullableObjectTypeVisitor(VisitorCollection visitorCollection)
+            : base(visitorCollection)
+        {
+        }
+
+        /// <inheritdoc />
         public override bool IsVisitable(Type type)
         {
             var isVisitable = this.IsVisitable(type, TypeCode.Object) && type.IsOpenApiNullable();
@@ -50,8 +56,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Core.Visitors
                 Schemas = schemas,
             };
 
-            var collection = VisitorCollection.CreateInstance();
-            subAcceptor.Accept(collection, namingStrategy);
+            subAcceptor.Accept(this.VisitorCollection, namingStrategy);
 
             // Adds the schema for the underlying type.
             var name = subAcceptor.Schemas.First().Key;
@@ -85,8 +90,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Core.Visitors
         public override OpenApiSchema ParameterVisit(Type type, NamingStrategy namingStrategy)
         {
             type.IsOpenApiNullable(out var underlyingType);
-            var collection = VisitorCollection.CreateInstance();
-            var schema = collection.ParameterVisit(underlyingType, namingStrategy);
+            var schema = this.VisitorCollection.ParameterVisit(underlyingType, namingStrategy);
 
             schema.Nullable = true;
 
@@ -105,8 +109,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Core.Visitors
         public override OpenApiSchema PayloadVisit(Type type, NamingStrategy namingStrategy)
         {
             type.IsOpenApiNullable(out var underlyingType);
-            var collection = VisitorCollection.CreateInstance();
-            var schema = collection.PayloadVisit(underlyingType, namingStrategy);
+            var schema = this.VisitorCollection.PayloadVisit(underlyingType, namingStrategy);
 
             schema.Nullable = true;
 

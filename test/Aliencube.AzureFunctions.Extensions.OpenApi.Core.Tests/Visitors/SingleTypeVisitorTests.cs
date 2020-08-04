@@ -19,13 +19,15 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Core.Tests.Visitors
     [TestClass]
     public class SingleTypeVisitorTests
     {
+        private VisitorCollection _visitorCollection;
         private IVisitor _visitor;
         private NamingStrategy _strategy;
 
         [TestInitialize]
         public void Init()
         {
-            this._visitor = new SingleTypeVisitor();
+            this._visitorCollection = new VisitorCollection();
+            this._visitor = new SingleTypeVisitor(this._visitorCollection);
             this._strategy = new CamelCaseNamingStrategy();
         }
 

@@ -17,7 +17,7 @@ using Newtonsoft.Json.Serialization;
 namespace Aliencube.AzureFunctions.Extensions.OpenApi.Core.Tests.Visitors
 {
     [TestClass]
-    public class DoubleTypeVisitorTests
+    public class UriTypeVisitorTests
     {
         private VisitorCollection _visitorCollection;
         private IVisitor _visitor;
@@ -27,12 +27,12 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Core.Tests.Visitors
         public void Init()
         {
             this._visitorCollection = new VisitorCollection();
-            this._visitor = new DoubleTypeVisitor(this._visitorCollection);
+            this._visitor = new UriTypeVisitor(this._visitorCollection);
             this._strategy = new CamelCaseNamingStrategy();
         }
 
         [DataTestMethod]
-        [DataRow(typeof(double), false)]
+        [DataRow(typeof(string), false)]
         public void Given_Type_When_IsNavigatable_Invoked_Then_It_Should_Return_Result(Type type, bool expected)
         {
             var result = this._visitor.IsNavigatable(type);
@@ -41,7 +41,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Core.Tests.Visitors
         }
 
         [DataTestMethod]
-        [DataRow(typeof(double), true)]
+        [DataRow(typeof(Uri), true)]
         [DataRow(typeof(int), false)]
         public void Given_Type_When_IsVisitable_Invoked_Then_It_Should_Return_Result(Type type, bool expected)
         {
@@ -51,7 +51,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Core.Tests.Visitors
         }
 
         [DataTestMethod]
-        [DataRow(typeof(double), true)]
+        [DataRow(typeof(Uri), true)]
         [DataRow(typeof(int), false)]
         public void Given_Type_When_IsParameterVisitable_Invoked_Then_It_Should_Return_Result(Type type, bool expected)
         {
@@ -61,7 +61,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Core.Tests.Visitors
         }
 
         [DataTestMethod]
-        [DataRow(typeof(double), true)]
+        [DataRow(typeof(Uri), true)]
         [DataRow(typeof(int), false)]
         public void Given_Type_When_IsPayloadVisitable_Invoked_Then_It_Should_Return_Result(Type type, bool expected)
         {
@@ -71,12 +71,12 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Core.Tests.Visitors
         }
 
         [DataTestMethod]
-        [DataRow("number", "double")]
+        [DataRow("string", "uri")]
         public void Given_Type_When_Visit_Invoked_Then_It_Should_Return_Result(string dataType, string dataFormat)
         {
             var name = "hello";
             var acceptor = new OpenApiSchemaAcceptor();
-            var type = new KeyValuePair<string, Type>(name, typeof(double));
+            var type = new KeyValuePair<string, Type>(name, typeof(Uri));
 
             this._visitor.Visit(acceptor, type, this._strategy);
 
@@ -93,7 +93,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Core.Tests.Visitors
         {
             var name = "hello";
             var acceptor = new OpenApiSchemaAcceptor();
-            var type = new KeyValuePair<string, Type>(name, typeof(double));
+            var type = new KeyValuePair<string, Type>(name, typeof(Uri));
             var attribute = new OpenApiSchemaVisibilityAttribute(visibility);
 
             this._visitor.Visit(acceptor, type, this._strategy, attribute);
@@ -104,20 +104,20 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Core.Tests.Visitors
         }
 
         [DataTestMethod]
-        [DataRow("number", "double")]
+        [DataRow("string", "uri")]
         public void Given_Type_When_ParameterVisit_Invoked_Then_It_Should_Return_Result(string dataType, string dataFormat)
         {
-            var result = this._visitor.ParameterVisit(typeof(double), this._strategy);
+            var result = this._visitor.ParameterVisit(typeof(Uri), this._strategy);
 
             result.Type.Should().Be(dataType);
             result.Format.Should().Be(dataFormat);
         }
 
         [DataTestMethod]
-        [DataRow("number", "double")]
+        [DataRow("string", "uri")]
         public void Given_Type_When_PayloadVisit_Invoked_Then_It_Should_Return_Result(string dataType, string dataFormat)
         {
-            var result = this._visitor.PayloadVisit(typeof(double), this._strategy);
+            var result = this._visitor.PayloadVisit(typeof(Uri), this._strategy);
 
             result.Type.Should().Be(dataType);
             result.Format.Should().Be(dataFormat);

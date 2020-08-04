@@ -19,6 +19,12 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Core.Visitors
     public class RecursiveObjectTypeVisitor : TypeVisitor
     {
         /// <inheritdoc />
+        public RecursiveObjectTypeVisitor(VisitorCollection visitorCollection)
+            : base(visitorCollection)
+        {
+        }
+
+        /// <inheritdoc />
         public override bool IsVisitable(Type type)
         {
             var isVisitable = this.IsVisitable(type, TypeCode.Object) && type.HasRecursiveProperty();
@@ -163,8 +169,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Core.Visitors
                 Schemas = schemas,
             };
 
-            var collection = VisitorCollection.CreateInstance();
-            subAcceptor.Accept(collection, namingStrategy);
+            subAcceptor.Accept(this.VisitorCollection, namingStrategy);
 
             // Add required properties to schema.
             var jsonPropertyAttributes = properties.Where(p => !p.Value.GetCustomAttribute<JsonPropertyAttribute>(inherit: false).IsNullOrDefault())
