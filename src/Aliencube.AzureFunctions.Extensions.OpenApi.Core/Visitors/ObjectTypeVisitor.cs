@@ -28,31 +28,36 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Core.Visitors
         public override bool IsVisitable(Type type)
         {
             var isVisitable = this.IsVisitable(type, TypeCode.Object);
+
             if (type == typeof(Guid))
             {
                 isVisitable = false;
             }
-            if (type == typeof(DateTime))
+            else if (type == typeof(DateTime))
             {
                 isVisitable = false;
             }
-            if (type == typeof(DateTimeOffset))
+            else if (type == typeof(DateTimeOffset))
             {
                 isVisitable = false;
             }
-            if (type.IsOpenApiNullable())
+            else if (type == typeof(Uri))
             {
                 isVisitable = false;
             }
-            if (type.IsUnflaggedEnumType())
+            else if (type.IsOpenApiNullable())
             {
                 isVisitable = false;
             }
-            if (type.IsJObjectType())
+            else if (type.IsUnflaggedEnumType())
             {
                 isVisitable = false;
             }
-            if (type.HasRecursiveProperty())
+            else if (type.IsJObjectType())
+            {
+                isVisitable = false;
+            }
+            else if (type.HasRecursiveProperty())
             {
                 isVisitable = false;
             }
