@@ -45,6 +45,14 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Core.Visitors
             {
                 isVisitable = false;
             }
+            else if (type.IsOpenApiArray())
+            {
+                isVisitable = false;
+            }
+            else if (type.IsOpenApiDictionary())
+            {
+                isVisitable = false;
+            }
             else if (type.IsOpenApiNullable())
             {
                 isVisitable = false;
