@@ -19,34 +19,53 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Core.Visitors
     public class ObjectTypeVisitor : TypeVisitor
     {
         /// <inheritdoc />
+        public ObjectTypeVisitor(VisitorCollection visitorCollection)
+            : base(visitorCollection)
+        {
+        }
+
+        /// <inheritdoc />
         public override bool IsVisitable(Type type)
         {
             var isVisitable = this.IsVisitable(type, TypeCode.Object);
+
             if (type == typeof(Guid))
             {
                 isVisitable = false;
             }
-            if (type == typeof(DateTime))
+            else if (type == typeof(DateTime))
             {
                 isVisitable = false;
             }
-            if (type == typeof(DateTimeOffset))
+            else if (type == typeof(DateTimeOffset))
             {
                 isVisitable = false;
             }
-            if (type.IsOpenApiNullable())
+            else if (type == typeof(Uri))
             {
                 isVisitable = false;
             }
-            if (type.IsUnflaggedEnumType())
+            else if (type.IsOpenApiArray())
             {
                 isVisitable = false;
             }
-            if (type.IsJObjectType())
+            else if (type.IsOpenApiDictionary())
             {
                 isVisitable = false;
             }
-            if (type.HasRecursiveProperty())
+            else if (type.IsOpenApiNullable())
+            {
+                isVisitable = false;
+            }
+            else if (type.IsUnflaggedEnumType())
+            {
+                isVisitable = false;
+            }
+            else if (type.IsJObjectType())
+            {
+                isVisitable = false;
+            }
+            else if (type.HasRecursiveProperty())
             {
                 isVisitable = false;
             }
@@ -145,8 +164,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Core.Visitors
                 Schemas = schemas,
             };
 
-            var collection = VisitorCollection.CreateInstance();
-            subAcceptor.Accept(collection, namingStrategy);
+            subAcceptor.Accept(this.VisitorCollection, namingStrategy);
 
             // Add required properties to schema.
             var jsonPropertyAttributes = properties.Where(p => !p.Value.GetCustomAttribute<JsonPropertyAttribute>(inherit: false).IsNullOrDefault())

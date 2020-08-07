@@ -22,13 +22,15 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Core.Tests.Visitors
     [TestClass]
     public class ListObjectTypeVisitorTests
     {
+        private VisitorCollection _visitorCollection;
         private IVisitor _visitor;
         private NamingStrategy _strategy;
 
         [TestInitialize]
         public void Init()
         {
-            this._visitor = new ListObjectTypeVisitor();
+            this._visitorCollection = VisitorCollection.CreateInstance();
+            this._visitor = new ListObjectTypeVisitor(this._visitorCollection);
             this._strategy = new CamelCaseNamingStrategy();
         }
 

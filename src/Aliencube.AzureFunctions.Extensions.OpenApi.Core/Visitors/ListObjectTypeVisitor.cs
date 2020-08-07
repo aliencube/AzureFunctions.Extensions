@@ -17,6 +17,12 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Core.Visitors
     public class ListObjectTypeVisitor : TypeVisitor
     {
         /// <inheritdoc />
+        public ListObjectTypeVisitor(VisitorCollection visitorCollection)
+            : base(visitorCollection)
+        {
+        }
+
+        /// <inheritdoc />
         public override bool IsVisitable(Type type)
         {
             var isVisitable = this.IsVisitable(type, TypeCode.Object) && type.IsOpenApiArray();
@@ -55,8 +61,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Core.Visitors
                 Schemas = schemas,
             };
 
-            var collection = VisitorCollection.CreateInstance();
-            subAcceptor.Accept(collection, namingStrategy);
+            subAcceptor.Accept(this.VisitorCollection, namingStrategy);
 
             var items = subAcceptor.Schemas.First().Value;
 
@@ -113,8 +118,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Core.Visitors
             var schema = this.ParameterVisit(dataType: "array", dataFormat: null);
 
             var underlyingType = type.GetElementType() ?? type.GetGenericArguments()[0];
-            var collection = VisitorCollection.CreateInstance();
-            var items = collection.ParameterVisit(underlyingType, namingStrategy);
+            var items = this.VisitorCollection.ParameterVisit(underlyingType, namingStrategy);
 
             schema.Items = items;
 
@@ -136,8 +140,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Core.Visitors
 
             // Gets the schema for the underlying type.
             var underlyingType = type.GetElementType() ?? type.GetGenericArguments()[0];
-            var collection = VisitorCollection.CreateInstance();
-            var items = collection.PayloadVisit(underlyingType, namingStrategy);
+            var items = this.VisitorCollection.PayloadVisit(underlyingType, namingStrategy);
 
             // Adds the reference to the schema for the underlying type.
             var reference = new OpenApiReference()

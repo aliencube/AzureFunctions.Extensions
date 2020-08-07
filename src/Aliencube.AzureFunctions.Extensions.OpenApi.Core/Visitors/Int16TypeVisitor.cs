@@ -16,6 +16,12 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Core.Visitors
     public class Int16TypeVisitor : TypeVisitor
     {
         /// <inheritdoc />
+        public Int16TypeVisitor(VisitorCollection visitorCollection)
+            : base(visitorCollection)
+        {
+        }
+
+        /// <inheritdoc />
         public override bool IsVisitable(Type type)
         {
             var isVisitable = this.IsVisitable(type, TypeCode.Int16) &&
