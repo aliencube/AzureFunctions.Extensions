@@ -40,5 +40,59 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Core.Tests.Extensions
 
             result.Should().Be(jsonPropertyName);
         }
+
+        [TestMethod]
+        public void Given_Property_When_GetJsonPropertyName_IsEmpty_Then_It_Should_Return_ElementName()
+        {
+            var name = "FakePropertyNoPropertyValue";
+            var property = typeof(FakeModel).GetProperty(name, BindingFlags.Public | BindingFlags.Instance);
+            var namingStrategy = new DefaultNamingStrategy();
+
+            var result = PropertyInfoExtensions.GetJsonPropertyName(property, namingStrategy);
+
+            result.Should().NotBeNullOrEmpty();
+            result.Should().Be(name);
+        }
+
+        [TestMethod]
+        public void Given_Property_When_DefaultJsonProperyAnnotation_Invoked_Then_It_Should_Return_ElementName()
+        {
+            var name = "FakePropertyNoAnnotation";
+            var property = typeof(FakeModel).GetProperty(name, BindingFlags.Public | BindingFlags.Instance);
+            var namingStrategy = new DefaultNamingStrategy();
+
+            var result = PropertyInfoExtensions.GetJsonPropertyName(property, namingStrategy);
+
+            result.Should().NotBeNullOrEmpty();
+            result.Should().Be(name);
+        }
+
+        [TestMethod]
+        public void Given_Property_When_GetJsonPropertyName_IsEmpty_WithCamelCaseNaming_Then_It_Should_Return_ElementName()
+        {
+            var name = "FakePropertyNoPropertyValue";
+            var camelCaseName = "fakePropertyNoPropertyValue";
+            var property = typeof(FakeModel).GetProperty(name, BindingFlags.Public | BindingFlags.Instance);
+            var namingStrategy = new CamelCaseNamingStrategy();
+
+            var result = PropertyInfoExtensions.GetJsonPropertyName(property, namingStrategy);
+
+            result.Should().NotBeNullOrEmpty();
+            result.Should().Be(camelCaseName);
+        }
+
+        [TestMethod]
+        public void Given_Property_When_DefaultJsonProperyAnnotation_Invoked_WithCamelCaseNaming_Then_It_Should_Return_ElementName()
+        {
+            var name = "FakePropertyNoAnnotation";
+            var camelCaseName = "fakePropertyNoAnnotation";
+            var property = typeof(FakeModel).GetProperty(name, BindingFlags.Public | BindingFlags.Instance);
+            var namingStrategy = new CamelCaseNamingStrategy();
+
+            var result = PropertyInfoExtensions.GetJsonPropertyName(property, namingStrategy);
+
+            result.Should().NotBeNullOrEmpty();
+            result.Should().Be(camelCaseName);
+        }
     }
 }
