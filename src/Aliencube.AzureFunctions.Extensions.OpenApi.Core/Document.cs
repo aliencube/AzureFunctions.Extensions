@@ -40,9 +40,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Core
             this._helper = helper.ThrowIfNullOrDefault();
         }
 
-        /// <summary>
-        /// Gets the underlying <see cref="OpenApiDocument"/>
-        /// </summary>
+        /// <inheritdoc />
         public OpenApiDocument OpenApiDocument { get; private set; }
 
         /// <inheritdoc />
