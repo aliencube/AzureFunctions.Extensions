@@ -257,12 +257,12 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Core
 
             if (securitySchemes != null && securitySchemes.Count > 0)
             {
-                foreach (var securityScheme in securitySchemes.Values)
+                foreach (var securityScheme in securitySchemes)
                 {
                     var requirement = new OpenApiSecurityRequirement
                     {
                         {
-                            securityScheme,
+                            new OpenApiSecurityScheme { Reference = new OpenApiReference { Id = securityScheme.Key, Type = ReferenceType.SecurityScheme } },
                             new List<string>()
                         }
                     };
