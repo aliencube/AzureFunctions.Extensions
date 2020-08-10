@@ -40,7 +40,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Core
         }
 
         /// <inheritdoc />
-        public List<MethodInfo> GetHttpTriggerMethods(Assembly assembly)
+        public IList<MethodInfo> GetHttpTriggerMethods(Assembly assembly)
         {
             var methods = assembly.GetTypes()
                                   .SelectMany(p => p.GetMethods())
@@ -123,7 +123,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Core
         }
 
         /// <inheritdoc />
-        public List<OpenApiParameter> GetOpenApiParameters(MethodInfo element, HttpTriggerAttribute trigger, NamingStrategy namingStrategy, VisitorCollection collection)
+        public IList<OpenApiParameter> GetOpenApiParameters(MethodInfo element, HttpTriggerAttribute trigger, NamingStrategy namingStrategy, VisitorCollection collection)
         {
             var parameters = element.GetCustomAttributes<OpenApiParameterAttribute>(inherit: false)
                                     .Select(p => p.ToOpenApiParameter(namingStrategy, collection))
@@ -192,7 +192,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Core
         }
 
         /// <inheritdoc />
-        public Dictionary<string, OpenApiSchema> GetOpenApiSchemas(List<MethodInfo> elements, NamingStrategy namingStrategy, VisitorCollection collection)
+        public IDictionary<string, OpenApiSchema> GetOpenApiSchemas(IList<MethodInfo> elements, NamingStrategy namingStrategy, VisitorCollection collection)
         {
             var requests = elements.SelectMany(p => p.GetCustomAttributes<OpenApiRequestBodyAttribute>(inherit: false))
                                    .Select(p => p.BodyType);
@@ -234,7 +234,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Core
         }
 
         /// <inheritdoc />
-        public Dictionary<string, OpenApiSecurityScheme> GetOpenApiSecuritySchemes()
+        public IDictionary<string, OpenApiSecurityScheme> GetOpenApiSecuritySchemes()
         {
             var scheme = new OpenApiSecurityScheme()
             {
@@ -248,6 +248,30 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Core
                               };
 
             return schemes;
+        }
+
+        /// <inheritdoc />
+        public IList<OpenApiSecurityRequirement> GetOpenApiSecurityRequirements(IDictionary<string, OpenApiSecurityScheme> securitySchemes)
+        {
+            var requirements = new List<OpenApiSecurityRequirement>();
+
+            if (securitySchemes != null && securitySchemes.Count > 0)
+            {
+                foreach (var securityScheme in securitySchemes.Values)
+                {
+                    var requirement = new OpenApiSecurityRequirement
+                    {
+                        {
+                            securityScheme,
+                            new List<string>()
+                        }
+                    };
+
+                    requirements.Add(requirement);
+                }
+            }
+
+            return requirements;
         }
 
         private string FilterRoute(string route)
