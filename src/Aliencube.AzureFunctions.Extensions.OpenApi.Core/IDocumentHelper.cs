@@ -113,7 +113,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Core.Abstractions
         /// <param name="namingStrategy"><see cref="NamingStrategy"/> instance to create the JSON schema from .NET Types.</param>
         /// <param name="collection"><see cref="VisitorCollection"/> instance to add types to schema.</param>
         /// <returns>Collection of <see cref="OpenApiSchema"/> instance.</returns>
-        Dictionary<string, OpenApiSchema> GetOpenApiSchemas(IList<MethodInfo> elements, NamingStrategy namingStrategy, VisitorCollection collection);
+        Dictionary<string, OpenApiSchema> GetOpenApiSchemas(List<MethodInfo> elements, NamingStrategy namingStrategy, VisitorCollection collection);
 
         /// <summary>
         /// Gets the collection of <see cref="OpenApiSecurityScheme"/> instances.
@@ -126,6 +126,6 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Core.Abstractions
         /// </summary>
         /// <param name="securitySchemes">The <see cref="OpenApiSecurityScheme"/> dictionary.</param>
         /// <returns>The list of <see cref="OpenApiSecurityRequirement"/></returns>
-        List<OpenApiSecurityRequirement> GetOpenApiSecurityRequirements(IDictionary<string, OpenApiSecurityScheme> securitySchemes);
+        List<OpenApiSecurityRequirement> GetOpenApiSecurityRequirements(Dictionary<string, OpenApiSecurityScheme> securitySchemes);
     }
 }
