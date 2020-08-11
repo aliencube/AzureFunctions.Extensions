@@ -21,7 +21,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Core.Abstractions
         /// </summary>
         /// <param name="assembly">Assembly of Azure Function instance.</param>
         /// <returns>List of <see cref="MethodInfo"/> instances representing HTTP triggers.</returns>
-        IList<MethodInfo> GetHttpTriggerMethods(Assembly assembly);
+        List<MethodInfo> GetHttpTriggerMethods(Assembly assembly);
 
         /// <summary>
         /// Gets the <see cref="FunctionNameAttribute"/> from the method.
@@ -77,7 +77,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Core.Abstractions
         /// <param name="namingStrategy"><see cref="NamingStrategy"/> instance to create the JSON schema from .NET Types.</param>
         /// <param name="collection"><see cref="VisitorCollection"/> instance to process parameters.</param>
         /// <returns>List of <see cref="OpenApiParameter"/> instance.</returns>
-        IList<OpenApiParameter> GetOpenApiParameters(MethodInfo element, HttpTriggerAttribute trigger, NamingStrategy namingStrategy, VisitorCollection collection);
+        List<OpenApiParameter> GetOpenApiParameters(MethodInfo element, HttpTriggerAttribute trigger, NamingStrategy namingStrategy, VisitorCollection collection);
 
         /// <summary>
         /// Gets the <see cref="OpenApiRequestBody"/> instance.
@@ -113,19 +113,19 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Core.Abstractions
         /// <param name="namingStrategy"><see cref="NamingStrategy"/> instance to create the JSON schema from .NET Types.</param>
         /// <param name="collection"><see cref="VisitorCollection"/> instance to add types to schema.</param>
         /// <returns>Collection of <see cref="OpenApiSchema"/> instance.</returns>
-        IDictionary<string, OpenApiSchema> GetOpenApiSchemas(IList<MethodInfo> elements, NamingStrategy namingStrategy, VisitorCollection collection);
+        Dictionary<string, OpenApiSchema> GetOpenApiSchemas(IList<MethodInfo> elements, NamingStrategy namingStrategy, VisitorCollection collection);
 
         /// <summary>
         /// Gets the collection of <see cref="OpenApiSecurityScheme"/> instances.
         /// </summary>
         /// <returns>Collection of <see cref="OpenApiSecurityScheme"/> instance.</returns>
-        IDictionary<string, OpenApiSecurityScheme> GetOpenApiSecuritySchemes();
+        Dictionary<string, OpenApiSecurityScheme> GetOpenApiSecuritySchemes();
 
         /// <summary>
         /// Gets the list of <see cref="OpenApiSecurityRequirement"/> instances.
         /// </summary>
         /// <param name="securitySchemes">The <see cref="OpenApiSecurityScheme"/> dictionary.</param>
         /// <returns>The list of <see cref="OpenApiSecurityRequirement"/></returns>
-        IList<OpenApiSecurityRequirement> GetOpenApiSecurityRequirements(IDictionary<string, OpenApiSecurityScheme> securitySchemes);
+        List<OpenApiSecurityRequirement> GetOpenApiSecurityRequirements(IDictionary<string, OpenApiSecurityScheme> securitySchemes);
     }
 }
