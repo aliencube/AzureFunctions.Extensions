@@ -251,7 +251,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Core
         }
 
         /// <inheritdoc />
-        public List<OpenApiSecurityRequirement> GetOpenApiSecurityRequirements(Dictionary<string, OpenApiSecurityScheme> securitySchemes)
+        public List<OpenApiSecurityRequirement> GetOpenApiSecurityRequirements(IDictionary<string, OpenApiSecurityScheme> securitySchemes)
         {
             var requirements = new List<OpenApiSecurityRequirement>();
 
