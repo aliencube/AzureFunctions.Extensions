@@ -84,7 +84,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.CLI
             var filter = new RouteConstraintFilter();
             var acceptor = new OpenApiSchemaAcceptor();
             var namingStrategy = new CamelCaseNamingStrategy();
-            var collection = this.GetVisitorCollection();
+            var collection = VisitorCollection.CreateInstance();
             var helper = new DocumentHelper(filter, acceptor);
             var document = new Document(helper);
 
@@ -135,18 +135,6 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.CLI
             }
 
             File.WriteAllText($"{outputpath}{directorySeparator}swagger.{format.ToDisplayName()}", swagger, Encoding.UTF8);
-        }
-
-        private VisitorCollection GetVisitorCollection()
-        {
-            var visitors = typeof(IVisitor).Assembly
-                                           .GetTypes()
-                                           .Where(p => p.Name.EndsWith("Visitor") && p.IsClass && !p.IsAbstract)
-                                           .Select(p => (IVisitor)Activator.CreateInstance(p))
-                                           .ToList();
-            var collection = new VisitorCollection(visitors);
-
-            return collection;
         }
     }
 }

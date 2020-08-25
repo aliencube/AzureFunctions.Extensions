@@ -2,7 +2,7 @@ using System;
 
 using Aliencube.AzureFunctions.Extensions.OpenApi.Core.Abstractions;
 using Aliencube.AzureFunctions.Extensions.OpenApi.Core.Tests.Fakes;
-
+using Aliencube.AzureFunctions.Extensions.OpenApi.Core.Visitors;
 using FluentAssertions;
 
 using Microsoft.OpenApi.Models;
@@ -15,13 +15,15 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Core.Tests.Visitors
     [TestClass]
     public class TypeVisitorTests
     {
+        private VisitorCollection _visitorCollection;
         private IVisitor _visitor;
         private NamingStrategy _strategy;
 
         [TestInitialize]
         public void Init()
         {
-            this._visitor = new FakeTypeVisitor();
+            this._visitorCollection = new VisitorCollection();
+            this._visitor = new FakeTypeVisitor(this._visitorCollection);
             this._strategy = new CamelCaseNamingStrategy();
         }
 

@@ -19,9 +19,23 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Core.Visitors
     public abstract class TypeVisitor : IVisitor
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="TypeVisitor"/> class.
+        /// </summary>
+        /// <param name="visitorCollection"><see cref="VisitorCollection"/> instance.</param>
+        protected TypeVisitor(VisitorCollection visitorCollection)
+        {
+            this.VisitorCollection = visitorCollection.ThrowIfNullOrDefault();
+        }
+
+        /// <summary>
         /// Gets the <see cref="Type"/> object.
         /// </summary>
         protected Type Type { get; private set; }
+
+        /// <summary>
+        /// Gets the <see cref="VisitorCollection"/>.
+        /// </summary>
+        protected VisitorCollection VisitorCollection { get; }
 
         /// <inheritdoc />
         public virtual bool IsVisitable(Type type)

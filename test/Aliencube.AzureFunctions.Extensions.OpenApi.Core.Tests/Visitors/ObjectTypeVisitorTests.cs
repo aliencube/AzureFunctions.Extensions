@@ -21,13 +21,15 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Core.Tests.Visitors
     [TestClass]
     public class ObjectTypeVisitorTests
     {
+        private VisitorCollection _visitorCollection;
         private IVisitor _visitor;
         private NamingStrategy _strategy;
 
         [TestInitialize]
         public void Init()
         {
-            this._visitor = new ObjectTypeVisitor();
+            this._visitorCollection = VisitorCollection.CreateInstance();
+            this._visitor = new ObjectTypeVisitor(this._visitorCollection);
             this._strategy = new CamelCaseNamingStrategy();
         }
 
@@ -43,6 +45,9 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Core.Tests.Visitors
         [DataTestMethod]
         [DataRow(typeof(FakeModel), true)]
         [DataRow(typeof(int), false)]
+        [DataRow(typeof(Uri), false)]
+        [DataRow(typeof(IEnumerable<object>), false)]
+        [DataRow(typeof(IDictionary<string, object>), false)]
         public void Given_Type_When_IsVisitable_Invoked_Then_It_Should_Return_Result(Type type, bool expected)
         {
             var result = this._visitor.IsVisitable(type);
@@ -53,6 +58,9 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Core.Tests.Visitors
         [DataTestMethod]
         [DataRow(typeof(FakeModel), false)]
         [DataRow(typeof(int), false)]
+        [DataRow(typeof(Uri), false)]
+        [DataRow(typeof(IEnumerable<object>), false)]
+        [DataRow(typeof(IDictionary<string, object>), false)]
         public void Given_Type_When_IsParameterVisitable_Invoked_Then_It_Should_Return_Result(Type type, bool expected)
         {
             var result = this._visitor.IsParameterVisitable(type);
@@ -63,6 +71,9 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Core.Tests.Visitors
         [DataTestMethod]
         [DataRow(typeof(FakeModel), true)]
         [DataRow(typeof(int), false)]
+        [DataRow(typeof(Uri), false)]
+        [DataRow(typeof(IEnumerable<object>), false)]
+        [DataRow(typeof(IDictionary<string, object>), false)]
         public void Given_Type_When_IsPayloadVisitable_Invoked_Then_It_Should_Return_Result(Type type, bool expected)
         {
             var result = this._visitor.IsPayloadVisitable(type);

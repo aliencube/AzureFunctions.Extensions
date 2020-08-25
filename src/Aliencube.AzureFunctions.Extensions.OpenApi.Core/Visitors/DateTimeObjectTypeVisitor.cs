@@ -15,6 +15,12 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Core.Visitors
     public class DateTimeObjectTypeVisitor : TypeVisitor
     {
         /// <inheritdoc />
+        public DateTimeObjectTypeVisitor(VisitorCollection visitorCollection)
+            : base(visitorCollection)
+        {
+        }
+
+        /// <inheritdoc />
         public override bool IsVisitable(Type type)
         {
             var isVisitable = this.IsVisitable(type, TypeCode.Object) && type == typeof(DateTime);

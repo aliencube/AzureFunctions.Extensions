@@ -19,6 +19,12 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Core.Tests.Fakes
         [JsonProperty("anotherFakeProperty", Required = Required.Always)]
         public string FakeProperty2 { get; set; }
 
+        [JsonProperty(Required = Required.Default)]
+        public string FakePropertyNoPropertyValue { get; set; }
+
+        [JsonProperty]
+        public string FakePropertyNoAnnotation { get; set; }
+
         /// <summary>
         /// Gets or sets the nullable int value.
         /// </summary>
