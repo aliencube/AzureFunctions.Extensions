@@ -120,12 +120,5 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Core.Abstractions
         /// </summary>
         /// <returns>Collection of <see cref="OpenApiSecurityScheme"/> instance.</returns>
         Dictionary<string, OpenApiSecurityScheme> GetOpenApiSecuritySchemes();
-
-        /// <summary>
-        /// Gets the list of <see cref="OpenApiSecurityRequirement"/> instances.
-        /// </summary>
-        /// <param name="securitySchemes">The <see cref="OpenApiSecurityScheme"/> dictionary.</param>
-        /// <returns>The list of <see cref="OpenApiSecurityRequirement"/></returns>
-        List<OpenApiSecurityRequirement> GetOpenApiSecurityRequirements(IDictionary<string, OpenApiSecurityScheme> securitySchemes);
     }
 }

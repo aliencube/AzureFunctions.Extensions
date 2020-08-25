@@ -249,30 +249,6 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Core
             return schemes;
         }
 
-        /// <inheritdoc />
-        public List<OpenApiSecurityRequirement> GetOpenApiSecurityRequirements(IDictionary<string, OpenApiSecurityScheme> securitySchemes)
-        {
-            var requirements = new List<OpenApiSecurityRequirement>();
-
-            if (securitySchemes != null && securitySchemes.Count > 0)
-            {
-                foreach (var securityScheme in securitySchemes)
-                {
-                    var requirement = new OpenApiSecurityRequirement
-                    {
-                        {
-                            new OpenApiSecurityScheme { Reference = new OpenApiReference { Id = securityScheme.Key, Type = ReferenceType.SecurityScheme } },
-                            new List<string>()
-                        }
-                    };
-
-                    requirements.Add(requirement);
-                }
-            }
-
-            return requirements;
-        }
-
         private string FilterRoute(string route)
         {
             var segments = route.Split(new[] { "/" }, StringSplitOptions.RemoveEmptyEntries)
