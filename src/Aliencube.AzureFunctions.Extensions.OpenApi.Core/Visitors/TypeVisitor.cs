@@ -19,12 +19,12 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Core.Visitors
     public abstract class TypeVisitor : IVisitor
     {
         /// <summary>
-        /// Constructor required for <see cref="VisitorCollection"/>
+        /// Initializes a new instance of the <see cref="TypeVisitor"/> class.
         /// </summary>
-        /// <param name="visitorCollection"><see cref="VisitorCollection"/></param>
-        public TypeVisitor(VisitorCollection visitorCollection)
+        /// <param name="visitorCollection"><see cref="VisitorCollection"/> instance.</param>
+        protected TypeVisitor(VisitorCollection visitorCollection)
         {
-            this.VisitorCollection = visitorCollection;
+            this.VisitorCollection = visitorCollection.ThrowIfNullOrDefault();
         }
 
         /// <summary>
