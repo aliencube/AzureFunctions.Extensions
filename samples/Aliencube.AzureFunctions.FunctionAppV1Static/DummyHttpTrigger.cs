@@ -50,5 +50,19 @@ namespace Aliencube.AzureFunctions.FunctionAppV1Static
 
             return await Task.FromResult(result).ConfigureAwait(false);
         }
+
+        [FunctionName(nameof(DummyHttpTrigger.UpdateDummies))]
+        [OpenApiOperation(operationId: "updateDummies", tags: new[] { "dummy" }, Summary = "Updates a list of dummies", Description = "This updates a list of dummies.", Visibility = OpenApiVisibilityType.Advanced)]
+        [OpenApiRequestBody(contentType: "application/json", bodyType: typeof(DummyListModel), Required = true, Description = "Dummy list model")]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(List<DummyStringModel>), Summary = "Dummy response", Description = "This returns the dummy response")]
+        public static async Task<HttpResponseMessage> UpdateDummies(
+            [HttpTrigger(AuthorizationLevel.Function, "PUT", Route = "dummies")] HttpRequestMessage req,
+            ILogger log)
+        {
+            var content = new List<DummyStringModel>();
+            var result = req.CreateResponse(HttpStatusCode.OK, content);
+
+            return await Task.FromResult(result).ConfigureAwait(false);
+        }
     }
 }

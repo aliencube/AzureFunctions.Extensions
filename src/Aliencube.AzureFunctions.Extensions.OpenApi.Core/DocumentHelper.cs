@@ -215,9 +215,8 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Core
             this._acceptor.Schemas = schemas;
 
             this._acceptor.Accept(collection, namingStrategy);
-            //types.ForEach(p => schemas.AddRange(p.ToOpenApiSchemas(namingStrategy)));
 
-            var union = schemas.Union(rootSchemas)
+            var union = schemas.Concat(rootSchemas.Where(p => !schemas.Keys.Contains(p.Key)))
                                .Distinct()
                                .OrderBy(p => p.Key)
                                .ToDictionary(p => p.Key,
