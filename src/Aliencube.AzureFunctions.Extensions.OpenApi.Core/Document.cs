@@ -163,7 +163,6 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Core
             this.OpenApiDocument.Paths = paths;
             this.OpenApiDocument.Components.Schemas = this._helper.GetOpenApiSchemas(methods, this._strategy, this._collection);
             this.OpenApiDocument.Components.SecuritySchemes = this._helper.GetOpenApiSecuritySchemes();
-            this.OpenApiDocument.SecurityRequirements = this._helper.GetOpenApiSecurityRequirements(this.OpenApiDocument.Components.SecuritySchemes);
 
             return this;
         }
