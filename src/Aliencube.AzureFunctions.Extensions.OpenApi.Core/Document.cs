@@ -29,12 +29,11 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Core
     {
         private readonly IDocumentHelper _helper;
 
-        private OpenApiDocument _document;
         private NamingStrategy _strategy;
         private VisitorCollection _collection;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Document"/> class.
+        /// Initializes a new instance of the <see cref="Core.Document"/> class.
         /// </summary>
         public Document(IDocumentHelper helper)
         {
@@ -42,9 +41,12 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Core
         }
 
         /// <inheritdoc />
+        public OpenApiDocument OpenApiDocument { get; private set; }
+
+        /// <inheritdoc />
         public IDocument InitialiseDocument()
         {
-            this._document = new OpenApiDocument()
+            this.OpenApiDocument = new OpenApiDocument()
             {
                 Components = new OpenApiComponents()
             };
@@ -55,7 +57,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Core
         /// <inheritdoc />
         public IDocument AddMetadata(OpenApiInfo info)
         {
-            this._document.Info = info;
+            this.OpenApiDocument.Info = info;
 
             return this;
         }
@@ -66,7 +68,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Core
             var prefix = string.IsNullOrWhiteSpace(routePrefix) ? string.Empty : $"/{routePrefix}";
             var baseUrl = $"{req.RequestUri.Scheme}://{req.RequestUri.Authority}{prefix}";
 
-            this._document.Servers.Add(new OpenApiServer { Url = baseUrl });
+            this.OpenApiDocument.Servers.Add(new OpenApiServer { Url = baseUrl });
 
             return this;
         }
@@ -77,7 +79,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Core
             var prefix = string.IsNullOrWhiteSpace(routePrefix) ? string.Empty : $"/{routePrefix}";
             var baseUrl = $"{req.Scheme}://{req.Host}{prefix}";
 
-            this._document.Servers.Add(new OpenApiServer { Url = baseUrl });
+            this.OpenApiDocument.Servers.Add(new OpenApiServer { Url = baseUrl });
 
             return this;
         }
@@ -158,9 +160,9 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Core
                 paths[path] = item;
             }
 
-            this._document.Paths = paths;
-            this._document.Components.Schemas = this._helper.GetOpenApiSchemas(methods, this._strategy, this._collection);
-            this._document.Components.SecuritySchemes = this._helper.GetOpenApiSecuritySchemes();
+            this.OpenApiDocument.Paths = paths;
+            this.OpenApiDocument.Components.Schemas = this._helper.GetOpenApiSchemas(methods, this._strategy, this._collection);
+            this.OpenApiDocument.Components.SecuritySchemes = this._helper.GetOpenApiSecuritySchemes();
 
             return this;
         }
@@ -179,7 +181,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Core
         {
             using (var sw = new StringWriter())
             {
-                this._document.Serialise(sw, version, format);
+                this.OpenApiDocument.Serialise(sw, version, format);
 
                 return sw.ToString();
             }
