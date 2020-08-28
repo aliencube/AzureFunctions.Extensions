@@ -35,7 +35,14 @@ namespace Aliencube.AzureFunctions.FunctionApp.Models
         /// </summary>
         public List<Tag> Tags { get; set; }
 
+        /// <summary>
+        /// Gets or sets the <see cref="Tag"/> value.
+        /// </summary>
         public Tag Tag1 { get; set; }
+
+        /// <summary>
+        /// Gets or sets the <see cref="Tag"/> value.
+        /// </summary>
         public Tag Tag2 { get; set; }
 
         /// <summary>
