@@ -12,7 +12,7 @@ jobs:
       matrix:
         os: [ 'windows-latest' ]
         node: [ 10 ]
-        dotnet: [ '3.1.302' ]
+        dotnet: [ '${{ secrets.DOTNET_SDK_VERSION }}' ]
         targetFramework: [ 'net461', 'netcoreapp3.1' ]
         runtime: [ 'win-x64', 'linux-x64', 'osx-x64' ]
 

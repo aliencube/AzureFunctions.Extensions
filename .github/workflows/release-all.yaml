@@ -15,7 +15,7 @@ jobs:
     strategy:
       matrix:
         os: [ 'windows-latest' ]
-        dotnet: [ '3.1.302' ]
+        dotnet: [ '${{ secrets.DOTNET_SDK_VERSION }}' ]
 
     runs-on: ${{ matrix.os }}
 

@@ -33,7 +33,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Core
         private VisitorCollection _collection;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Core.Document"/> class.
+        /// Initializes a new instance of the <see cref="Document"/> class.
         /// </summary>
         public Document(IDocumentHelper helper)
         {
