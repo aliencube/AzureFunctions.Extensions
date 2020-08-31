@@ -46,15 +46,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Aliencube.AzureFunctions.Fu
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Aliencube.AzureFunctions.FunctionAppV3IoC", "samples\Aliencube.AzureFunctions.FunctionAppV3IoC\Aliencube.AzureFunctions.FunctionAppV3IoC.csproj", "{8460A7F9-FED4-4495-A595-8C585FC7F606}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Aliencube.AzureFunctions.FunctionAppV1Static", "samples\Aliencube.AzureFunctions.FunctionAppV1Static\Aliencube.AzureFunctions.FunctionAppV1Static.csproj", "{033D654F-D762-420B-A549-ACC9CC28AB40}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Aliencube.AzureFunctions.FunctionApp.Functions", "samples\Aliencube.AzureFunctions.FunctionApp.Functions\Aliencube.AzureFunctions.FunctionApp.Functions.csproj", "{B6C530E3-6C74-426A-B518-218FC7581D3F}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Aliencube.AzureFunctions.FunctionAppV1IoC", "samples\Aliencube.AzureFunctions.FunctionAppV1IoC\Aliencube.AzureFunctions.FunctionAppV1IoC.csproj", "{7FD855AB-EB0E-42AE-A26D-E164D375D6A5}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Aliencube.AzureFunctions.FunctionAppV2Static", "samples\Aliencube.AzureFunctions.FunctionAppV2Static\Aliencube.AzureFunctions.FunctionAppV2Static.csproj", "{848EDB8F-9C45-462B-A544-EA237774F3BA}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Aliencube.AzureFunctions.FunctionAppV2IoC", "samples\Aliencube.AzureFunctions.FunctionAppV2IoC\Aliencube.AzureFunctions.FunctionAppV2IoC.csproj", "{D6C3806E-2685-4E8D-9F4F-7A93E5270891}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "templates", "templates", "{56A43630-87E6-4E94-B24A-859258202578}"
 EndProject
@@ -74,9 +66,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Aliencube.AzureFunctions.Ex
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Aliencube.AzureFunctions.Extensions.OpenApi.Core.Tests", "test\Aliencube.AzureFunctions.Extensions.OpenApi.Core.Tests\Aliencube.AzureFunctions.Extensions.OpenApi.Core.Tests.csproj", "{968CD847-80D0-4740-92D5-F5553461EC04}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aliencube.AzureFunctions.Extensions.OpenApi", "src\Aliencube.AzureFunctions.Extensions.OpenApi\Aliencube.AzureFunctions.Extensions.OpenApi.csproj", "{D405655F-C8BE-4134-893C-ADB4918B0624}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Aliencube.AzureFunctions.Extensions.OpenApi", "src\Aliencube.AzureFunctions.Extensions.OpenApi\Aliencube.AzureFunctions.Extensions.OpenApi.csproj", "{D405655F-C8BE-4134-893C-ADB4918B0624}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aliencube.AzureFunctions.Extensions.OpenApi.Tests", "test\Aliencube.AzureFunctions.Extensions.OpenApi.Tests\Aliencube.AzureFunctions.Extensions.OpenApi.Tests.csproj", "{D787694D-B87B-4E11-9455-B5BF9306D8FC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Aliencube.AzureFunctions.Extensions.OpenApi.Tests", "test\Aliencube.AzureFunctions.Extensions.OpenApi.Tests\Aliencube.AzureFunctions.Extensions.OpenApi.Tests.csproj", "{D787694D-B87B-4E11-9455-B5BF9306D8FC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -136,26 +128,10 @@ Global
 		{8460A7F9-FED4-4495-A595-8C585FC7F606}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8460A7F9-FED4-4495-A595-8C585FC7F606}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8460A7F9-FED4-4495-A595-8C585FC7F606}.Release|Any CPU.Build.0 = Release|Any CPU
-		{033D654F-D762-420B-A549-ACC9CC28AB40}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{033D654F-D762-420B-A549-ACC9CC28AB40}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{033D654F-D762-420B-A549-ACC9CC28AB40}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{033D654F-D762-420B-A549-ACC9CC28AB40}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B6C530E3-6C74-426A-B518-218FC7581D3F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B6C530E3-6C74-426A-B518-218FC7581D3F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B6C530E3-6C74-426A-B518-218FC7581D3F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B6C530E3-6C74-426A-B518-218FC7581D3F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7FD855AB-EB0E-42AE-A26D-E164D375D6A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7FD855AB-EB0E-42AE-A26D-E164D375D6A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7FD855AB-EB0E-42AE-A26D-E164D375D6A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7FD855AB-EB0E-42AE-A26D-E164D375D6A5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{848EDB8F-9C45-462B-A544-EA237774F3BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{848EDB8F-9C45-462B-A544-EA237774F3BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{848EDB8F-9C45-462B-A544-EA237774F3BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{848EDB8F-9C45-462B-A544-EA237774F3BA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D6C3806E-2685-4E8D-9F4F-7A93E5270891}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D6C3806E-2685-4E8D-9F4F-7A93E5270891}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D6C3806E-2685-4E8D-9F4F-7A93E5270891}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D6C3806E-2685-4E8D-9F4F-7A93E5270891}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B18937F6-B39F-46BB-BB3C-86C0693993EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B18937F6-B39F-46BB-BB3C-86C0693993EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B18937F6-B39F-46BB-BB3C-86C0693993EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -199,11 +175,7 @@ Global
 		{C2996131-C3CA-4D3D-8357-C533849792E1} = {66D8DEA8-B477-497F-95BB-E8F9A5BAC352}
 		{B7CF1C77-FE6F-4586-93FE-801671A5EAFD} = {66D8DEA8-B477-497F-95BB-E8F9A5BAC352}
 		{8460A7F9-FED4-4495-A595-8C585FC7F606} = {66D8DEA8-B477-497F-95BB-E8F9A5BAC352}
-		{033D654F-D762-420B-A549-ACC9CC28AB40} = {66D8DEA8-B477-497F-95BB-E8F9A5BAC352}
 		{B6C530E3-6C74-426A-B518-218FC7581D3F} = {66D8DEA8-B477-497F-95BB-E8F9A5BAC352}
-		{7FD855AB-EB0E-42AE-A26D-E164D375D6A5} = {66D8DEA8-B477-497F-95BB-E8F9A5BAC352}
-		{848EDB8F-9C45-462B-A544-EA237774F3BA} = {66D8DEA8-B477-497F-95BB-E8F9A5BAC352}
-		{D6C3806E-2685-4E8D-9F4F-7A93E5270891} = {66D8DEA8-B477-497F-95BB-E8F9A5BAC352}
 		{41695443-A292-4909-89A6-2D9846753164} = {56A43630-87E6-4E94-B24A-859258202578}
 		{B18937F6-B39F-46BB-BB3C-86C0693993EF} = {810145E0-41CF-4E24-BD9C-E7517498BA29}
 		{7AD094AA-01D6-4644-B9B6-E555A029D6D7} = {810145E0-41CF-4E24-BD9C-E7517498BA29}
