@@ -24,6 +24,11 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Core.Abstractions
     public interface IDocument
     {
         /// <summary>
+        /// Gets the underlying <see cref="OpenApiDocument"/> instance.
+        /// </summary>
+        OpenApiDocument OpenApiDocument { get; }
+
+        /// <summary>
         /// Initializes the document instance.
         /// </summary>
         /// <returns><see cref="IDocument"/> instance.</returns>

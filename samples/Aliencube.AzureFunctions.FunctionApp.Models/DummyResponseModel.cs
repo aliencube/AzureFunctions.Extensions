@@ -46,5 +46,9 @@ namespace Aliencube.AzureFunctions.FunctionApp.Models
 
         [OpenApiSchemaVisibility(OpenApiVisibilityType.Advanced)]
         public string OpenApiSchemaVisibilityValue { get; set; }
+
+        public DummySubResponseModel SubResponse1 { get; set; }
+
+        public DummySubResponseModel SubResponse2 { get; set; }
     }
 }
