@@ -197,8 +197,8 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Core.Visitors
                                                           p.Value.Format.IsNullOrWhiteSpace() &&
                                                           p.Value.Items.IsNullOrDefault() &&
                                                           p.Value.AdditionalProperties.IsNullOrDefault())
-                                              .GroupBy(p=>p.Value.Title)
-                                              .Select(g=>g.First())
+                                              .GroupBy(p => p.Value.Title)
+                                              .Select(p => p.First())
                                               .ToDictionary(p => p.Value.Title, p => p.Value);
 
             foreach (var schema in schemasToBeAdded.Where(p => p.Key != "jObject" && p.Key != "jToken"))

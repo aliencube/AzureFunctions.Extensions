@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+
 using Newtonsoft.Json;
 
 namespace Aliencube.AzureFunctions.FunctionApp.Models
@@ -34,16 +35,6 @@ namespace Aliencube.AzureFunctions.FunctionApp.Models
         /// Gets or sets the list of tags.
         /// </summary>
         public List<Tag> Tags { get; set; }
-
-        /// <summary>
-        /// Gets or sets the Tag1 <see cref="Tag"/> value.
-        /// </summary>
-        public Tag Tag1 { get; set; }
-
-        /// <summary>
-        /// Gets or sets the Tag2 <see cref="Tag"/> value.
-        /// </summary>
-        public Tag Tag2 { get; set; }
 
         /// <summary>
         /// Gets or sets the <see cref="PetStatus"/> value.
