@@ -352,6 +352,43 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Core.Extensions
         }
 
         /// <summary>
+        /// Gets the underlying type of the given generic type.
+        /// </summary>
+        /// <param name="type">Type to check to get its underlying type.</param>
+        /// <returns>Returns the underlying type.</returns>
+        public static Type GetUnderlyingType(this Type type)
+        {
+            var underlyingType = default(Type);
+            if (type.IsOpenApiNullable(out var nullableUnderlyingType))
+            {
+                underlyingType = nullableUnderlyingType;
+            }
+
+            if (type.IsOpenApiArray())
+            {
+                underlyingType = type.GetElementType() ?? type.GetGenericArguments()[0];
+            }
+
+            if (type.IsOpenApiDictionary())
+            {
+                underlyingType = type.GetGenericArguments()[1];
+            }
+
+            if (underlyingType.IsNullOrDefault())
+            {
+                return underlyingType;
+            }
+
+            if (underlyingType.IsGenericType)
+            {
+                var underlyingTypeOfUnderlyingType = underlyingType.GetUnderlyingType();
+                underlyingType = underlyingTypeOfUnderlyingType;
+            }
+
+            return underlyingType;
+        }
+
+        /// <summary>
         /// Gets the Open API description from the given <see cref="Type"/>.
         /// </summary>
         /// <param name="type"><see cref="Type"/> instance.</param>

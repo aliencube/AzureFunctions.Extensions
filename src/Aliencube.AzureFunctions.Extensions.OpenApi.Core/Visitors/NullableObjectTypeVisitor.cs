@@ -42,8 +42,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Core.Visitors
             }
 
             // Gets the schema for the underlying type.
-            type.Value.IsOpenApiNullable(out var underlyingType);
-
+            var underlyingType = type.Value.GetUnderlyingType();
             var types = new Dictionary<string, Type>()
             {
                 { type.Key, underlyingType }

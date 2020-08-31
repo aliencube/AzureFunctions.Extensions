@@ -47,7 +47,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Core.Visitors
             }
 
             // Gets the schema for the underlying type.
-            var underlyingType = type.Value.GetGenericArguments()[1];
+            var underlyingType = type.Value.GetUnderlyingType();
             var types = new Dictionary<string, Type>()
             {
                 { underlyingType.GetOpenApiTypeName(namingStrategy), underlyingType }
