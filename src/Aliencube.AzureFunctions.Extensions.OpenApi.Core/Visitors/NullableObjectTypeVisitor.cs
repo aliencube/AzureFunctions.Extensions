@@ -88,7 +88,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Core.Visitors
         /// <inheritdoc />
         public override OpenApiSchema ParameterVisit(Type type, NamingStrategy namingStrategy)
         {
-            type.IsOpenApiNullable(out var underlyingType);
+            var underlyingType = type.GetUnderlyingType();
             var schema = this.VisitorCollection.ParameterVisit(underlyingType, namingStrategy);
 
             schema.Nullable = true;
@@ -107,7 +107,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Core.Visitors
         /// <inheritdoc />
         public override OpenApiSchema PayloadVisit(Type type, NamingStrategy namingStrategy)
         {
-            type.IsOpenApiNullable(out var underlyingType);
+            var underlyingType = type.GetUnderlyingType();
             var schema = this.VisitorCollection.PayloadVisit(underlyingType, namingStrategy);
 
             schema.Nullable = true;

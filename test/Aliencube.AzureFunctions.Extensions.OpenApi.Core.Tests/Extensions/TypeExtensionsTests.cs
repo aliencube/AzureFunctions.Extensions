@@ -125,5 +125,18 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Core.Tests.Extensions
 
             result.Should().Be(expected);
         }
+
+        [DataTestMethod]
+        [DataRow(typeof(int), false)]
+        [DataRow(typeof(int?), false)]
+        [DataRow(typeof(List<int>), true)]
+        [DataRow(typeof(FakeModel), true)]
+        [DataRow(typeof(JObject), false)]
+        public void Given_Type_When_IsReferentialType_Invoked_Then_It_Should_Return_Result(Type type, bool expected)
+        {
+            var result = TypeExtensions.IsReferentialType(type);
+
+            result.Should().Be(expected);
+        }
     }
 }

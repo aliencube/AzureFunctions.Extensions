@@ -68,6 +68,45 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Core.Extensions
             }
         }
 
+
+        /// <summary>
+        /// Checks whether the type can be referenced or not.
+        /// </summary>
+        /// <param name="type">Type to check.</param>
+        /// <returns>Returns <c>True</c>, if the type can be referenced; otherwise returns <c>False</c>.</returns>
+        public static bool IsReferentialType(this Type type)
+        {
+            var @enum = Type.GetTypeCode(type);
+            var isReferential = @enum == TypeCode.Object;
+
+            if (type == typeof(Guid))
+            {
+                isReferential = false;
+            }
+            if (type == typeof(DateTime))
+            {
+                isReferential = false;
+            }
+            if (type == typeof(DateTimeOffset))
+            {
+                isReferential = false;
+            }
+            if (type.IsOpenApiNullable())
+            {
+                isReferential = false;
+            }
+            if (type.IsUnflaggedEnumType())
+            {
+                isReferential = false;
+            }
+            if (type.IsJObjectType())
+            {
+                isReferential = false;
+            }
+
+            return isReferential;
+        }
+
         /// <summary>
         /// Checks whether the given type is Json.NET related <see cref="JObject"/>, <see cref="JToken"/> or not.
         /// </summary>

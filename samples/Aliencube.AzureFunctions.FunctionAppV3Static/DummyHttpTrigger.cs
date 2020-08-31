@@ -22,8 +22,8 @@ namespace Aliencube.AzureFunctions.FunctionAppV3Static
         [OpenApiParameter(name: "name", In = ParameterLocation.Query, Required = true, Type = typeof(string), Summary = "Dummy name", Description = "Dummy name", Visibility = OpenApiVisibilityType.Important)]
         [OpenApiParameter(name: "switch", In = ParameterLocation.Path, Required = true, Type = typeof(StringEnum), Summary = "Dummy switch", Description = "Dummy switch", Visibility = OpenApiVisibilityType.Important)]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(List<DummyResponseModel>), Summary = "List of the dummy responses", Description = "This returns the list of dummy responses")]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.BadRequest, contentType: "application/json", bodyType: typeof(string), Summary = "Invalid switch", Description = "Switch parameter is not valid")]
         [OpenApiResponseWithoutBody(statusCode: HttpStatusCode.NotFound, Summary = "Name not found", Description = "Name parameter is not found")]
-        [OpenApiResponseWithoutBody(statusCode: HttpStatusCode.BadRequest, Summary = "Invalid switch", Description = "Switch parameter is not valid")]
         public static async Task<IActionResult> GetDummies(
             [HttpTrigger(AuthorizationLevel.Function, "GET", Route = "dummies")] HttpRequest req,
             ILogger log)
@@ -56,6 +56,7 @@ namespace Aliencube.AzureFunctions.FunctionAppV3Static
         [OpenApiOperation(operationId: "updateDummies", tags: new[] { "dummy" }, Summary = "Updates a list of dummies", Description = "This updates a list of dummies.", Visibility = OpenApiVisibilityType.Advanced)]
         [OpenApiRequestBody(contentType: "application/json", bodyType: typeof(DummyListModel), Required = true, Description = "Dummy list model")]
         [OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(List<DummyStringModel>), Summary = "Dummy response", Description = "This returns the dummy response")]
+        [OpenApiResponseWithBody(statusCode: HttpStatusCode.BadRequest, contentType: "application/json", bodyType: typeof(List<int?>), Summary = "Invalid switch", Description = "Switch parameter is not valid")]
         public static async Task<IActionResult> UpdateDummies(
             [HttpTrigger(AuthorizationLevel.Function, "PUT", Route = "dummies")] HttpRequest req,
             ILogger log)
