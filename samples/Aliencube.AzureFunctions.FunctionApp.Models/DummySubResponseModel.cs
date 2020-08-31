@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 using Newtonsoft.Json;
 
 namespace Aliencube.AzureFunctions.FunctionApp.Models
@@ -8,5 +10,7 @@ namespace Aliencube.AzureFunctions.FunctionApp.Models
 
         [JsonProperty("CapitalisedJsonRequiredValue", Required = Required.Always)]
         public string JsonRequiredValue { get; set; }
+
+        public Dictionary<string, List<int>> NestedDictionaryValue { get; set; }
     }
 }
