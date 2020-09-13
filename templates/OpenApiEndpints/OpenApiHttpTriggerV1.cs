@@ -1,4 +1,3 @@
-#if NET461
 using System.Net;
 using System.Net.Http;
 using System.Text;
@@ -323,4 +322,3 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi
         }
     }
 }
-#endif
