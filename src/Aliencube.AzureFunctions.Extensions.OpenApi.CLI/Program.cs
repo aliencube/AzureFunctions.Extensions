@@ -66,9 +66,9 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.CLI
             {
                 pi = new ProjectInfo(project, configuration, target);
             }
-            catch
+            catch (Exception ex)
             {
-                return;
+                throw ex;
             }
 #if NET461
             var requestUri = new Uri("http://localhost:7071");
