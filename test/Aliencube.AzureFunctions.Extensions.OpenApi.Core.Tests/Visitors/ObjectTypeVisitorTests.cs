@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-
+using System.Linq;
 using Aliencube.AzureFunctions.Extensions.OpenApi.Core.Abstractions;
 using Aliencube.AzureFunctions.Extensions.OpenApi.Core.Attributes;
 using Aliencube.AzureFunctions.Extensions.OpenApi.Core.Enums;
@@ -82,7 +82,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Core.Tests.Visitors
         }
 
         [DataTestMethod]
-        [DataRow(typeof(FakeModel), "object", null, 2, 1, "fakeModel")]
+        [DataRow(typeof(FakeModel), "object", null, 2, 3, "fakeModel")]
         public void Given_Type_When_Visit_Invoked_Then_It_Should_Return_Result(Type objectType, string dataType, string dataFormat, int requiredCount, int rootSchemaCount, string referenceId)
         {
             var name = "hello";
@@ -98,6 +98,8 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Core.Tests.Visitors
             acceptor.Schemas[name].Required.Count.Should().Be(requiredCount);
 
             acceptor.RootSchemas.Count.Should().Be(rootSchemaCount);
+
+            acceptor.RootSchemas.Keys.Any(a => a.Contains("`")).Should().BeFalse();
 
             acceptor.Schemas[name].Reference.Type.Should().Be(ReferenceType.Schema);
             acceptor.Schemas[name].Reference.Id.Should().Be(referenceId);
