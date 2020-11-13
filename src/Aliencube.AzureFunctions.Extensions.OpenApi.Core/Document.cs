@@ -1,6 +1,6 @@
 using System.IO;
 
-#if NET461
+#if NETFRAMEWORK
 using System.Net.Http;
 #endif
 
@@ -11,7 +11,7 @@ using Aliencube.AzureFunctions.Extensions.OpenApi.Core.Abstractions;
 using Aliencube.AzureFunctions.Extensions.OpenApi.Core.Extensions;
 using Aliencube.AzureFunctions.Extensions.OpenApi.Core.Visitors;
 
-#if NETSTANDARD2_0
+#if NETSTANDARD
 using Microsoft.AspNetCore.Http;
 #endif
 
@@ -61,7 +61,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Core
 
             return this;
         }
-#if NET461
+#if NETFRAMEWORK
         /// <inheritdoc />
         public IDocument AddServer(HttpRequestMessage req, string routePrefix)
         {
@@ -72,7 +72,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Core
 
             return this;
         }
-#elif NETSTANDARD2_0
+#elif NETSTANDARD
         /// <inheritdoc />
         public IDocument AddServer(HttpRequest req, string routePrefix)
         {

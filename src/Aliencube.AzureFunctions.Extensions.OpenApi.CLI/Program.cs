@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using System.Linq;
 
-#if NET461
+#if NETFRAMEWORK
 using System.Net.Http;
 #endif
 
@@ -17,7 +17,7 @@ using Aliencube.AzureFunctions.Extensions.OpenApi.Core.Visitors;
 
 using Cocona;
 
-#if !NET461
+#if !NETFRAMEWORK
 using Microsoft.AspNetCore.Http;
 
 using Moq;
@@ -70,7 +70,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.CLI
             {
                 return;
             }
-#if NET461
+#if NETFRAMEWORK
             var requestUri = new Uri("http://localhost:7071");
             var req = new HttpRequestMessage()
             {
@@ -93,7 +93,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.CLI
             {
                 swagger = document.InitialiseDocument()
                                   .AddMetadata(pi.OpenApiInfo)
-#if NET461
+#if NETFRAMEWORK
                                   .AddServer(req, pi.HostJsonHttpSettings.RoutePrefix)
 #else
                                   .AddServer(req.Object, pi.HostJsonHttpSettings.RoutePrefix)
@@ -108,11 +108,11 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.CLI
             {
                 Console.WriteLine(ex.Message);
                 Console.WriteLine(ex.StackTrace);
-#if NET461
+#if NETFRAMEWORK
                 req.Dispose();
 #endif
             }
-#if NET461
+#if NETFRAMEWORK
             req.Dispose();
 #endif
             if (console)
@@ -121,7 +121,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.CLI
             }
 
             var outputpath =
-#if NET461
+#if NETFRAMEWORK
                 Path.IsPathRooted(output)
 #else
                 Path.IsPathFullyQualified(output)
