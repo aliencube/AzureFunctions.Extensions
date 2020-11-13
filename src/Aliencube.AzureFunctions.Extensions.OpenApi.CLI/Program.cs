@@ -68,7 +68,10 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.CLI
             }
             catch (Exception ex)
             {
-                throw ex;
+                Console.WriteLine(ex.Message);
+                Console.WriteLine(ex.StackTrace);
+
+                return;
             }
 #if NETFRAMEWORK
             var requestUri = new Uri("http://localhost:7071");
