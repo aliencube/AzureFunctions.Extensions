@@ -1,6 +1,6 @@
 using System;
 
-#if NET461
+#if NETFRAMEWORK
 using System.Net.Http;
 #endif
 
@@ -12,7 +12,7 @@ using Aliencube.AzureFunctions.Extensions.OpenApi.Core.Visitors;
 
 using FluentAssertions;
 
-#if !NET461
+#if !NETFRAMEWORK
 using Microsoft.AspNetCore.Http;
 #endif
 
@@ -120,7 +120,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Core.Tests
             var host = "localhost";
             var routePrefix = "api";
             var url = $"{scheme}://{host}";
-#if NET461
+#if NETFRAMEWORK
             var uri = new Uri(url);
             var req = new HttpRequestMessage() { RequestUri = uri };
 #else
@@ -131,7 +131,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Core.Tests
             var doc = new Document(helper.Object);
 
             var result = await doc.InitialiseDocument()
-#if NET461
+#if NETFRAMEWORK
                                   .AddServer(req, routePrefix)
 #else
                                   .AddServer(req.Object, routePrefix)
@@ -154,7 +154,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Core.Tests
             var host = "localhost";
             string routePrefix = null;
             var url = $"{scheme}://{host}";
-#if NET461
+#if NETFRAMEWORK
             var uri = new Uri(url);
             var req = new HttpRequestMessage() { RequestUri = uri };
 #else
@@ -165,7 +165,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Core.Tests
             var doc = new Document(helper.Object);
 
             var result = await doc.InitialiseDocument()
-#if NET461
+#if NETFRAMEWORK
                                   .AddServer(req, routePrefix)
 #else
                                   .AddServer(req.Object, routePrefix)
@@ -188,7 +188,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Core.Tests
             var host = "localhost";
             var routePrefix = string.Empty;
             var url = $"{scheme}://{host}";
-#if NET461
+#if NETFRAMEWORK
             var uri = new Uri(url);
             var req = new HttpRequestMessage() { RequestUri = uri };
 #else
@@ -199,7 +199,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Core.Tests
             var doc = new Document(helper.Object);
 
             var result = await doc.InitialiseDocument()
-#if NET461
+#if NETFRAMEWORK
                                   .AddServer(req, routePrefix)
 #else
                                   .AddServer(req.Object, routePrefix)

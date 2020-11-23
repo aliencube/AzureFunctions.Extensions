@@ -76,11 +76,11 @@
     {
       "type": "func",
       // Change this to what you want to test. eg) build - functiopn app v3 static
-      "dependsOn": "build - function app v3 ioc",
+      "dependsOn": "build - function app v3 static",
       "options": {
         // Change the directory where you're going to test. eg) Aliencube.AzureFunctions.FunctionAppV3Static
         // Change the directory for target framework. eg) netcoreapp2.1
-        "cwd": "${workspaceFolder}/samples/Aliencube.AzureFunctions.FunctionAppV3IoC/bin/Debug/netcoreapp3.1"
+        "cwd": "${workspaceFolder}/samples/Aliencube.AzureFunctions.FunctionAppV3Static/bin/Debug/netcoreapp3.1"
       },
       "command": "host start",
       "isBackground": true,

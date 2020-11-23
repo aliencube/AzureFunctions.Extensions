@@ -202,10 +202,12 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.CLI
 
                 var csproj = new FileInfo(filepath);
                 this._filename = csproj.Name;
+
+                return;
             }
 
             var fqpath =
-#if NET461
+#if NETFRAMEWORK
                 System.IO.Path.IsPathRooted(path)
 #else
                 System.IO.Path.IsPathFullyQualified(path)
@@ -219,6 +221,8 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.CLI
 
                 this._projectPath = csproj.DirectoryName.TrimEnd(directorySeparator);
                 this._filename = csproj.Name;
+
+                return;
             }
 
             var di = new DirectoryInfo(fqpath);

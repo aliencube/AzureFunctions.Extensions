@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-
+using System.Security.Cryptography;
 using Newtonsoft.Json;
 
 namespace Aliencube.AzureFunctions.FunctionApp.Models
@@ -40,5 +40,22 @@ namespace Aliencube.AzureFunctions.FunctionApp.Models
         /// Gets or sets the <see cref="PetStatus"/> value.
         /// </summary>
         public PetStatus? Status { get; set; }
+
+        public TestGeneric<SomeClass> TestGenericIAmSomeClass { get; set; }
+
     }
+
+    public class TestGeneric<T>
+    {
+        public string Name { get; set; }
+        public T Value { get; set; }
+    }
+
+    public class SomeClass
+    {
+        public int Number { get; set; }
+        public string Text { get; set; }
+    }
+
+
 }
