@@ -33,8 +33,15 @@ jobs:
     #   with:
     #     dotnet-version: '5.x'
 
+    # NOTE: the setup-msbuild task currently leverages ::add-path which is deprecated and so requires ACTIONS_ALLOW_UNSECURE_COMMANDS
+    - name: Enable ACTIONS_ALLOW_UNSECURE_COMMANDS
+      run: echo "ACTIONS_ALLOW_UNSECURE_COMMANDS=true" >> $GITHUB_ENV
+
     - name: Add MSBuild to PATH
-      uses: microsoft/setup-msbuild@v1.0.0
+      uses: microsoft/setup-msbuild@v1.0.2
+
+    - name: Disable ACTIONS_ALLOW_UNSECURE_COMMANDS
+      run: echo "ACTIONS_ALLOW_UNSECURE_COMMANDS=false" >> $GITHUB_ENV
 
     - name: Restore NuGet packages
       shell: pwsh
