@@ -1,4 +1,4 @@
-#if NET461
+#if NETFRAMEWORK
 using System.Net.Http;
 #endif
 
@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 using Aliencube.AzureFunctions.Extensions.OpenApi.Core.Visitors;
 
-#if NETSTANDARD2_0
+#if NETSTANDARD
 using Microsoft.AspNetCore.Http;
 #endif
 
@@ -41,7 +41,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Core.Abstractions
         /// <returns><see cref="IDocument"/> instance.</returns>
         IDocument AddMetadata(OpenApiInfo info);
 
-#if NET461
+#if NETFRAMEWORK
         /// <summary>
         /// Adds server details.
         /// </summary>
@@ -49,7 +49,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Core.Abstractions
         /// <param name="routePrefix">Route prefix value.</param>
         /// <returns><see cref="IDocument"/> instance.</returns>
         IDocument AddServer(HttpRequestMessage req, string routePrefix);
-#elif NETSTANDARD2_0
+#elif NETSTANDARD
         /// <summary>
         /// Adds server details.
         /// </summary>

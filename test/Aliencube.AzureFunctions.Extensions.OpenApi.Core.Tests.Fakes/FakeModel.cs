@@ -45,5 +45,18 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Core.Tests.Fakes
         /// </summary>
         public FakeStringEnum EnumProperty { get; set; }
 
+        public TestGeneric<SomeClass> TestGenericIAmSomeClass { get; set; }
+    }
+
+    public class TestGeneric<T>
+    {
+        public string Name { get; set; }
+        public T Value { get; set; }
+    }
+
+    public class SomeClass
+    {
+        public int Number { get; set; }
+        public string Text { get; set; }
     }
 }

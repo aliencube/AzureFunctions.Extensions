@@ -361,6 +361,12 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Core.Extensions
                 return namingStrategy.GetPropertyName(name, hasSpecifiedName: false);
             }
 
+            if (type.IsGenericType)
+            {
+                return namingStrategy.GetPropertyName(type.Name.Split('`').First(), false) + "_" +
+                       string.Join("_", type.GenericTypeArguments.Select(a => namingStrategy.GetPropertyName(a.Name, false)));
+            }
+
             return namingStrategy.GetPropertyName(type.Name, hasSpecifiedName: false);
         }
 

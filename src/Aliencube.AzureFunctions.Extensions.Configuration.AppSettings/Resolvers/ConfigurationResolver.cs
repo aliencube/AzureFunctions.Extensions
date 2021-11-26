@@ -61,7 +61,7 @@ namespace Aliencube.AzureFunctions.Extensions.Configuration.AppSettings.Resolver
             {
                 basePath = $"/{basePath}";
             }
-#if NET461
+#if NETFRAMEWORK
             var scriptRootPath = environmentVariables.GetValue<string>("AzureWebJobsScriptRoot");
             if (!string.IsNullOrWhiteSpace(scriptRootPath))
             {

@@ -1,10 +1,10 @@
-#if NET461
+#if NETFRAMEWORK
 using System.Net;
 using System.Net.Http;
 #endif
 using System.Threading.Tasks;
 
-#if !NET461
+#if !NETFRAMEWORK
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 #endif
@@ -17,7 +17,7 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Core.Tests.Fakes
     /// </summary>
     public class FakeHttpTrigger
     {
-#if NET461
+#if NETFRAMEWORK
         /// <summary>
         /// Gets something.
         /// </summary>

@@ -1,4 +1,4 @@
-#if NET461
+#if NETFRAMEWORK
 using System;
 using System.Net;
 using System.Net.Http;
@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using Aliencube.AzureFunctions.Extensions.DependencyInjection.Abstractions;
 using Aliencube.AzureFunctions.FunctionApp.Services;
 
-#if !NET461
+#if !NETFRAMEWORK
 using Microsoft.AspNetCore.Mvc;
 #endif
 
@@ -39,12 +39,12 @@ namespace Aliencube.AzureFunctions.FunctionApp.Functions
             this.Log.LogInformation("C# HTTP trigger function processed a request.");
 
             var content = await this._service.GetDummies().ConfigureAwait(false);
-#if NET461
+#if NETFRAMEWORK
             var req = input as HttpRequestMessage;
             var result = req.CreateResponse(HttpStatusCode.OK, content);
 
             return (TOutput)Convert.ChangeType(result, typeof(TOutput));
-#elif NETSTANDARD2_0
+#elif NETSTANDARD
             var result = new OkObjectResult(content);
 
             return (TOutput)(IActionResult)result;

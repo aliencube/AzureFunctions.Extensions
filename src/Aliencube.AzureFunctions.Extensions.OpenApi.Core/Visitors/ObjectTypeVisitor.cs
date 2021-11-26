@@ -76,7 +76,11 @@ namespace Aliencube.AzureFunctions.Extensions.OpenApi.Core.Visitors
         /// <inheritdoc />
         public override void Visit(IAcceptor acceptor, KeyValuePair<string, Type> type, NamingStrategy namingStrategy, params Attribute[] attributes)
         {
-            var title = namingStrategy.GetPropertyName(type.Value.Name, hasSpecifiedName: false);
+            var title = type.Value.IsGenericType
+                ? namingStrategy.GetPropertyName(type.Value.Name.Split('`').First(), hasSpecifiedName: false) + "_" +
+                  string.Join("_",
+                      type.Value.GenericTypeArguments.Select(a => namingStrategy.GetPropertyName(a.Name, false)))
+                : namingStrategy.GetPropertyName(type.Value.Name, hasSpecifiedName: false);
             var name = this.Visit(acceptor, name: type.Key, title: title, dataType: "object", dataFormat: null, attributes: attributes);
 
             if (name.IsNullOrWhiteSpace())
