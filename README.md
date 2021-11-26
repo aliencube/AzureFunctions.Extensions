@@ -10,7 +10,7 @@ This provides some useful extensions for Azure Functions.
 
 ## Getting Started ![Build and Test](https://github.com/aliencube/AzureFunctions.Extensions/workflows/Build%20and%20Test/badge.svg) ##
 
-The following extensions are not actively developed any longer, but for reference only.
+The following extensions are not actively developed any longer, but for reference only. You can find out the archived source codes by checking out the [archived](https://github.com/aliencube/AzureFunctions.Extensions/tree/archived) tag.
 
 | Package | Status | Version |
 | --- | --- | --- |

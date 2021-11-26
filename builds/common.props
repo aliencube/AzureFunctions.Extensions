@@ -1,0 +1,27 @@
+<Project>
+
+  <PropertyGroup>
+    <Product>Aliencube Azure Functions Extensions</Product>
+    <Copyright>© Aliencube Community. All rights reserved.</Copyright>
+
+    <Owners>justinyoo</Owners>
+    <Authors>Justin Yoo</Authors>
+    <Company>Aliencube Community</Company>
+
+    <RepositoryUrl>https://github.com/aliencube/AzureFunctions.Extensions</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <PackageProjectUrl>https://github.com/aliencube/AzureFunctions.Extensions</PackageProjectUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+
+    <PackageIconUrl>https://raw.githubusercontent.com/aliencube/AzureFunctions.Extensions/main/icons/Aliencube.AzureFunctions.Extensions.Common.png</PackageIconUrl>
+    <PackageIcon>Aliencube.AzureFunctions.Extensions.Common.png</PackageIcon>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\icons\Aliencube.AzureFunctions.Extensions.Common.png" Pack="true" PackagePath="\" />
+  </ItemGroup>
+</Project>

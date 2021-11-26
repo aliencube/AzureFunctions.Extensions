@@ -1,242 +1,124 @@
-# name: Release NuGet
+name: Release NuGet
 
-# on:
-#   push:
-#     branches:
-#     - release/appsettings-*
-#     - release/configjson-*
-#     - release/di-*
-#     - release/swagger-*
-#     - release/swaggercore-*
+on:
+  push:
+    branches:
+    - release/common-*
 
-# jobs:
-#   build_test_package_release:
-#     name: Build, test, package and release
-#     strategy:
-#       matrix:
-#         os: [ 'windows-latest' ]
+jobs:
+  build_test_package_release:
+    name: Build, test, package and release
+    strategy:
+      matrix:
+        os: [ 'windows-latest', 'ubuntu-latest', 'macos-latest' ]
 
-#     runs-on: ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
 
-#     steps:
-#     # - name: Check event payload
-#     #   shell: pwsh
-#     #   run: |
-#     #     echo ${{ toJSON(github.event) }}
+    steps:
+    # - name: Check event payload
+    #   shell: pwsh
+    #   run: |
+    #     echo ${{ toJSON(github.event) }}
 
-#     - name: Set release module and version
-#       id: release
-#       shell: pwsh
-#       run: |
-#         $branch = "${{ github.event.ref }}" -replace "refs/heads/release/", ""
-#         $segments = $branch -split "-"
-#         $module = $segments[0]
-#         $version = $segments[1]
+    - name: Set release module and version
+      id: release
+      shell: pwsh
+      run: |
+        $branch = "${{ github.event.ref }}" -replace "refs/heads/release/", ""
+        $segments = $branch -split "-"
+        $module = $segments[0]
+        $version = $segments[1]
 
-#         # echo "::set-env name=RELEASE_MODULE::$module"
-#         # echo "::set-env name=RELEASE_VERSION::$version"
+        # echo "::set-env name=RELEASE_MODULE::$module"
+        # echo "::set-env name=RELEASE_VERSION::$version"
 
-#         echo "::set-output name=module::$module"
-#         echo "::set-output name=version::$version"
+        echo "::set-output name=module::$module"
+        echo "::set-output name=version::$version"
 
-#     - name: Check release module and version
-#       shell: pwsh
-#       run: |
-#         # echo "env: $env:RELEASE_MODULE"
-#         # echo "env: $env:RELEASE_VERSION"
+    - name: Check release module and version
+      shell: pwsh
+      run: |
+        # echo "env: $env:RELEASE_MODULE"
+        # echo "env: $env:RELEASE_VERSION"
 
-#         echo "output: ${{ steps.release.outputs.module }}"
-#         echo "output: ${{ steps.release.outputs.version }}"
+        echo "output: ${{ steps.release.outputs.module }}"
+        echo "output: ${{ steps.release.outputs.version }}"
 
-#     - name: Checkout the repository
-#       uses: actions/checkout@v2
+    - name: Checkout the repository
+      uses: actions/checkout@v2
 
-#     - name: Setup .NET SDK 2.1 LTS
-#       uses: actions/setup-dotnet@v1
-#       with:
-#         dotnet-version: '2.1.x'
+    - name: Setup .NET SDK 6
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '6.x'
 
-#     - name: Setup .NET SDK 3.1 LTS
-#       uses: actions/setup-dotnet@v1
-#       with:
-#         dotnet-version: '3.1.x'
+    # - name: Add MSBuild to PATH
+    #   uses: microsoft/setup-msbuild@v1.0.0
 
-#     # - name: Setup .NET SDK 5
-#     #   uses: actions/setup-dotnet@v1
-#     #   with:
-#     #     dotnet-version: '5.x'
+    - name: Restore NuGet packages
+      shell: pwsh
+      run: |
+        dir
+        dotnet restore .
 
-#     - name: Add MSBuild to PATH
-#       uses: microsoft/setup-msbuild@v1.0.0
+    - name: Build solution for Common
+      if: steps.release.outputs.module == 'common'
+      shell: pwsh
+      run: |
+        dir
+        dotnet build ./src/Aliencube.AzureFunctions.Extensions.Common -c Release -p:Version=${{ steps.release.outputs.version }} -v minimal
+        dotnet build ./test/Aliencube.AzureFunctions.Extensions.Common.Tests -c Release
 
-#     - name: Restore NuGet packages
-#       shell: pwsh
-#       run: |
-#         dir
-#         dotnet restore .
+    - name: Test solution for Common
+      if: steps.release.outputs.module == 'common'
+      shell: pwsh
+      run: |
+        dir
+        dotnet test ./test/Aliencube.AzureFunctions.Extensions.Common.Tests -c Release
 
-#     - name: Build solution for AppSettings
-#       if: steps.release.outputs.module == 'appsettings'
-#       shell: pwsh
-#       run: |
-#         dir
-#         dotnet build ./src/Aliencube.AzureFunctions.Extensions.Configuration.AppSettings -c Release -p:Version=${{ steps.release.outputs.version }} -v minimal
-#         dotnet build ./test/Aliencube.AzureFunctions.Extensions.Configuration.AppSettings.Tests -c Release
+    - name: List Package for Common
+      if: steps.release.outputs.module == 'common'
+      shell: pwsh
+      run: |
+        $package = Get-ChildItem -Path ./src/*.Common -Include *.nupkg -Recurse | Where-Object { $_.FullName -like "*${{ steps.release.outputs.version }}*" }
+        $path = $package[0].FullName
+        $name = $package[0].Name
 
-#     - name: Build solution for Configuration.Json
-#       if: steps.release.outputs.module == 'configjson'
-#       shell: pwsh
-#       run: |
-#         dir
-#         dotnet build ./src/Aliencube.AzureFunctions.Extensions.Configuration.Json -c Release -p:Version=${{ steps.release.outputs.version }} -v minimal
-#         dotnet build ./test/Aliencube.AzureFunctions.Extensions.Configuration.Json.Tests -c Release
+        echo "::set-env name=PACKAGE_PATH::$path"
+        echo "::set-env name=PACKAGE_NAME::$name"
 
-#     - name: Build solution for DependencyInjection
-#       if: steps.release.outputs.module == 'di'
-#       shell: pwsh
-#       run: |
-#         dir
-#         dotnet build ./src/Aliencube.AzureFunctions.Extensions.DependencyInjection -c Release -p:Version=${{ steps.release.outputs.version }} -v minimal
-#         dotnet build ./test/Aliencube.AzureFunctions.Extensions.DependencyInjection.Tests -c Release
+    - name: Check package path and name
+      id: package
+      shell: pwsh
+      run: |
+        echo "package-path: $env:PACKAGE_PATH"
+        echo "package-name: $env:PACKAGE_NAME"
 
-#     - name: Build solution for OpenApi Core
-#       if: steps.release.outputs.module == 'swaggercore'
-#       shell: pwsh
-#       run: |
-#         dir
-#         dotnet build ./src/Aliencube.AzureFunctions.Extensions.OpenApi.Core -c Release -p:Version=${{ steps.release.outputs.version }} -v minimal
-#         dotnet build ./test/Aliencube.AzureFunctions.Extensions.OpenApi.Core.Tests -c Release
+        echo "::set-output name=path::$env:PACKAGE_PATH"
+        echo "::set-output name=name::$env:PACKAGE_NAME"
 
-#     - name: Build solution for OpenApi
-#       if: steps.release.outputs.module == 'swagger'
-#       shell: pwsh
-#       run: |
-#         dir
-#         dotnet build ./src/Aliencube.AzureFunctions.Extensions.OpenApi -c Release -p:Version=${{ steps.release.outputs.version }} -v minimal
-#         dotnet build ./test/Aliencube.AzureFunctions.Extensions.OpenApi.Tests -c Release
+    - name: Create Release to GitHub
+      id: ghrelease
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: "${{ steps.release.outputs.module }}-${{ steps.release.outputs.version }}"
+        release_name: Release "${{ steps.release.outputs.module }}-v${{ steps.release.outputs.version }}"
+        draft: false
+        prerelease: false
 
-#     - name: Test solution for AppSettings
-#       if: steps.release.outputs.module == 'appsettings'
-#       shell: pwsh
-#       run: |
-#         dir
-#         dotnet test ./test/Aliencube.AzureFunctions.Extensions.Configuration.AppSettings.Tests -c Release
+    - name: Upload NuGet package to GitHub
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.ghrelease.outputs.upload_url }}
+        asset_path: ${{ steps.package.outputs.path }}
+        asset_name: ${{ steps.package.outputs.name }}
+        asset_content_type: application/octet-stream
 
-#     - name: Test solution for Configuration.Json
-#       if: steps.release.outputs.module == 'configjson'
-#       shell: pwsh
-#       run: |
-#         dir
-#         dotnet test ./test/Aliencube.AzureFunctions.Extensions.Configuration.Json.Tests -c Release
-
-#     - name: Test solution for DependencyInjection
-#       if: steps.release.outputs.module == 'di'
-#       shell: pwsh
-#       run: |
-#         dir
-#         dotnet test ./test/Aliencube.AzureFunctions.Extensions.DependencyInjection.Tests -c Release
-
-#     - name: Test solution for OpenApi Core
-#       if: steps.release.outputs.module == 'swaggercore'
-#       shell: pwsh
-#       run: |
-#         dir
-#         dotnet test ./test/Aliencube.AzureFunctions.Extensions.OpenApi.Core.Tests -c Release
-
-#     - name: Test solution for OpenApi
-#       if: steps.release.outputs.module == 'swagger'
-#       shell: pwsh
-#       run: |
-#         dir
-#         dotnet test ./test/Aliencube.AzureFunctions.Extensions.OpenApi.Tests -c Release
-
-#     - name: List Package for AppSettings
-#       if: steps.release.outputs.module == 'appsettings'
-#       shell: pwsh
-#       run: |
-#         $package = Get-ChildItem -Path ./src/*.AppSettings -Include *.nupkg -Recurse | Where-Object { $_.FullName -like "*${{ steps.release.outputs.version }}*" }
-#         $path = $package[0].FullName
-#         $name = $package[0].Name
-
-#         echo "::set-env name=PACKAGE_PATH::$path"
-#         echo "::set-env name=PACKAGE_NAME::$name"
-
-#     - name: List Package for Configuration.Json
-#       if: steps.release.outputs.module == 'configjson'
-#       shell: pwsh
-#       run: |
-#         $package = Get-ChildItem -Path ./src/*.Json -Include *.nupkg -Recurse | Where-Object { $_.FullName -like "*${{ steps.release.outputs.version }}*" }
-#         $path = $package[0].FullName
-#         $name = $package[0].Name
-
-#         echo "::set-env name=PACKAGE_PATH::$path"
-#         echo "::set-env name=PACKAGE_NAME::$name"
-
-#     - name: List Package for DependencyInjection
-#       if: steps.release.outputs.module == 'di'
-#       shell: pwsh
-#       run: |
-#         $package = Get-ChildItem -Path ./src/*.DependencyInjection -Include *.nupkg -Recurse | Where-Object { $_.FullName -like "*${{ steps.release.outputs.version }}*" }
-#         $path = $package[0].FullName
-#         $name = $package[0].Name
-
-#         echo "::set-env name=PACKAGE_PATH::$path"
-#         echo "::set-env name=PACKAGE_NAME::$name"
-
-#     - name: List Package for OpenApi Core
-#       if: steps.release.outputs.module == 'swaggercore'
-#       shell: pwsh
-#       run: |
-#         $package = Get-ChildItem -Path ./src/*.OpenApi.Core -Include *.nupkg -Recurse | Where-Object { $_.FullName -like "*${{ steps.release.outputs.version }}*" }
-#         $path = $package[0].FullName
-#         $name = $package[0].Name
-
-#         echo "::set-env name=PACKAGE_PATH::$path"
-#         echo "::set-env name=PACKAGE_NAME::$name"
-
-#     - name: List Package for OpenApi
-#       if: steps.release.outputs.module == 'swagger'
-#       shell: pwsh
-#       run: |
-#         $package = Get-ChildItem -Path ./src/*.OpenApi -Include *.nupkg -Recurse | Where-Object { $_.FullName -like "*${{ steps.release.outputs.version }}*" }
-#         $path = $package[0].FullName
-#         $name = $package[0].Name
-
-#         echo "::set-env name=PACKAGE_PATH::$path"
-#         echo "::set-env name=PACKAGE_NAME::$name"
-
-#     - name: Check package path and name
-#       id: package
-#       shell: pwsh
-#       run: |
-#         echo "package-path: $env:PACKAGE_PATH"
-#         echo "package-name: $env:PACKAGE_NAME"
-
-#         echo "::set-output name=path::$env:PACKAGE_PATH"
-#         echo "::set-output name=name::$env:PACKAGE_NAME"
-
-#     - name: Create Release to GitHub
-#       id: ghrelease
-#       uses: actions/create-release@v1
-#       env:
-#         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#       with:
-#         tag_name: "${{ steps.release.outputs.module }}-${{ steps.release.outputs.version }}"
-#         release_name: Release "${{ steps.release.outputs.module }}-v${{ steps.release.outputs.version }}"
-#         draft: false
-#         prerelease: false
-
-#     - name: Upload NuGet package to GitHub
-#       uses: actions/upload-release-asset@v1
-#       env:
-#         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#       with:
-#         upload_url: ${{ steps.ghrelease.outputs.upload_url }}
-#         asset_path: ${{ steps.package.outputs.path }}
-#         asset_name: ${{ steps.package.outputs.name }}
-#         asset_content_type: application/octet-stream
-
-#     - name: Release to NuGet
-#       shell: pwsh
-#       run: |
-#         dotnet nuget push ${{ steps.package.outputs.path }} --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_API_KEY }}
+    - name: Release to NuGet
+      shell: pwsh
+      run: |
+        dotnet nuget push ${{ steps.package.outputs.path }} --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_API_KEY }}

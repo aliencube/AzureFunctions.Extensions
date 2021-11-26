@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\..\builds\common.props" />
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+
+    <IsPackable>true</IsPackable>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
+    <Version>1.0.0</Version>
+    <PackageId>Aliencube.AzureFunctions.Extensions.Common</PackageId>
+    <Title>Aliencube.AzureFunctions.Extensions.Common</Title>
+    <Summary>Useful extension methods and constants for Azure Functions apps</Summary>
+    <Description>This package provides some useful extension methods and constants frequently used, while building Azure Functions apps.</Description>
+    <PackageTags>AzureFunctions, Extensions</PackageTags>
+
+    <AssemblyName>Aliencube.AzureFunctions.Extensions.Common</AssemblyName>
+    <RootNamespace>Aliencube.AzureFunctions.Extensions.Common</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.1.0" />
+    <PackageReference Include="Microsoft.OpenApi" Version="1.2.3" />
+    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+  </ItemGroup>
+
+</Project>
