@@ -1,55 +1,45 @@
-# name: Pull Request
+name: Pull Request
 
-# on:
-#   pull_request:
-#     branches:
-#     - dev
+on:
+  pull_request:
+    branches:
+    - main
 
-# jobs:
-#   build_and_test:
-#     name: Build and test
-#     strategy:
-#       matrix:
-#         os: [ 'windows-latest' ]
+jobs:
+  build_and_test:
+    name: Build and test
+    strategy:
+      matrix:
+        os: [ 'windows-latest', 'ubuntu-latest', 'macos-latest' ]
 
-#     runs-on: ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
 
-#     steps:
-#     - name: Checkout the repository
-#       uses: actions/checkout@v2
+    steps:
+    - name: Checkout the repository
+      uses: actions/checkout@v2
 
-#     - name: Setup .NET SDK 2.1 LTS
-#       uses: actions/setup-dotnet@v1
-#       with:
-#         dotnet-version: '2.1.x'
+    - name: Setup .NET SDK 6
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '6.x'
 
-#     - name: Setup .NET SDK 3.1 LTS
-#       uses: actions/setup-dotnet@v1
-#       with:
-#         dotnet-version: '3.1.x'
+    # - name: Add MSBuild to PATH
+    #   uses: microsoft/setup-msbuild@v1.0.0
 
-#     # - name: Setup .NET SDK 5
-#     #   uses: actions/setup-dotnet@v1
-#     #   with:
-#     #     dotnet-version: '5.x'
+    - name: Restore NuGet packages
+      shell: pwsh
+      run: |
+        dir
+        dotnet restore .
 
-#     - name: Add MSBuild to PATH
-#       uses: microsoft/setup-msbuild@v1.0.0
+    - name: Build solution
+      shell: pwsh
+      run: |
+        dir
+        dotnet build . -c Debug -v minimal
 
-#     - name: Restore NuGet packages
-#       shell: pwsh
-#       run: |
-#         dir
-#         dotnet restore .
-
-#     - name: Build solution
-#       shell: pwsh
-#       run: |
-#         dir
-#         dotnet build . -c Debug -v minimal
-
-#     - name: Test solution
-#       shell: pwsh
-#       run: |
-#         dir
-#         dotnet test . -c Debug
+    - name: Test solution
+      shell: pwsh
+      run: |
+        dir
+        dotnet test . -c Debug
