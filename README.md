@@ -1,6 +1,6 @@
-> As the [Azure Functions OpenAPI Extension](https://github.com/Azure/azure-functions-openapi-extension/) package was [officially announced]((https://techcommunity.microsoft.com/t5/apps-on-azure/create-and-publish-openapi-enabled-azure-functions-with-visual/ba-p/2381067?WT.mc_id=github-0000-juyoo)) during the [//Build](https://mybuild.microsoft.com/sessions/5ac55e8d-82e5-4b9f-b9bc-d51187761b42?WT.mc_id=github-0000-juyoo) event in May 2021, this repository has now been archived.
+> As the [Azure Functions OpenAPI Extension](https://github.com/Azure/azure-functions-openapi-extension/) package was [officially announced]((https://techcommunity.microsoft.com/t5/apps-on-azure/create-and-publish-openapi-enabled-azure-functions-with-visual/ba-p/2381067?WT.mc_id=github-0000-juyoo)) during the [//Build](https://mybuild.microsoft.com/sessions/5ac55e8d-82e5-4b9f-b9bc-d51187761b42?WT.mc_id=github-0000-juyoo) event in May 2021, this repository has now been pivoted to maintain other extensions for Azure Functions.
 > 
-> If you have any questions around this extension, please pile up an issue to [here](https://github.com/Azure/azure-functions-openapi-extension/issues).
+> If you have any questions around the OpenAPI extension, please pile up an issue to [here](https://github.com/Azure/azure-functions-openapi-extension/issues).
 
 
 # AzureFunctions.Extensions #
@@ -9,6 +9,8 @@ This provides some useful extensions for Azure Functions.
 
 
 ## Getting Started ![Build and Test](https://github.com/aliencube/AzureFunctions.Extensions/workflows/Build%20and%20Test/badge.svg) ##
+
+The following extensions are not actively developed any longer, but for reference only.
 
 | Package | Status | Version |
 | --- | --- | --- |
