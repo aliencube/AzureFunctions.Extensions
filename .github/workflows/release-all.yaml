@@ -10,7 +10,7 @@ jobs:
     name: Build, test, package and release
     strategy:
       matrix:
-        os: [ 'windows-latest', 'ubuntu-latest', 'macos-latest' ]
+        os: [ 'windows-latest' ]
 
     runs-on: ${{ matrix.os }}
 
