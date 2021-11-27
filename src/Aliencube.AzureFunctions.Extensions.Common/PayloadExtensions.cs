@@ -8,10 +8,11 @@ namespace Aliencube.AzureFunctions.Extensions.Common
     public static class PayloadExtensions
     {
         /// <summary>
-        /// Replaces the placeholder with the given value.
+        /// Serialises the given payload to JSON string.
         /// </summary>
-        /// <param name="payload"><see cref="PlaceholderReplaceRequest"/> instance.</param>
-        /// <returns>Returns the replaced value.</returns>
+        /// <typeparam name="T">Type of the payload to serialise.</typeparam>
+        /// <param name="payload">Payload object.</param>
+        /// <returns>Returns the serialised JSON string value.</returns>
         public static string ToJson<T>(this T payload)
         {
             if (payload == null)
@@ -24,6 +25,12 @@ namespace Aliencube.AzureFunctions.Extensions.Common
             return result;
         }
 
+        /// <summary>
+        /// Deserialises the JSON string value to given type.
+        /// </summary>
+        /// <typeparam name="T">Type of the payload to deserialise.</typeparam>
+        /// <param name="payload">JSON string value.</param>
+        /// <returns>Returns the deserialised object.</returns>
         public static T FromJson<T>(this string payload)
         {
             if (string.IsNullOrWhiteSpace(payload))
