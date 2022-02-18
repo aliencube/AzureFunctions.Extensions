@@ -24,5 +24,15 @@ namespace Aliencube.AzureFunctions.Extensions.Common
         /// Identifies text/vnd.yaml.
         /// </summary>
         public const string TextVndYaml = "text/vnd.yaml";
+
+        /// <summary>
+        /// Identifies application/x-www-form-urlencoded.
+        /// </summary>
+        public const string ApplicationFormUrlEncoded = "application/x-www-form-urlencoded";
+
+        /// <summary>
+        /// Identifies multipart/form-data.
+        /// </summary>
+        public const string MultipartFormData = "multipart/form-data";
     }
 }

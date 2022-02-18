@@ -2,8 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 using Aliencube.AzureFunctions.Extensions.Common.Tests.Models;
@@ -48,7 +48,7 @@ namespace Aliencube.AzureFunctions.Extensions.Common.Tests
         }
 
         [DataTestMethod]
-        [DataRow("key1", "value1")]
+        [DataRow("x-secret-key", "hello-world")]
         public async Task Given_Header_When_To_Invoked_Then_It_Should_Return_Result(string key, string value)
         {
             var store = new Dictionary<string, StringValues>() { { key, value } };
@@ -57,15 +57,14 @@ namespace Aliencube.AzureFunctions.Extensions.Common.Tests
             var req = new Mock<HttpRequest>();
             req.SetupGet(p => p.Headers).Returns(headers);
 
-            var result = await HttpRequestExtensions.To<IHeaderDictionary>(req.Object, SourceFrom.Header).ConfigureAwait(false);
+            var result = await HttpRequestExtensions.To<FakeRequestHeader>(req.Object, SourceFrom.Header).ConfigureAwait(false);
 
             result.Should().NotBeNull();
-            result.Should().HaveCount(store.Count);
-            result.Should().ContainKey(store.First().Key);
+            result.SecretKey.Should().Be(value);
         }
 
         [DataTestMethod]
-        [DataRow("key1", "value1")]
+        [DataRow("key", "value")]
         public async Task Given_Query_When_To_Invoked_Then_It_Should_Return_Result(string key, string value)
         {
             var store = new Dictionary<string, StringValues>() { { key, value } };
@@ -74,11 +73,10 @@ namespace Aliencube.AzureFunctions.Extensions.Common.Tests
             var req = new Mock<HttpRequest>();
             req.SetupGet(p => p.Query).Returns(queries);
 
-            var result = await HttpRequestExtensions.To<IQueryCollection>(req.Object, SourceFrom.Query).ConfigureAwait(false);
+            var result = await HttpRequestExtensions.To<FakeRequestQuery>(req.Object, SourceFrom.Query).ConfigureAwait(false);
 
             result.Should().NotBeNull();
-            result.Should().HaveCount(store.Count);
-            result.Should().ContainKey(store.First().Key);
+            result.Key.Should().Be(value);
         }
 
         [DataTestMethod]
@@ -100,6 +98,47 @@ namespace Aliencube.AzureFunctions.Extensions.Common.Tests
             result.Message.Should().Be(message);
 
             await stream.DisposeAsync().ConfigureAwait(false);
+        }
+
+        [TestMethod]
+        public async Task Given_Null_Payload_When_ToMultipartFormDataContent_Invoked_Then_It_Should_Return_Null()
+        {
+            var files = new FormFileCollection();
+
+            var form = new Mock<IFormCollection>();
+            form.SetupGet(p => p.Files).Returns(files);
+
+            var req = new Mock<HttpRequest>();
+            req.SetupGet(p => p.Form).Returns(form.Object);
+
+            var result = await HttpRequestExtensions.ToMultipartFormDataContent(req.Object).ConfigureAwait(false);
+
+            result.Should().BeNull();
+        }
+
+        [DataTestMethod]
+        [DataRow("hello", "world.jpg")]
+        public async Task Given_Payload_When_ToMultipartFormDataContent_Invoked_Then_It_Should_Return_Result(string name, string filename)
+        {
+            var file = new Mock<IFormFile>();
+            file.SetupGet(p => p.Name).Returns(name);
+            file.SetupGet(p => p.FileName).Returns(filename);
+            file.Setup(p => p.CopyToAsync(It.IsAny<Stream>(), It.IsAny<CancellationToken>())).Returns(Task.CompletedTask);
+
+            var files = new FormFileCollection
+            {
+                file.Object
+            };
+
+            var form = new Mock<IFormCollection>();
+            form.SetupGet(p => p.Files).Returns(files);
+
+            var req = new Mock<HttpRequest>();
+            req.SetupGet(p => p.Form).Returns(form.Object);
+
+            var result = await HttpRequestExtensions.ToMultipartFormDataContent(req.Object).ConfigureAwait(false);
+
+            result.Should().NotBeNull();
         }
     }
 }
